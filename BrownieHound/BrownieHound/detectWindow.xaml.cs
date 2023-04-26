@@ -8,25 +8,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace BrownieHound
 {
     /// <summary>
-    /// capture.xaml の相互作用ロジック
+    /// detectWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class capture : Page
+    public partial class detectWindow : Window
     {
-        public capture()
+        public detectWindow()
         {
             InitializeComponent();
-        }
 
-        private void inactivate_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-
+            Uri uri = new Uri("/detect.xaml", UriKind.Relative);
+            frame.Source = uri;
         }
     }
 }

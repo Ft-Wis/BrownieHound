@@ -22,5 +22,11 @@ namespace BrownieHound
         {
             InitializeComponent();
         }
+
+        private void s_rTotop_Click(object sender, RoutedEventArgs e)
+        {
+            var nextPage = new top();
+            NavigationService.Navigate(nextPage);
+        }
     }
 }

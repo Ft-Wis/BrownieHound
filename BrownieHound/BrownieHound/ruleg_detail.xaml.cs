@@ -22,5 +22,12 @@ namespace BrownieHound
         {
             InitializeComponent();
         }
+
+
+        private void rg_dTorg_s_Click(object sender, RoutedEventArgs e)
+        {
+            var nextPage = new ruleg_settings();
+            NavigationService.Navigate(nextPage);
+        }
     }
 }

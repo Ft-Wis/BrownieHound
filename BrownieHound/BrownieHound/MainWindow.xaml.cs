@@ -23,6 +23,9 @@ namespace BrownieHound
         public MainWindow()
         {
             InitializeComponent();
+
+            Uri uri = new Uri("/top.xaml", UriKind.Relative);
+            frame.Source = uri;
         }
     }
 }
