@@ -9,6 +9,9 @@
       Title="mail_settings">
 
     <Grid>
-        
+        <Button x:Name="m_sTotop_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" Click="s_rTotop_redo_Click"/>
+        <Button x:Name="m_sTotop_submit" Content="確定" HorizontalAlignment="Left" Height="43" Margin="617,0,0,22" VerticalAlignment="Bottom" Width="146" Click="s_rTotop_submit_Click"/>
+        <Label x:Name="title" Content="メール設定画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+
     </Grid>
 </Page>

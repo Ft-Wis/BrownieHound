@@ -9,6 +9,8 @@
       Title="ruleg_settings">
 
     <Grid>
-        
+        <Button x:Name="rg_sTotop" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" Click="s_rTotop_Click"/>
+        <Label x:Name="title" Content="ルールグループ設定画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+
     </Grid>
 </Page>
