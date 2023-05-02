@@ -1,19 +1,19 @@
 ﻿BrownieHound
-
+1.0.0.0
 
 winexe
 C#
 .cs
-C:\Users\user\Source\Repos\sotsuken\BrownieHound\BrownieHound\obj\Debug\netcoreapp3.1\
+C:\Users\user\source\repos\sotsuken2022\BrownieHound\BrownieHound\obj\Debug\netcoreapp3.1\
 BrownieHound
 none
 false
-TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
-C:\Users\user\Source\Repos\sotsuken\BrownieHound\BrownieHound\App.xaml
-121343323684
+TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
+C:\Users\user\source\repos\sotsuken2022\BrownieHound\BrownieHound\App.xaml
+12-2109843859
 
-15958055587
-1921654412462
+16695216207
+192-1533232326
 capture.xaml;detect.xaml;detectWindow.xaml;mail_settings.xaml;MainWindow.xaml;packet_detail.xaml;ruleg_detail.xaml;ruleg_settings.xaml;rule_add.xaml;rule_edit.xaml;standby_rule.xaml;top.xaml;
 
 False
