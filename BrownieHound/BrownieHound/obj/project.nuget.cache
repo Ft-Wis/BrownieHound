@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "XLkrSetVXnEyHKalmDTg5rZ3+S7i9B8tpula2X9VsjgGHYvtJ+BTErvupBvP3nDBCE7YT0AfPnti0IFJp9Y7aw==",
+  "dgSpecHash": "LEz2VXeNlTSkpM4id04DXLoEC3oj+9k8cPnaUR056h6a6BMM1arG6ihn4uA+VbaHz/I5VrdbnFOjqOnrsIdv2Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.32\\microsoft.netcore.app.host.win-x64.3.1.32.nupkg.sha512"
+  ],
   "logs": []
 }
