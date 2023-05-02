@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ifeRViXdpV0bJ8e8grvI/K2GhRpEe2RIidzRbPeEm4KDkDRwj3hVs0GFhK9DDaEOXDpnV2g3OSYkPEO4bVcpVA==",
+  "dgSpecHash": "YluFWgR2T//bJMRtZJc6cWQbU8wS6xFwkK6yi0jr+bmh5mgstxJ7bS2mFtbYXj7BD6IyPVET2rymIFMTv2tvSQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\materialdesigncolors\\2.1.2\\materialdesigncolors.2.1.2.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\materialdesignthemes\\4.8.0\\materialdesignthemes.4.8.0.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.32\\microsoft.netcore.app.host.win-x64.3.1.32.nupkg.sha512"
   ],
