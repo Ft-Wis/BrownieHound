@@ -33,7 +33,6 @@ namespace BrownieHound
                 Data = msg;
             }
         }
-        Process processTsinterface = null;
         Process processTscap = null;
         private ObservableCollection<packetData> CData;
         public capture()
@@ -45,10 +44,6 @@ namespace BrownieHound
         
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
-            if(processTsinterface != null && !processTsinterface.HasExited)
-            {
-                processTsinterface.Kill();
-            }
             if (processTscap != null && !processTscap.HasExited)
             {
                 processTscap.Kill();
@@ -80,29 +75,6 @@ namespace BrownieHound
 
             processTscap.BeginErrorReadLine();
             processTscap.BeginOutputReadLine();
-            /*
-            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
-
-            string args = "-D";
-
-            processTsinterface = new Process();
-            ProcessStartInfo processSinfo = new ProcessStartInfo(Command,args);
-            processSinfo.CreateNoWindow = true;
-            processSinfo.UseShellExecute = false;
-            processSinfo.RedirectStandardOutput = true;
-            processSinfo.RedirectStandardError = true;
-
-            processSinfo.StandardErrorEncoding = Encoding.UTF8;
-            processSinfo.StandardOutputEncoding = Encoding.UTF8;
-
-            processTsinterface = Process.Start(processSinfo);
-
-            processTsinterface.OutputDataReceived += dataReceivedTsinterface;
-            processTsinterface.ErrorDataReceived += errReceivedTsinterface;
-
-            processTsinterface.BeginErrorReadLine();
-            processTsinterface.BeginOutputReadLine();
-            */
         }
 
         private void errReceived(object sender, DataReceivedEventArgs e)
@@ -122,24 +94,6 @@ namespace BrownieHound
                 PrintTextBoxByThread(packetText);
             }
         }
-        /*
-        void dataReceivedTsinterface(object sender, DataReceivedEventArgs e)
-        {
-            string packetText = e.Data;
-            if(packetText != null && packetText.Length > 0)
-            {
-                PrintTextBoxByThread(packetText, captureTest);
-            }
-        }
-        void errReceivedTsinterface(object sender,DataReceivedEventArgs e)
-        {
-            string packetText = e.Data;
-            if (packetText != null && packetText.Length > 0)
-            {
-                PrintTextBoxByThread("ERR:" + packetText, captureTest);
-            }
-        }
-        */
         private void PrintText(string msg)
         {
             CData.Add(new packetData(msg));
