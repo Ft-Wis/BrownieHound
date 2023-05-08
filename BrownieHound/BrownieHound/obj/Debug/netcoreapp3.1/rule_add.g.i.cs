@@ -53,7 +53,7 @@ namespace BrownieHound {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BrownieHound;component/rule_add.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BrownieHound;V1.0.0.0;component/rule_add.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\rule_add.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
