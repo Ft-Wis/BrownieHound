@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static BrownieHound.capture;
 
 namespace BrownieHound
 {
@@ -22,9 +24,67 @@ namespace BrownieHound
         {
             InitializeComponent();
         }
+        Process processTsinterface = null;
+        private void Page_loaded(object sender, RoutedEventArgs e)
+        {
+            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
+
+            string args = "-D";
+            processTsinterface = new Process();
+            ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
+            processSinfo.CreateNoWindow = true;
+            processSinfo.UseShellExecute = false;
+            processSinfo.RedirectStandardOutput = true;
+            processSinfo.RedirectStandardError = true;
+
+            processSinfo.StandardErrorEncoding = Encoding.UTF8;
+            processSinfo.StandardOutputEncoding = Encoding.UTF8;
+
+            processTsinterface = Process.Start(processSinfo);
+
+            processTsinterface.OutputDataReceived += dataReceived;
+            processTsinterface.ErrorDataReceived += errReceived;
+
+            processTsinterface.BeginErrorReadLine();
+            processTsinterface.BeginOutputReadLine();
+            
+        }
+
+        private void errReceived(object sender, DataReceivedEventArgs e)
+        {
+            string packetText = e.Data;
+            if (packetText != null && packetText.Length > 0)
+            {
+                PrintTextBoxByThread("ERR:" + packetText);
+            }
+        }
+
+        private void dataReceived(object sender, DataReceivedEventArgs e)
+        {
+            string packetText = e.Data;
+            if (packetText != null && packetText.Length > 0)
+            {
+                PrintTextBoxByThread(packetText);
+            }
+        }
+        private void PrintText(string msg)
+        {
+            interfaceList.Items.Add(msg);
+        }
+        private void PrintTextBoxByThread(string msg)
+        {
+            Dispatcher.Invoke(new Action(() => PrintText(msg)));
+        }
         private void topTos_r_Click(object sender, RoutedEventArgs e)
         {
-            var nextPage = new standby_rule();
+            if (interfaceList.SelectedItems.Count > 0)
+            {
+                sendTos_r(interfaceList.SelectedItems[0].ToString());
+            }
+        }
+        private void sendTos_r(string tsInterface)
+        {
+            var nextPage = new standby_rule(tsInterface);
             NavigationService.Navigate(nextPage);
         }
 
@@ -38,6 +98,23 @@ namespace BrownieHound
         {
             var nextPage = new ruleg_settings();
             NavigationService.Navigate(nextPage);
+        }
+
+        private void Grid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (processTsinterface != null && !processTsinterface.HasExited)
+            {
+                processTsinterface.Kill();
+            }
+        }
+
+        private void listBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var listBoxItem = sender as ListBoxItem;
+            if (listBoxItem != null)
+            {
+                sendTos_r(listBoxItem.Content.ToString());
+            }
         }
     }
 }

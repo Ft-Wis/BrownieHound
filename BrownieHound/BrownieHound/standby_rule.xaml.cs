@@ -18,9 +18,10 @@ namespace BrownieHound
     /// </summary>
     public partial class standby_rule : Page
     {
-        public standby_rule()
+        public standby_rule(string tsInterface)
         {
             InitializeComponent();
+            this.interfaceLabel.Content = tsInterface;
         }
 
         private void s_rTotop_Click(object sender, RoutedEventArgs e)

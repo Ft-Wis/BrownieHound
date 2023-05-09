@@ -7,12 +7,17 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="top">
-
-    <Grid>
+    <Page.Resources>
+        <Style TargetType="ListBoxItem">
+            <EventSetter Event="MouseDoubleClick" Handler="listBoxItem_MouseDoubleClick"/>
+        </Style>
+    </Page.Resources>
+    <Grid Unloaded="Grid_Unloaded" Loaded="Page_loaded">
+        
         <Button x:Name="topTos_r" Content="解析実行" HorizontalAlignment="Left" Height="43" Margin="617,0,0,22" VerticalAlignment="Bottom" Width="146" Click="topTos_r_Click"/>
         <Button x:Name="topTom_s" Content="メール設定" HorizontalAlignment="Left" Height="43" Margin="444,0,0,22" VerticalAlignment="Bottom" Width="146" Click="topTom_s_Click"/>
         <Button x:Name="topTorg_s" Content="ルールグループ設定" HorizontalAlignment="Left" Height="43" Margin="271,0,0,22" VerticalAlignment="Bottom" Width="146" Click="topTorg_s_Click"/>
         <Label x:Name="title" Content="TOP画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-
+        <ListBox x:Name="interfaceList" HorizontalAlignment="Left" Height="210" Margin="63,0,0,0" VerticalAlignment="Center" Width="700" ScrollViewer.CanContentScroll="True"/>
     </Grid>
 </Page>
