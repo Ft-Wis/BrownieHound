@@ -11,6 +11,12 @@
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Orange" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="decideButton" TargetType="Button">
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontFamily" Value="Yu Gothic"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
