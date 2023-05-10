@@ -23,7 +23,7 @@ namespace BrownieHound
 
             Uri uri = new Uri("/rule_"+mode+".xaml", UriKind.Relative);
 
-            MessageBox.Show(uri.ToString());
+            //MessageBox.Show(uri.ToString());
 
             frame.Source = uri;
 
@@ -38,6 +38,7 @@ namespace BrownieHound
             // コンテンツに合わせて自動的にWindow幅と高さをリサイズする
             this.SizeToContent = SizeToContent.WidthAndHeight;
 
+            
         }
     }
 }

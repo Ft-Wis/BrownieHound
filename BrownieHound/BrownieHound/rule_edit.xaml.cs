@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Channels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,7 +27,7 @@ namespace BrownieHound
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-
+           
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
