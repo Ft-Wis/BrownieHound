@@ -6,9 +6,12 @@
       xmlns:local="clr-namespace:BrownieHound"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="rule_edit">
+      Title="rule_edit" Width="400" Height="500">
 
-    <Grid>
-        
+    <Grid Background="White" RenderTransformOrigin="0.485,0.542" Margin="0,0,400,0">
+        <Label x:Name="title" Content="ルール編集画面" HorizontalAlignment="Left" Height="44" Margin="30,11,0,0" VerticalAlignment="Top" Width="238" FontSize="24" Grid.Column="1" Grid.Row="2"/>
+        <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="216,0,0,22" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click"/>
+        <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="14,0,0,22" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click"/>
+
     </Grid>
 </Page>

@@ -22,5 +22,15 @@ namespace BrownieHound
         {
             InitializeComponent();
         }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void editButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
