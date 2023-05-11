@@ -32,9 +32,11 @@ namespace BrownieHound
 
         private void activate_Click(object sender, RoutedEventArgs e)
         {
+            string interfaceText = interfaceLabel.Content.ToString();
+            string interfaceNumber = interfaceText.Substring(0,interfaceText.IndexOf("."));
             var window = new detectWindow();
             window.Show();
-            var nextPage = new capture();
+            var nextPage = new capture(interfaceNumber);
             NavigationService.Navigate(nextPage);
 
         }

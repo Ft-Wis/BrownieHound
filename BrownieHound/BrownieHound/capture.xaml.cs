@@ -35,12 +35,14 @@ namespace BrownieHound
             }
         }
         Process processTscap = null;
+        string tsInterfaceNumber = "";
         private ObservableCollection<packetData> CData;
-        public capture()
+        public capture(string tsINumber)
         {
             InitializeComponent();
             CaputureData.ItemsSource = CData;
             CData = new ObservableCollection<packetData> { };
+            this.tsInterfaceNumber = tsINumber;
         }
         
         private void inactivate_Click(object sender, RoutedEventArgs e)
@@ -52,7 +54,7 @@ namespace BrownieHound
         {
             string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
 
-            string args = "-i 5";
+            string args = "-i " + tsInterfaceNumber;
             //オプションとしてテスト用に固定値を指定
             processTscap = new Process();
             ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
