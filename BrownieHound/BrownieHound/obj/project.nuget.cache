@@ -1,8 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9EqdpAmNK6AYindnCJCraD3s2nhwcoNLry/JbT+82lRo/2d7K0pocHsGkbf1f6N6AHcAv0zUBEatWsdnFfrEOQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\materialdesigncolors\\2.1.2\\materialdesigncolors.2.1.2.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\materialdesignthemes\\4.8.0\\materialdesignthemes.4.8.0.nupkg.sha512",
