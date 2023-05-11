@@ -12,6 +12,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="subWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="detectWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
