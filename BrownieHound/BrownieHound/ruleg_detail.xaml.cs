@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -23,11 +24,27 @@ namespace BrownieHound
             InitializeComponent();
         }
 
-
-        private void rg_dTorg_s_Click(object sender, RoutedEventArgs e)
+        private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            var nextPage = new ruleg_settings();
-            NavigationService.Navigate(nextPage);
+            subWindow subWindow = new subWindow("edit");
+            subWindow.ShowDialog();
         }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            subWindow subWindow = new subWindow("add");
+            subWindow.ShowDialog();
+        }
+
+        private void redoButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
+        }
+
+        private void inactivate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

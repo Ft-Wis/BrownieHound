@@ -21,7 +21,7 @@ namespace BrownieHound
         {
             InitializeComponent();
 
-            Uri uri = new Uri("/detect.xaml", UriKind.Relative);
+            Uri uri = new Uri("/rule_add.xaml", UriKind.Relative);
             frame.Source = uri;
         }
     }
