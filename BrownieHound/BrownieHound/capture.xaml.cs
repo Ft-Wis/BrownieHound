@@ -17,6 +17,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Printing;
 
 namespace BrownieHound
 {
@@ -44,12 +45,7 @@ namespace BrownieHound
         
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
-            if (processTscap != null && !processTscap.HasExited)
-            {
-                processTscap.Kill();
-            }
-            Application.Current.Shutdown();
-
+            closing();
         }
 
         private void Page_loaded(object sender, RoutedEventArgs e)
@@ -103,6 +99,19 @@ namespace BrownieHound
         private void PrintTextBoxByThread(string msg)
         {
             Dispatcher.Invoke(new Action(() => PrintText(msg)));
+        }
+        private void closing()
+        {
+            if (processTscap != null && !processTscap.HasExited)
+            {
+                processTscap.Kill();
+            }
+            Application.Current.Shutdown();
+
+        }
+        private void Grid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            closing();
         }
     }
 }
