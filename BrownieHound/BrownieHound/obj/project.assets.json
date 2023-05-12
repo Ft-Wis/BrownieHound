@@ -238,5 +238,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "キャッシュ ファイルの読み取りの問題 C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\obj\\project.nuget.cache : 値を Null にすることはできません。\r\nパラメーター名:value"
+    }
+  ]
 }
