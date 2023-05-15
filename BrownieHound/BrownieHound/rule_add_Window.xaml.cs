@@ -23,12 +23,12 @@ namespace BrownieHound
 
         }
 
-        private void editButton_Click(object sender, RoutedEventArgs e)
+        private void addButton_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = true;
         }
 
-        private void addButton_Click(object sender, RoutedEventArgs e)
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

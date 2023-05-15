@@ -8,8 +8,8 @@
         Title="rule_add_Window" Height="450" Width="409">
     <Grid>
         <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Left" Height="44" Margin="19,10,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="221,0,0,29" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
-        <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,29" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="editButton_Click" IsCancel="True"/>
+        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="221,0,0,29" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" IsDefault="True"/>
+        <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,29" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
 
     </Grid>
 
