@@ -68,9 +68,6 @@ namespace BrownieHound
         }
         private void PrintText(string msg)
         {
-            ListBoxItem item = new ListBoxItem();
-            item.Content = msg;
-            item.MouseDoubleClick += listBoxItem_MouseDoubleClick;
             interfaceList.Items.Add(msg);
         }
         private void PrintTextBoxByThread(string msg)
