@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\user\Source\Repos\sotsuken\BrownieHound\BrownieHound\obj\Debug\netcoreapp3.1\
+C:\Users\user\Documents\卒業研究\sotsuken\BrownieHound\BrownieHound\obj\Debug\netcoreapp3.1\
 BrownieHound
 none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
-C:\Users\user\Source\Repos\sotsuken\BrownieHound\BrownieHound\App.xaml
-13508429003
+C:\Users\user\Documents\卒業研究\sotsuken\BrownieHound\BrownieHound\App.xaml
+15-991902080
 
-171742103075
+191938557143
 19564947137
-capture.xaml;detect.xaml;detectWindow.xaml;mail_settings.xaml;MainWindow.xaml;packet_detail.xaml;ruleg_detail.xaml;ruleg_settings.xaml;rule_add.xaml;rule_edit.xaml;standby_rule.xaml;subWindow.xaml;top.xaml;
+capture.xaml;detect.xaml;detectWindow.xaml;mail_settings.xaml;MainWindow.xaml;packet_detail.xaml;ruleg_detail.xaml;ruleg_settings.xaml;rule_add.xaml;rule_add_Window.xaml;rule_edit.xaml;rule_edit_Window.xaml;standby_rule.xaml;subWindow.xaml;top.xaml;
 
-True
+False
 
