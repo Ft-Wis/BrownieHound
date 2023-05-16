@@ -25,14 +25,18 @@ namespace BrownieHound
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            var nextPage = new rule_edit();
-            NavigationService.Navigate(nextPage);
+            rule_add_Window ruleAddWin = new rule_add_Window();
+            ruleAddWin.ShowDialog();
+            //var nextPage = new rule_edit();
+            //NavigationService.Navigate(nextPage);
         }
 
         private void detailButton_Click(object sender, RoutedEventArgs e)
         {
-            var nextPage = new ruleg_detail();
-            NavigationService.Navigate(nextPage);
+            rule_edit_Window ruleEditWin = new rule_edit_Window();
+            ruleEditWin.ShowDialog();
+            //var nextPage = new ruleg_detail();
+            //NavigationService.Navigate(nextPage);
         }
 
         private void inactivate_Click(object sender, RoutedEventArgs e)
