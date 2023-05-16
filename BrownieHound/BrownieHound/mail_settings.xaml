@@ -18,7 +18,7 @@
         <Button x:Name="m_sTotop_submit" Content="確定" HorizontalAlignment="Left" Height="43" Margin="580,0,0,28" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White"   Click="s_rTotop_submit_Click" Grid.Column="2"/>
         <Label x:Name="title" Content="メール設定画面" HorizontalAlignment="Left" Height="44" Margin="41,19,0,0" VerticalAlignment="Top" Width="238" FontSize="24" Grid.ColumnSpan="3"/>
         <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="41,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Yu Gothic" FontWeight="Bold" FontSize="23" Height="36" Width="177"><Run Text="メール送信"/><Run Language="ja-jp" Text="設定"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
-        <ToggleButton  Height="50" Width="70" Margin="371,92,359,331"
+        <ToggleButton  Height="50" Width="70" Margin="368,92,362,331"
           Style="{StaticResource MaterialDesignSwitchToggleButton}"
           ToolTip="MaterialDesignSwitchToggleButton with Custom Track Background" Grid.ColumnSpan="3" Checked="ToggleButton_Checked">
             <materialDesign:ToggleButtonAssist.SwitchTrackOnBackground>
