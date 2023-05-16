@@ -36,7 +36,7 @@
         <TextBlock Grid.Column="2" HorizontalAlignment="Center" Margin="0,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Yu Gothic" FontSize="15" Height="70" Width="700"><Run Text="※「"/><Run Language="ja-jp" Text="B"/><Run Text="rown"/><Run Language="ja-jp" Text="ie"/><Run Text="hound@gmail.com」からの送信になります。メールが届かないときは、迷惑メールとして
 　　認識されている場合や正しい送信先メールアドレスが設定されていない場合がありますので、お手数ですがご確認いただきますようよろしくお願い申し上げます。"/><LineBreak/><Run/>
         </TextBlock>
-        <TextBox Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="375,256,0,0" TextWrapping="Wrap" x:Name="MailaddressTextBox" materialDesign:HintAssist.Hint="メールアドレス" VerticalAlignment="Top" FontSize="15" Width="375"/>
+        <TextBox Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="375,247,0,0" TextWrapping="Wrap" x:Name="MailaddressTextBox" materialDesign:HintAssist.Hint="メールアドレス" VerticalAlignment="Top" FontSize="15" Width="375"/>
         <TextBlock Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="22" Margin="452,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" FontSize="15" FontFamily="Yu Gothic"><Run Language="ja-jp" Text="時間"/></TextBlock>
         <TextBox Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="378,173,0,0" TextWrapping="Wrap" x:Name="HourSpan" materialDesign:HintAssist.Hint="XX" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="66"  FontSize="20"/>
 
