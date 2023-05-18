@@ -13,9 +13,10 @@
         <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="12,0,0,48" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
 
         <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Center" Height="312" CornerRadius="10"   Margin="0,38,0,0" VerticalAlignment="Top" Width="379">
+            
         </Border>
-        <TextBlock HorizontalAlignment="Left" Margin="32,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信元メールアドレス"/></TextBlock>
-        <ComboBox HorizontalAlignment="Center" Margin="0,47,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105">
+        <TextBlock HorizontalAlignment="Left" Margin="27,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信元メールアドレス"/></TextBlock>
+        <ComboBox x:Name="sourceComboBox"  HorizontalAlignment="Left" Margin="144,44,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="ComboBox_SelectionChanged">
             <ComboBox.Resources>
                 <Style TargetType="{x:Type materialDesign:SmartHint}">
                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -25,6 +26,7 @@
             <ComboBoxItem Content="このPCのアドレス" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
+        <TextBox HorizontalAlignment="Left" Margin="262,42,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontSize="13" Width="120"/>
 
 
 

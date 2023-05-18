@@ -19,7 +19,7 @@ namespace BrownieHound
     {
         public rule_add_Window()
         {
-            InitializeComponent();  
+            InitializeComponent();
 
         }
 
@@ -31,6 +31,21 @@ namespace BrownieHound
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
+            if (sourceComboBox.Text == "手動で設定")
+            {
+                sourceTextBox.IsEnabled = false;
+            }
+
+            //「手動で設定」を選択したときにIPアドレスを入力できるようにする。
+            if (sourceComboBox.SelectedIndex.ToString()=="2")
+            {
+                sourceTextBox.IsEnabled = true;
+            }
         }
     }
 }
