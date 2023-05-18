@@ -18,6 +18,8 @@ using System.Drawing;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Printing;
+using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace BrownieHound
 {
@@ -26,6 +28,31 @@ namespace BrownieHound
     /// </summary>
     public partial class capture : Page
     {
+        public class detectRule
+        {
+            public int interval { get; set; }
+            public int count { get; set; }
+            public string Source { get; set; }
+            public string Destination { get; set; }
+            public string Protocol { get; set;}
+            public int Length { get; set;}
+
+            private void ruleSplit(string ruleSeet)
+            {
+                string[] data = ruleSeet.Split(',');
+                int i = 0;
+                interval = Int32.Parse(data[i++]);
+                count = Int32.Parse(data[i++]);
+                Source = data[i++];
+                Destination = data[i++];
+                Protocol = data[i++];
+                Length = Int32.Parse(data[i]);
+            }
+            public detectRule(string ruleSeet) 
+            {
+                ruleSplit(ruleSeet);
+            }
+        }
         public class packetData
         {
             public int Number { get; set; }
@@ -36,7 +63,7 @@ namespace BrownieHound
             public int Length { get; set; }
             public string Info { get; set; }
 
-            public void packetSplit(string msg)
+            private void packetSplit(string msg)
             {
                 string[] data = msg.Trim().Split(' ');
                 int i = 0;
@@ -66,9 +93,13 @@ namespace BrownieHound
                 packetSplit(msg);
             }
         }
+
         Process processTscap = null;
         string tsInterfaceNumber = "";
         private ObservableCollection<packetData> CData;
+        DispatcherTimer detectTimer;
+        DispatcherTimer clockTimer;
+
         public capture(string tsINumber)
         {
             InitializeComponent();
@@ -101,6 +132,11 @@ namespace BrownieHound
             processTscap.BeginErrorReadLine();
             processTscap.BeginOutputReadLine();
         }
+        private void record()
+        {
+            throw new NotImplementedException();
+        }
+
         private void Page_loaded(object sender, RoutedEventArgs e)
         {
             string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
@@ -108,7 +144,27 @@ namespace BrownieHound
             string args = $"-i {tsInterfaceNumber} -t a";
             //オプションとしてテスト用に固定値を指定
             tsStart(Command, args);
+            detectRule rule = new detectRule("60,1,8.8.8.8,,,0");
 
+            clockTimer = new DispatcherTimer();
+            clockTimer.Interval = new TimeSpan(0, 0, 1);
+            clockTimer.Tick += new EventHandler(record);
+            dtStart(rule);
+
+        }
+
+
+        private void dtStart(detectRule rule)
+        {
+            detectTimer = new DispatcherTimer();
+            detectTimer.Interval = new TimeSpan(0, 0, rule.interval);
+            detectTimer.Tick += new EventHandler(detection(rule));
+            detectTimer.Start();
+        }
+
+        private EventHandler detection(detectRule rule)
+        {
+            throw new NotImplementedException();
         }
 
         private void errReceived(object sender, DataReceivedEventArgs e)
@@ -145,6 +201,8 @@ namespace BrownieHound
             {
                 processTscap.Kill();
             }
+            clockTimer.Stop();
+            detectTimer.Stop();
             Application.Current.Shutdown();
 
         }
