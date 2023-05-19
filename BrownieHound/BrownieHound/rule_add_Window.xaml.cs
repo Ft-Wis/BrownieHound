@@ -73,6 +73,7 @@ namespace BrownieHound
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
             if(protocolComboBox.SelectedIndex.ToString() == "1")
             {
+                protocolTextBox.Text = "TCP";
                 //portnumberComboBox.ItemsSource = new string[] { "すべて", "HTTP", "HTTPS", "手動で設定" };
                 portnumberComboBox.Items.Clear();
                 for(int i=0 ; i<tcpChoiced.Length ; i++)
@@ -84,16 +85,31 @@ namespace BrownieHound
             else if (protocolComboBox.SelectedIndex.ToString() == "2")
             {
                 //「プロトコル」で「UDP」を選択したときに、ポート番号の選択肢を変更する
+
+                //テキストボックスに代入
+                protocolTextBox.Text = "UDP";
                 portnumberComboBox.Items.Clear();
-                for (int i = 0; i < tcpChoiced.Length; i++)
+                for (int i = 0; i < udpChoiced.Length; i++)
                 {
                     portnumberComboBox.Items.Add(udpChoiced[i]);
                 }
             }
             else
             {
+                //他の選択肢を選択したときに、ポート番号の選択肢を変更する
+
+                //手動で設定を選択したときは、テキストボックスに書き込めるようにする
+                if(protocolComboBox.SelectedIndex.ToString().Equals("3")) 
+                {
+                    protocolTextBox.IsEnabled = true;
+                }
+                else
+                {
+                    protocolTextBox.IsEnabled = false;
+                }
+
                 portnumberComboBox.Items.Clear();
-                for( int i = 0;i<tcpChoiced.Length; i++)
+                for( int i = 0 ; i<otherChoiced.Length ; i++)
                 {
                     portnumberComboBox.Items.Add(otherChoiced[i]);
                 }
@@ -103,6 +119,10 @@ namespace BrownieHound
         private void portnumberComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            if (portnumberComboBox.SelectedIndex == portnumberComboBox.Items.Count-1)
+            {
+                portnumberTextBox.IsEnabled= true;
+            }
         }
     }
 }
