@@ -13,10 +13,11 @@
         <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="12,0,0,48" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
 
         <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Center" Height="312" CornerRadius="10"   Margin="0,38,0,0" VerticalAlignment="Top" Width="379">
-            
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="13,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"><Run Language="ja-jp" Text="プロトコル"/></TextBlock>
+
         </Border>
-        <TextBlock HorizontalAlignment="Left" Margin="27,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信元メールアドレス"/></TextBlock>
-        <ComboBox x:Name="sourceComboBox"  HorizontalAlignment="Left" Margin="144,44,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="ComboBox_SelectionChanged">
+        <TextBlock HorizontalAlignment="Left" Margin="27,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信元メールアドレス"/></TextBlock>
+        <ComboBox x:Name="sourceComboBox"  HorizontalAlignment="Left" Margin="144,59,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="sourceComboBox_SelectionChanged">
             <ComboBox.Resources>
                 <Style TargetType="{x:Type materialDesign:SmartHint}">
                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -26,7 +27,43 @@
             <ComboBoxItem Content="このPCのアドレス" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <TextBox HorizontalAlignment="Left" Margin="262,42,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontSize="13" Width="120"/>
+        <TextBox x:Name="sourceTextBox"  HorizontalAlignment="Left" Margin="262,57,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
+        <TextBlock x:Name="distinationTextBlock" HorizontalAlignment="Left" Margin="27,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信元メールアドレス"/></TextBlock>
+        <ComboBox x:Name="distinationComboBox"  HorizontalAlignment="Left" Margin="144,91,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="distinationComboBox_SelectionChanged">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type materialDesign:SmartHint}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBoxItem Content="すべて" />
+            <ComboBoxItem Content="このPCのアドレス" />
+            <ComboBoxItem Content="手動で設定" />
+        </ComboBox>
+        <TextBox x:Name="distinationTextBox"  HorizontalAlignment="Left" Margin="262,89,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="30,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="ポート番号"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="32,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="サイズ"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="32,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="間隔"/></TextBlock>
+        <ComboBox x:Name="protocolComboBox"  HorizontalAlignment="Left" Margin="110,138,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="protocolComboBox_SelectionChanged">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type materialDesign:SmartHint}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBoxItem Content="すべてのプロトコル" />
+            <ComboBoxItem Content="TCP" />
+            <ComboBoxItem Content="UDP" />
+            <ComboBoxItem Content="手動で設定" />
+        </ComboBox>
+        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="111,184,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="portnumberComboBox_SelectionChanged">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type materialDesign:SmartHint}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBoxItem Content="すべて" />
+            <ComboBoxItem Content="このPCのアドレス" />
+            <ComboBoxItem Content="手動で設定" />
+        </ComboBox>
 
 
 
