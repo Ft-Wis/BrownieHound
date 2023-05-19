@@ -61,7 +61,10 @@
                 </Style>
             </ComboBox.Resources>
             <ComboBoxItem Content="すべて" />
-            <ComboBoxItem Content="このPCのアドレス" />
+            <ComboBoxItem Content="HTTP(80)" />
+            <ComboBoxItem Content="HTTPS(443)" />
+            <ComboBoxItem Content="SNMP(162)" />
+            <ComboBoxItem Content="DNS(53)" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
 

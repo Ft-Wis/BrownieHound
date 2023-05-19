@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,8 +18,9 @@ namespace BrownieHound
     /// </summary>
     public partial class rule_add_Window : Window
     {
-        private string[] tcpChoiced = { "HTTP", "HTTPS" };
-        private string[] udpChoiced = { "SNMP", "DNS" };
+        private string[] tcpChoiced = { "すべて", "HTTP(80)", "HTTPS(443)","手動で設定" };
+        private string[] udpChoiced = { "すべて", "SNMP(162)", "DNS(53)", "手動で設定" };
+        private string[] otherChoiced = { "すべて", "HTTP(80)", "HTTPS(443)", "SNMP(162)", "DNS(53)", "手動で設定" };
         public rule_add_Window()
         {
             InitializeComponent();
@@ -71,13 +73,30 @@ namespace BrownieHound
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
             if(protocolComboBox.SelectedIndex.ToString() == "1")
             {
+                //portnumberComboBox.ItemsSource = new string[] { "すべて", "HTTP", "HTTPS", "手動で設定" };
+                portnumberComboBox.Items.Clear();
+                for(int i=0 ; i<tcpChoiced.Length ; i++)
+                {
+                    portnumberComboBox.Items.Add(tcpChoiced[i]);
+                }
 
             }
-
-            //「プロトコル」で「UDP」を選択したときに、ポート番号の選択肢を変更する
-            if (protocolComboBox.SelectedIndex.ToString() == "2")
+            else if (protocolComboBox.SelectedIndex.ToString() == "2")
             {
-
+                //「プロトコル」で「UDP」を選択したときに、ポート番号の選択肢を変更する
+                portnumberComboBox.Items.Clear();
+                for (int i = 0; i < tcpChoiced.Length; i++)
+                {
+                    portnumberComboBox.Items.Add(udpChoiced[i]);
+                }
+            }
+            else
+            {
+                portnumberComboBox.Items.Clear();
+                for( int i = 0;i<tcpChoiced.Length; i++)
+                {
+                    portnumberComboBox.Items.Add(otherChoiced[i]);
+                }
             }
         }
 
