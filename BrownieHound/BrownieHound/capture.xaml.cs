@@ -99,6 +99,10 @@ namespace BrownieHound
         private ObservableCollection<packetData> CData;
         DispatcherTimer detectTimer;
         DispatcherTimer clockTimer;
+        int clock = 0;
+        //１秒単位の経過時間
+        int[] countRows = new int[10000];
+        //秒数毎のCDataのカウント
 
         public capture(string tsINumber)
         {
@@ -132,40 +136,93 @@ namespace BrownieHound
             processTscap.BeginErrorReadLine();
             processTscap.BeginOutputReadLine();
         }
-        private void record()
-        {
-            throw new NotImplementedException();
-        }
 
         private void Page_loaded(object sender, RoutedEventArgs e)
         {
             string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
 
             string args = $"-i {tsInterfaceNumber} -t a";
-            //オプションとしてテスト用に固定値を指定
+
+            countRows[clock] = 0;
+
             tsStart(Command, args);
-            detectRule rule = new detectRule("60,1,8.8.8.8,,,0");
+            detectRule rule = new detectRule("10,1,8.8.8.8,,,0");
 
             clockTimer = new DispatcherTimer();
             clockTimer.Interval = new TimeSpan(0, 0, 1);
-            clockTimer.Tick += new EventHandler(record);
+            clockTimer.Tick += new EventHandler(recordTime);
+            clockTimer.Start();
             dtStart(rule);
 
         }
 
+        private void recordTime(object sender,EventArgs e)
+        {
+            int countNumber = CData.Count;
+            if(countNumber > 0)
+            {
+                countNumber -= 1;
+            }
+            countRows[++clock] = countNumber;
+        }
 
         private void dtStart(detectRule rule)
         {
             detectTimer = new DispatcherTimer();
-            detectTimer.Interval = new TimeSpan(0, 0, rule.interval);
-            detectTimer.Tick += new EventHandler(detection(rule));
+            detectTimer.Interval = new TimeSpan(0, 0, 1);
+            detectTimer.Tick += new EventHandler(detection);
             detectTimer.Start();
+            void detection(object sender, EventArgs e)
+            {
+                if (clock >= rule.interval)
+                {
+                    int start = countRows[clock - rule.interval];
+                    int end = countRows[clock] - 1;
+                    //想定としてインターバルは秒指定
+                    if (countRows[clock] == countRows[clock - 1])
+                    {
+                        end++;
+                    }
+                    if (clock > rule.interval && start == countRows[clock - rule.interval - 1] && start < end)
+                    {
+                        //検知する範囲内で出現したパケットのみを対象とする処理
+                        //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
+                        start++;
+                    }
+                    //Debug.WriteLine(CData[start].Source);
+                    //Debug.WriteLine(CData[end].Source);
+                    //Debug.WriteLine(start + ":" + end);
+
+                    for(int i = start;i <= end; i++)
+                    {
+                        int flg = 0;
+                        if (rule.Source == "" || rule.Source.Equals(CData[i].Source))
+                        {
+                            flg++;
+                        }
+                        if (rule.Destination == "" || rule.Destination.Equals(CData[i].Destination))
+                        {
+                            flg++;
+                        }
+                        if (rule.Protocol == "" || rule.Protocol.Equals(CData[i].Protocol))
+                        {
+                            flg++;
+                        }
+                        if (CData[i].Length > rule.Length)
+                        {
+                            flg++;
+                        }
+                        if(flg == 4)
+                        {
+                            Debug.WriteLine(CData[i].Number + ":" + CData[i].Source);
+                        }
+                    }
+
+                }
+            }
         }
 
-        private EventHandler detection(detectRule rule)
-        {
-            throw new NotImplementedException();
-        }
+
 
         private void errReceived(object sender, DataReceivedEventArgs e)
         {
