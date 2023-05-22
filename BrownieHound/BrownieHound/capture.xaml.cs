@@ -146,7 +146,7 @@ namespace BrownieHound
             countRows[clock] = 0;
 
             tsStart(Command, args);
-            detectRule rule = new detectRule("10,1,8.8.8.8,,,0");
+            detectRule rule = new detectRule("10,5,8.8.8.8,,,0");
 
             clockTimer = new DispatcherTimer();
             clockTimer.Interval = new TimeSpan(0, 0, 1);
@@ -165,11 +165,46 @@ namespace BrownieHound
             }
             countRows[++clock] = countNumber;
         }
-
+        private void detectLogic(int start,int end,detectRule rule)
+        {
+            int[] targets = new int[1000];
+            int count = 0;
+            for (int i = start; i <= end; i++)
+            {
+                int flg = 0;
+                if (rule.Source == "" || rule.Source.Equals(CData[i].Source))
+                {
+                    flg++;
+                }
+                if (rule.Destination == "" || rule.Destination.Equals(CData[i].Destination))
+                {
+                    flg++;
+                }
+                if (rule.Protocol == "" || rule.Protocol.Equals(CData[i].Protocol))
+                {
+                    flg++;
+                }
+                if (CData[i].Length > rule.Length)
+                {
+                    flg++;
+                }
+                if (flg == 4)
+                {
+                    targets[count++] = i;
+                }
+            }
+            if (count >= rule.count)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    Debug.WriteLine(CData[targets[i]].Number + " : " + CData[targets[i]].Source);
+                }
+            }
+        }
         private void dtStart(detectRule rule)
         {
             detectTimer = new DispatcherTimer();
-            detectTimer.Interval = new TimeSpan(0, 0, 1);
+            detectTimer.Interval = new TimeSpan(0, 0, rule.interval);
             detectTimer.Tick += new EventHandler(detection);
             detectTimer.Start();
             void detection(object sender, EventArgs e)
@@ -192,31 +227,7 @@ namespace BrownieHound
                     //Debug.WriteLine(CData[start].Source);
                     //Debug.WriteLine(CData[end].Source);
                     //Debug.WriteLine(start + ":" + end);
-
-                    for(int i = start;i <= end; i++)
-                    {
-                        int flg = 0;
-                        if (rule.Source == "" || rule.Source.Equals(CData[i].Source))
-                        {
-                            flg++;
-                        }
-                        if (rule.Destination == "" || rule.Destination.Equals(CData[i].Destination))
-                        {
-                            flg++;
-                        }
-                        if (rule.Protocol == "" || rule.Protocol.Equals(CData[i].Protocol))
-                        {
-                            flg++;
-                        }
-                        if (CData[i].Length > rule.Length)
-                        {
-                            flg++;
-                        }
-                        if(flg == 4)
-                        {
-                            Debug.WriteLine(CData[i].Number + ":" + CData[i].Source);
-                        }
-                    }
+                    detectLogic(start, end, rule);
 
                 }
             }
