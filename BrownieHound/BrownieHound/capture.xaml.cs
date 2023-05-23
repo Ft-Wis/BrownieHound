@@ -99,6 +99,7 @@ namespace BrownieHound
             CData.Add(new packetData(msg));
             CaputureData.ItemsSource = CData;
             CaputureData.ScrollIntoView(CaputureData.Items.GetItemAt(CaputureData.Items.Count - 1));
+            
         }
         private void PrintTextBoxByThread(string msg)
         {
