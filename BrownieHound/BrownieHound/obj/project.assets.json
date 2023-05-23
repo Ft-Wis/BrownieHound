@@ -147,31 +147,27 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "MaterialDesignColors >= 2.1.2",
       "MaterialDesignThemes >= 4.8.0"
     ]
   },
   "packageFolders": {
     "C:\\Users\\user\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
       "projectName": "BrownieHound",
-      "projectPath": "C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+      "projectPath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
+      "outputPath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -197,10 +193,6 @@
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
         "dependencies": {
-          "MaterialDesignColors": {
-            "target": "Package",
-            "version": "[2.1.2, )"
-          },
           "MaterialDesignThemes": {
             "target": "Package",
             "version": "[4.8.0, )"
@@ -238,13 +230,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "キャッシュ ファイルの読み取りの問題 C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\obj\\project.nuget.cache : 値を Null にすることはできません。\r\nパラメーター名:value"
-    }
-  ]
+  }
 }
