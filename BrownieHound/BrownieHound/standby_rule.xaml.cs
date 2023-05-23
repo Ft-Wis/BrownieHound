@@ -18,9 +18,10 @@ namespace BrownieHound
     /// </summary>
     public partial class standby_rule : Page
     {
-        public standby_rule()
+        public standby_rule(string tsInterface)
         {
             InitializeComponent();
+            this.interfaceLabel.Content = tsInterface;
         }
 
         private void s_rTotop_Click(object sender, RoutedEventArgs e)
@@ -31,9 +32,11 @@ namespace BrownieHound
 
         private void activate_Click(object sender, RoutedEventArgs e)
         {
+            string interfaceText = interfaceLabel.Content.ToString();
+            string interfaceNumber = interfaceText.Substring(0,interfaceText.IndexOf("."));
             var window = new detectWindow();
             window.Show();
-            var nextPage = new capture();
+            var nextPage = new capture(interfaceNumber);
             NavigationService.Navigate(nextPage);
 
         }

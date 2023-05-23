@@ -8,12 +8,18 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="capture">
 
-    <Grid Loaded="Page_loaded">
+    <Grid Loaded="Page_loaded" Unloaded="Grid_Unloaded">
         <Label x:Name="title" Content="キャプチャ画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-        <Button x:Name="inactivate" Content="停止" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" Click="inactivate_Click"/>
-        <DataGrid x:Name="CaputureData" Margin="0,85,50,104" HorizontalAlignment="Right" Width="701" AutoGenerateColumns="False" ForceCursor="True" ScrollViewer.ScrollChanged="chaptureDataGrid_ScrollChanged">
+        <Button x:Name="inactivate" Content="停止" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" Click="inactivate_Click"  FontFamily="Yu Gothic" Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" />
+        <DataGrid x:Name="CaputureData" Margin="0,85,50,104" HorizontalAlignment="Right" Width="701" AutoGenerateColumns="False" ForceCursor="True"  ScrollViewer.ScrollChanged="chaptureDataGrid_ScrollChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="パケット内容" Binding="{Binding Data}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="No" Binding="{Binding Number}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="time" Binding="{Binding time}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Length" Binding="{Binding Length}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 
