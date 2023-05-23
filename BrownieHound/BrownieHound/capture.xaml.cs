@@ -103,6 +103,11 @@ namespace BrownieHound
         //１秒単位の経過時間
         int[] countRows = new int[10000];
         //秒数毎のCDataのカウント
+        //int[,,] detectionNumber = new int[10,10,10000];
+        List<List<List<int>>> detectionNumber = new List<List<List<int>>>();
+        //検出したキャプチャデータのナンバーをルールに対応付けて格納
+        //これを基に検知画面に表示したい
+
 
         public capture(string tsINumber)
         {
@@ -144,9 +149,17 @@ namespace BrownieHound
             string args = $"-i {tsInterfaceNumber} -t a";
 
             countRows[clock] = 0;
+            for(int i = 0;i < 10; i++)
+            {
+                detectionNumber.Add(new List<List<int>>());
+            }
+            for(int i = 0;i < 10; i++)
+            {
+                detectionNumber[i].Add(new List<int>());
+            }
 
             tsStart(Command, args);
-            detectRule rule = new detectRule("10,5,8.8.8.8,,,0");
+            detectRule rule = new detectRule("60,1,8.8.8.8,,,0");
 
             clockTimer = new DispatcherTimer();
             clockTimer.Interval = new TimeSpan(0, 0, 1);
@@ -163,12 +176,11 @@ namespace BrownieHound
             {
                 countNumber -= 1;
             }
-            countRows[++clock] = countNumber;
+            countRows[++clock] = countNumber;            
         }
         private void detectLogic(int start,int end,detectRule rule)
         {
-            int[] targets = new int[1000];
-            int count = 0;
+            List<int> targets = new List<int>();
             for (int i = start; i <= end; i++)
             {
                 int flg = 0;
@@ -190,21 +202,24 @@ namespace BrownieHound
                 }
                 if (flg == 4)
                 {
-                    targets[count++] = i;
+                    targets.Add(i);
                 }
             }
-            if (count >= rule.count)
+            if (targets.Count >= rule.count)
             {
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < targets.Count; i++)
                 {
-                    Debug.WriteLine(CData[targets[i]].Number + " : " + CData[targets[i]].Source);
+                    if (!detectionNumber[0][0].Contains(targets[i]))
+                    {
+                        detectionNumber[0][0].Add(targets[i]);
+                    }
                 }
             }
         }
         private void dtStart(detectRule rule)
         {
             detectTimer = new DispatcherTimer();
-            detectTimer.Interval = new TimeSpan(0, 0, rule.interval);
+            detectTimer.Interval = new TimeSpan(0, 0, 1);
             detectTimer.Tick += new EventHandler(detection);
             detectTimer.Start();
             void detection(object sender, EventArgs e)
