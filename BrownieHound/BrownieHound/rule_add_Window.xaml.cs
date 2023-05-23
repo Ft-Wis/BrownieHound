@@ -123,6 +123,28 @@ namespace BrownieHound
             {
                 portnumberTextBox.IsEnabled= true;
             }
+            else
+            {
+                portnumberTextBox.IsEnabled = false;
+                if (portnumberComboBox.SelectedValue.ToString() == "HTTP(80)")
+                {
+                    MessageBox.Show("選んだ");
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+        private void portnumberComboBox_TextChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show(portnumberComboBox.SelectedItem.ToString());
+        }
+
+        private void portnumberComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -58,7 +58,7 @@
             <ComboBoxItem Content="UDP" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="111,184,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="portnumberComboBox_SelectionChanged">
+        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="111,184,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" TextBoxBase.TextChanged="portnumberComboBox_TextChanged"  SelectionChanged="portnumberComboBox_SelectionChanged">
             <ComboBox.Resources>
                 <Style TargetType="{x:Type materialDesign:SmartHint}">
                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -71,7 +71,7 @@
             <ComboBoxItem Content="DNS(53)" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="254,185,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="69" IsEnabled="False"/>
+        <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="254,185,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="74" IsEnabled="False"/>
         <TextBox HorizontalAlignment="Left" Height="26" Margin="99,235,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116"/>
 
 
