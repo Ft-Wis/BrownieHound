@@ -23,10 +23,26 @@ namespace BrownieHound
             InitializeComponent();
         }
 
-        private void s_rTotop_Click(object sender, RoutedEventArgs e)
+        private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            var nextPage = new top();
+            var nextPage = new rule_edit();
             NavigationService.Navigate(nextPage);
+        }
+
+        private void detailButton_Click(object sender, RoutedEventArgs e)
+        {
+            var nextPage = new ruleg_detail();
+            NavigationService.Navigate(nextPage);
+        }
+
+        private void inactivate_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void redoButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }
