@@ -101,9 +101,9 @@ namespace BrownieHound
         DispatcherTimer clockTimer;
         int clock = 0;
         //１秒単位の経過時間
-        int[] countRows = new int[10000];
+        List<int> countRows = new List<int>();
+        //int[] countRows = new int[10000];
         //秒数毎のCDataのカウント
-        //int[,,] detectionNumber = new int[10,10,10000];
         List<List<List<int>>> detectionNumber = new List<List<List<int>>>();
         //検出したキャプチャデータのナンバーをルールに対応付けて格納
         //これを基に検知画面に表示したい
@@ -148,7 +148,7 @@ namespace BrownieHound
 
             string args = $"-i {tsInterfaceNumber} -t a";
 
-            countRows[clock] = 0;
+            countRows.Add(0);
             for(int i = 0;i < 10; i++)
             {
                 detectionNumber.Add(new List<List<int>>());
@@ -176,7 +176,8 @@ namespace BrownieHound
             {
                 countNumber -= 1;
             }
-            countRows[++clock] = countNumber;            
+            clock++;
+            countRows.Add(countNumber);
         }
         private void detectLogic(int start,int end,detectRule rule)
         {
@@ -239,9 +240,6 @@ namespace BrownieHound
                         //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
                         start++;
                     }
-                    //Debug.WriteLine(CData[start].Source);
-                    //Debug.WriteLine(CData[end].Source);
-                    //Debug.WriteLine(start + ":" + end);
                     detectLogic(start, end, rule);
 
                 }
