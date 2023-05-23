@@ -270,9 +270,42 @@ namespace BrownieHound
         private void PrintText(string msg)
         {
             packetData pd = new packetData(msg);
+            bool isRowSelected = CaputureData.SelectedItems.Count > 0;
             CData.Add(pd);
             CaputureData.ItemsSource = CData;
-            CaputureData.ScrollIntoView(CaputureData.Items.GetItemAt(CaputureData.Items.Count - 1));
+
+            if (!isRowSelected)
+            {
+                CaputureData.ScrollIntoView(CaputureData.Items.GetItemAt(CaputureData.Items.Count - 1));
+            }
+
+
+        }
+        private void chaptureDataGrid_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            DataGrid dataGrid = (DataGrid)sender;
+            ScrollViewer scrollViewer = GetScrollViewer(dataGrid);
+
+            if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight)
+            {
+                dataGrid.UnselectAll(); // DataGrid自体から選択を解除する場合
+            }
+        }
+
+        private ScrollViewer GetScrollViewer(DependencyObject depObj)
+        {
+            if (depObj is ScrollViewer viewer)
+                return viewer;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(depObj, i);
+                var result = GetScrollViewer(child);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
         }
         private void PrintTextBoxByThread(string msg)
         {
