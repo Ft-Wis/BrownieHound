@@ -74,7 +74,7 @@ namespace BrownieHound
             if(protocolComboBox.SelectedIndex.ToString() == "1")
             {
                 protocolTextBox.Text = "TCP";
-
+                //portnumberComboBox.ItemsSource = new string[] { "すべて", "HTTP", "HTTPS", "手動で設定" };
                 portnumberComboBox.Items.Clear();
                 for(int i=0 ; i<tcpChoiced.Length ; i++)
                 {
@@ -118,48 +118,23 @@ namespace BrownieHound
 
         private void portnumberComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBox comboBox = (ComboBox)sender;
-            string selectedValue = comboBox.SelectedItem as string;
 
-            MessageBox.Show(comboBox.SelectedItem.ToString());
-
-            switch (selectedValue)
+            if (portnumberComboBox.SelectedIndex == portnumberComboBox.Items.Count-1)
             {
-                case "すべて":
-                    
-                    break;
-                case "HTTP(80)":
-                    portnumberTextBox.Text= "80";
-                    break;
-                case "HTTPS(443)":
-                    portnumberTextBox.Text = "443";
-                    break;
-                case "SNMP(162)":
-                    portnumberTextBox.Text = "162";
-                    break;
-                case "DNS(53)":
-                    portnumberTextBox.Text = "53";
-                    break;
-                case "手動で設定":
-                    portnumberTextBox.IsEnabled = true ;
-                    break;
-                default:
-                    break;
+                portnumberTextBox.IsEnabled= true;
             }
-
-
-            if (selectedValue != "手動で設定" && portnumberTextBox.IsEnabled)
+            else
             {
                 portnumberTextBox.IsEnabled = false;
-            }
-            //if (portnumberComboBox.SelectedIndex == portnumberComboBox.Items.Count-1)
-            //{
-            //    portnumberTextBox.IsEnabled= true;
-            //}
-            //else
-            //{
+                if (portnumberComboBox.SelectedValue.ToString() == "HTTP(80)")
+                {
+                    MessageBox.Show("選んだ");
+                }
+                else
+                {
 
-            //}
+                }
+            }
         }
 
         private void portnumberComboBox_TextChanged(object sender, EventArgs e)
