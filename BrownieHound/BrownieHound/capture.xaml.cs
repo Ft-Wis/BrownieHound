@@ -30,6 +30,8 @@ namespace BrownieHound
     {
         public class detectRule
         {
+            public int ruleGroupNo { get; set; }
+            public int ruleNo { get; set; }
             public int interval { get; set; }
             public int count { get; set; }
             public string Source { get; set; }
@@ -41,6 +43,8 @@ namespace BrownieHound
             {
                 string[] data = ruleSeet.Split(',');
                 int i = 0;
+                ruleGroupNo = Int32.Parse(data[i++]);
+                ruleNo = Int32.Parse(data[i++]);
                 interval = Int32.Parse(data[i++]);
                 count = Int32.Parse(data[i++]);
                 Source = data[i++];
@@ -102,7 +106,6 @@ namespace BrownieHound
         int clock = 0;
         //１秒単位の経過時間
         List<int> countRows = new List<int>();
-        //int[] countRows = new int[10000];
         //秒数毎のCDataのカウント
         List<List<List<int>>> detectionNumber = new List<List<List<int>>>();
         //検出したキャプチャデータのナンバーをルールに対応付けて格納
@@ -159,7 +162,8 @@ namespace BrownieHound
             }
 
             tsStart(Command, args);
-            detectRule rule = new detectRule("60,1,8.8.8.8,,,0");
+            detectRule rule = new detectRule("0,0,60,1,8.8.8.8,,,0");
+            //固定値のルールセットを渡す
 
             clockTimer = new DispatcherTimer();
             clockTimer.Interval = new TimeSpan(0, 0, 1);
@@ -210,9 +214,9 @@ namespace BrownieHound
             {
                 for (int i = 0; i < targets.Count; i++)
                 {
-                    if (!detectionNumber[0][0].Contains(targets[i]))
+                    if (!detectionNumber[rule.ruleGroupNo][rule.ruleNo].Contains(targets[i]))
                     {
-                        detectionNumber[0][0].Add(targets[i]);
+                        detectionNumber[rule.ruleGroupNo][rule.ruleNo].Add(targets[i]);
                     }
                 }
             }
