@@ -121,7 +121,8 @@ namespace BrownieHound
             ComboBox comboBox = (ComboBox)sender;
             string selectedValue = comboBox.SelectedItem as string;
 
-            MessageBox.Show(comboBox.SelectedItem.ToString());
+            MessageBox.Show(((ComboBoxItem)comboBox.SelectedItem).Content.ToString());
+            MessageBox.Show(selectedValue);
 
             switch (selectedValue)
             {
