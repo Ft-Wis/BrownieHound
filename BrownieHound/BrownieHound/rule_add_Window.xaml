@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
         Title="rule_add_Window" Height="450" Width="409">
@@ -78,15 +79,19 @@
             materialDesign:HintAssist.Hint="ポート番号" 
             VerticalAlignment="Top"  IsEnabled="False"
          >
-            <TextBox.Text>
-                <Binding Path="dataSize" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
+            
         </TextBox>
-        <TextBox x:Name="sizeTextBox" InputScope="Number" Text="{Binding FormattedNumber}" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,234,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116"/>
+        <TextBox x:Name="sizeTextBox" Text="{Binding FormattedNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,234,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="116">
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <StackPanel>
+                        <AdornedElementPlaceholder x:Name="textBox"/>
+                        <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
+        </TextBox>
+
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="224,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
         <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,278,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75"/>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="177,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
@@ -18,14 +19,34 @@ namespace BrownieHound
     /// <summary>
     /// rule_add_Window.xaml の相互作用ロジック
     /// </summary>
-    public partial class rule_add_Window : Window , IDataErrorInfo
+    /// 
+
+    public class NumericValidationRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            if (value == null || string.IsNullOrEmpty(value.ToString()))
+            {
+                return new ValidationResult(false, "数値を入力してください。");
+            }
+
+            if (!double.TryParse(value.ToString(), out _))
+            {
+                return new ValidationResult(false, "数値を入力してください。");
+            }
+
+            return ValidationResult.ValidResult;
+        }
+    }
+
+    public partial class rule_add_Window : Window 
     {
         private string[] tcpChoiced = { "すべて", "HTTP(80)", "HTTPS(443)","手動で設定" };
         private string[] udpChoiced = { "すべて", "SNMP(162)", "DNS(53)", "手動で設定" };
         private string[] otherChoiced = { "すべて", "HTTP(80)", "HTTPS(443)", "SNMP(162)", "DNS(53)", "手動で設定" };
 
         private int _number;
-        public string FormattedNumber => Number.ToString("N0");
+        //public string FormattedNumber => Number.ToString("N0");
 
         public rule_add_Window()
         {
@@ -210,23 +231,40 @@ namespace BrownieHound
             //}
         }
 
+
+
         //数値以外が入力された場合にエラーを出す
-        
 
-
-
-        //sizeTextBoxの内容をコンマ区切りにするやつ　まだ未完成
-        //public  int Number
+        //public int Number
         //{
-        //    get { return _number ; }
+        //    get { return _number; }
         //    set
         //    {
-        //        _number = value ;
+        //        _number = value;
         //        OnPropertyChanged(nameof(Number));
-        //        OnPropertyChanged(nameof(FormattedNumber));
         //    }
 
+        // }
+
+        //public string this[string columnName]
+        //{ 
+        //    get
+        //    {
+        //        string error = null;
+
+        //        switch(columnName)
+        //        {
+        //            case nameof(Number):
+        //                if (Number <= 0)
+        //                    error = "数値を入力してください";
+        //                break;
+        //        }
+
+        //        return error;
+        //    }
         //}
+
+        //public string Error => null;
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
