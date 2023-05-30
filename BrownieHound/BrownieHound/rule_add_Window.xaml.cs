@@ -70,13 +70,15 @@ namespace BrownieHound
 
         private void protocolComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            portnumberComboBox.SelectedIndex = -1;
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
             if(protocolComboBox.SelectedIndex.ToString() == "1")
             {
                 protocolTextBox.Text = "TCP";
 
                 portnumberComboBox.Items.Clear();
-                for(int i=0 ; i<tcpChoiced.Length ; i++)
+
+                for (int i = 0; i < tcpChoiced.Length; i++)
                 {
                     portnumberComboBox.Items.Add(tcpChoiced[i]);
                 }
@@ -85,10 +87,10 @@ namespace BrownieHound
             else if (protocolComboBox.SelectedIndex.ToString() == "2")
             {
                 //「プロトコル」で「UDP」を選択したときに、ポート番号の選択肢を変更する
-
-                //テキストボックスに代入
                 protocolTextBox.Text = "UDP";
+
                 portnumberComboBox.Items.Clear();
+
                 for (int i = 0; i < udpChoiced.Length; i++)
                 {
                     portnumberComboBox.Items.Add(udpChoiced[i]);
@@ -109,6 +111,7 @@ namespace BrownieHound
                 }
 
                 portnumberComboBox.Items.Clear();
+
                 for( int i = 0 ; i<otherChoiced.Length ; i++)
                 {
                     portnumberComboBox.Items.Add(otherChoiced[i]);
@@ -118,41 +121,74 @@ namespace BrownieHound
 
         private void portnumberComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBox comboBox = (ComboBox)sender;
-            string selectedValue = comboBox.SelectedItem as string;
+            string selectedValue = portnumberComboBox.SelectedValue?.ToString();
 
-            MessageBox.Show(((ComboBoxItem)comboBox.SelectedItem).Content.ToString());
             MessageBox.Show(selectedValue);
 
-            switch (selectedValue)
+            if (selectedValue != null)
             {
-                case "すべて":
-                    
-                    break;
-                case "HTTP(80)":
-                    portnumberTextBox.Text= "80";
-                    break;
-                case "HTTPS(443)":
-                    portnumberTextBox.Text = "443";
-                    break;
-                case "SNMP(162)":
-                    portnumberTextBox.Text = "162";
-                    break;
-                case "DNS(53)":
-                    portnumberTextBox.Text = "53";
-                    break;
-                case "手動で設定":
-                    portnumberTextBox.IsEnabled = true ;
-                    break;
-                default:
-                    break;
+                switch (selectedValue)
+                {
+                    case "HTTP(80)":
+                        portnumberTextBox.Text = "80";
+                        break;
+                    case "HTTPS(443)":
+                        portnumberTextBox.Text = "443";
+                        break;
+                    case "DNS(53)":
+                        portnumberTextBox.Text = "53";
+                        break;
+                    case "SNMP(162)":
+                        portnumberTextBox.Text = "162"; 
+                        break;
+                    case "手動で設定":
+                        portnumberTextBox.Text = "";
+                        portnumberTextBox.IsEnabled = true;
+                        break;
+                    default:
+                        portnumberTextBox.Text = "";
+                        portnumberTextBox.IsEnabled = false;
+                        break;
+                }
             }
 
 
-            if (selectedValue != "手動で設定" && portnumberTextBox.IsEnabled)
-            {
-                portnumberTextBox.IsEnabled = false;
-            }
+
+            //ComboBox comboBox = (ComboBox)sender;
+            //string selectedValue = comboBox.SelectedItem as string;
+
+            //MessageBox.Show(((ComboBoxItem)comboBox.SelectedItem).Content.ToString());
+            //MessageBox.Show(selectedValue);
+
+            //switch (selectedValue)
+            //{
+            //    case "すべて":
+
+            //        break;
+            //    case "HTTP(80)":
+            //        portnumberTextBox.Text= "80";
+            //        break;
+            //    case "HTTPS(443)":
+            //        portnumberTextBox.Text = "443";
+            //        break;
+            //    case "SNMP(162)":
+            //        portnumberTextBox.Text = "162";
+            //        break;
+            //    case "DNS(53)":
+            //        portnumberTextBox.Text = "53";
+            //        break;
+            //    case "手動で設定":
+            //        portnumberTextBox.IsEnabled = true ;
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+
+            //if (selectedValue != "手動で設定" && portnumberTextBox.IsEnabled)
+            //{
+            //    portnumberTextBox.IsEnabled = false;
+            //}
             //if (portnumberComboBox.SelectedIndex == portnumberComboBox.Items.Count-1)
             //{
             //    portnumberTextBox.IsEnabled= true;

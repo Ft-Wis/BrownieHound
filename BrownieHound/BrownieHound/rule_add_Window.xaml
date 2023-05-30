@@ -58,7 +58,7 @@
             <ComboBoxItem Content="UDP" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="111,184,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" TextBoxBase.TextChanged="portnumberComboBox_TextChanged"  SelectionChanged="portnumberComboBox_SelectionChanged">
+        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="111,184,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectedValuePath="Content" TextBoxBase.TextChanged="portnumberComboBox_TextChanged"  SelectionChanged="portnumberComboBox_SelectionChanged">
             <ComboBox.Resources>
                 <Style TargetType="{x:Type materialDesign:SmartHint}">
                     <Setter Property="HorizontalAlignment" Value="Center"/>
