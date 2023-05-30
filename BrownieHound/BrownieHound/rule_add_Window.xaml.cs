@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,11 +18,15 @@ namespace BrownieHound
     /// <summary>
     /// rule_add_Window.xaml の相互作用ロジック
     /// </summary>
-    public partial class rule_add_Window : Window
+    public partial class rule_add_Window : Window , IDataErrorInfo
     {
         private string[] tcpChoiced = { "すべて", "HTTP(80)", "HTTPS(443)","手動で設定" };
         private string[] udpChoiced = { "すべて", "SNMP(162)", "DNS(53)", "手動で設定" };
         private string[] otherChoiced = { "すべて", "HTTP(80)", "HTTPS(443)", "SNMP(162)", "DNS(53)", "手動で設定" };
+
+        private int _number;
+        public string FormattedNumber => Number.ToString("N0");
+
         public rule_add_Window()
         {
             InitializeComponent();
@@ -70,7 +76,10 @@ namespace BrownieHound
 
         private void protocolComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            portnumberComboBox.IsEnabled = true;
+
             portnumberComboBox.SelectedIndex = -1;
+
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
             if(protocolComboBox.SelectedIndex.ToString() == "1")
             {
@@ -121,7 +130,7 @@ namespace BrownieHound
 
         private void portnumberComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string selectedValue = portnumberComboBox.SelectedValue?.ToString();
+            string selectedValue = portnumberComboBox.SelectedItem as string;
 
             MessageBox.Show(selectedValue);
 
@@ -152,6 +161,8 @@ namespace BrownieHound
                 }
             }
 
+
+        
 
 
             //ComboBox comboBox = (ComboBox)sender;
@@ -199,14 +210,29 @@ namespace BrownieHound
             //}
         }
 
-        private void portnumberComboBox_TextChanged(object sender, EventArgs e)
-        {
-            MessageBox.Show(portnumberComboBox.SelectedItem.ToString());
-        }
+        //数値以外が入力された場合にエラーを出す
+        
 
-        private void portnumberComboBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
+
+        //sizeTextBoxの内容をコンマ区切りにするやつ　まだ未完成
+        //public  int Number
+        //{
+        //    get { return _number ; }
+        //    set
+        //    {
+        //        _number = value ;
+        //        OnPropertyChanged(nameof(Number));
+        //        OnPropertyChanged(nameof(FormattedNumber));
+        //    }
+
+        //}
+
+        //public event PropertyChangedEventHandler PropertyChanged;
+
+        //protected virtual void OnPropertyChanged(string propertyName)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }

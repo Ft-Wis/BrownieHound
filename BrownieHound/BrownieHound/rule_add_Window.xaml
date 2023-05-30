@@ -58,7 +58,7 @@
             <ComboBoxItem Content="UDP" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="111,184,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectedValuePath="Content" TextBoxBase.TextChanged="portnumberComboBox_TextChanged"  SelectionChanged="portnumberComboBox_SelectionChanged">
+        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="111,184,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectedValuePath="Content"   SelectionChanged="portnumberComboBox_SelectionChanged" IsEnabled="False">
             <ComboBox.Resources>
                 <Style TargetType="{x:Type materialDesign:SmartHint}">
                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -71,8 +71,27 @@
             <ComboBoxItem Content="DNS(53)" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="254,185,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="74" IsEnabled="False"/>
-        <TextBox HorizontalAlignment="Left" Height="26" Margin="99,235,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116"/>
+        <TextBox 
+            x:Name="portnumberTextBox" 
+            HorizontalAlignment="Left" Height="24" Width="74" 
+            Margin="254,185,0,0" TextWrapping="Wrap" 
+            materialDesign:HintAssist.Hint="ポート番号" 
+            VerticalAlignment="Top"  IsEnabled="False"
+         >
+            <TextBox.Text>
+                <Binding Path="dataSize" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox x:Name="sizeTextBox" InputScope="Number" Text="{Binding FormattedNumber}" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,234,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="224,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+        <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,278,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="177,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
+        <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="230,278,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="50"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="285,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43"><Run Language="ja-jp" Text="回以上"/></TextBlock>
 
 
 
