@@ -20,6 +20,12 @@ using System.Collections.ObjectModel;
 using System.Printing;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.Globalization;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
+using System.Xml;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace BrownieHound
 {
@@ -60,42 +66,74 @@ namespace BrownieHound
         public class packetData
         {
             public int Number { get; set; }
-            public string time { get; set; }
+            public DateTime time { get; set; }
             public string Source { get; set; }
             public string Destination { get; set; }
+            public string SourcePort { get; set; }
+            public string DestinationPort { get; set; }
             public string Protocol { get; set; }
             public int Length { get; set; }
             public string Info { get; set; }
+            public string Data { get; set; }
+            List<string> protocols = new List<string>();
 
-            private void packetSplit(string msg)
+            public packetData(String err)
             {
-                string[] data = msg.Trim().Split(' ');
-                int i = 0;
-                if (Int32.TryParse(data[i], out int num)) {
-                    Number = num;
-                    time = data[++i];
-                    while (data[++i] == "");
-                    Source = data[i];
-                    Destination = data[i += 2];
-                    while (data[++i] == "");
-                    Protocol = data[i++];
-                    if (Int32.TryParse(data[i],out int length))
-                    {
-                        Length = length;
-                        i++;
-                    }
-                }
-
-                for(; i < data.Length; i++)
+                Info = err;
+            }
+            public packetData(JObject layersObject)
+            {
+                Data = JsonConvert.SerializeObject(layersObject, Newtonsoft.Json.Formatting.None);
+                foreach (var layer in layersObject)
                 {
-                    Info += $" {data[i]}";
+                    protocols.Add(layer.Key.ToString());
+                    //Debug.WriteLine(layer.Key);
+                }
+                Number = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_number"]);
+                //frame_frame_number
+
+                string caputureTime = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_time"];
+                caputureTime = caputureTime.Substring(0, 27);
+                //精度が高すぎるので落とす
+
+                time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+                time = time.AddHours(9);
+
+
+                string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
+                string eDestination = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_dst"];
+                //ethレベルのアドレス（MACアドレス）
+
+                Source = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_src"];
+                Destination = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_dst"];
+
+                if (Source == null)
+                {
+                    Source = eSource;
+                    Destination = eDestination;
+                }
+                if (protocols.Contains("tcp") || protocols.Contains("udp"))
+                {
+                    SourcePort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_srcport"];
+                    DestinationPort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_dstport"];
+                    Info += $"{SourcePort} → {DestinationPort}";
                 }
 
+                if (protocols.Last().Equals("data"))
+                {
+                    Protocol = protocols[protocols.Count - 2];
+                }
+                else
+                {
+                    Protocol = protocols.Last();
+                }
+
+                Length = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
+                Info += $" {protocols.Last()}";
+                //Debug.WriteLine($"{Number} : {time.TimeOfDay} : {Source} : {Destination} : {Protocol} : {Length} :: {Info}");
+
             }
-            public packetData(string msg)
-            {
-                packetSplit(msg);
-            }
+
         }
 
         Process processTscap = null;
@@ -149,7 +187,7 @@ namespace BrownieHound
         {
             string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
 
-            string args = $"-i {tsInterfaceNumber} -t a";
+            string args = $"-i {tsInterfaceNumber} -T ek";
 
             countRows.Add(0);
             for(int i = 0;i < 10; i++)
@@ -257,7 +295,7 @@ namespace BrownieHound
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintTextBoxByThread("ERR:" + packetText);
+                PrintpacketByThread("ERR:" + packetText);
             }
         }
 
@@ -266,14 +304,26 @@ namespace BrownieHound
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintTextBoxByThread(packetText);
+                PrintpacketByThread(packetText);
             }
         }
-        private void PrintText(string msg)
+        private void Printpacket(string msg)
         {
-            packetData pd = new packetData(msg);
+            try
+            {
+                JObject packetObject = JObject.Parse(msg);
+                if (packetObject["layers"] != null)
+                {
+                    packetData pd = new packetData((JObject)packetObject["layers"]);
+                    CData.Add(pd);
+                }
+            }
+            catch
+            {
+                CData.Add(new packetData(msg));
+                //errなどはそのまま出力する
+            }
             bool isRowSelected = CaputureData.SelectedItems.Count > 0;
-            CData.Add(pd);
             CaputureData.ItemsSource = CData;
 
             if (!isRowSelected)
@@ -309,9 +359,9 @@ namespace BrownieHound
 
             return null;
         }
-        private void PrintTextBoxByThread(string msg)
+        private void PrintpacketByThread(string msg)
         {
-            Dispatcher.Invoke(new Action(() => PrintText(msg)));
+            Dispatcher.Invoke(new Action(() => Printpacket(msg)));
         }
         private void closing()
         {
