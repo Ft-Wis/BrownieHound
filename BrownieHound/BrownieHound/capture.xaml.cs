@@ -20,13 +20,6 @@ using System.Collections.ObjectModel;
 using System.Printing;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using System.Globalization;
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
-using System.Xml;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace BrownieHound
 {
@@ -103,37 +96,6 @@ namespace BrownieHound
             {
                 packetSplit(msg);
             }
-        }
-
-        public class paD
-        {
-            public int Number { get; set; }
-            public DateTime time { get; set; }
-            public string Source { get; set; }
-            public string Destination { get; set; }
-            public string Protocol { get; set; }
-            public int Length { get; set; }
-            public string Info { get; set; }
-            List<string> protocols = new List<string>();
-            public paD(JObject layersObject)
-            {
-                Info = JsonConvert.SerializeObject(layersObject, Formatting.None);
-
-                foreach (var layer in layersObject)
-                {
-                    protocols.Add(layer.Key.ToString());
-                    Debug.WriteLine(layer.Value);
-                }
-                Number = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_number"]);
-                string day = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_time"];
-                day = day.Substring(0, 27);
-                time = DateTime.ParseExact(day, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
-                time = time.AddHours(9);
-                //if (jsonO["layers"]["ip"] != null)
-                //    Debug.WriteLine(jsonO["layers"]["ip"]["ip_ip_dst"]);
-
-            }
-
         }
 
         Process processTscap = null;
@@ -295,7 +257,7 @@ namespace BrownieHound
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintpacketByThread("ERR:" + packetText);
+                PrintTextBoxByThread("ERR:" + packetText);
             }
         }
 
@@ -304,10 +266,10 @@ namespace BrownieHound
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintpacketByThread(packetText);
+                PrintTextBoxByThread(packetText);
             }
         }
-        private void Printpacket(string msg)
+        private void PrintText(string msg)
         {
             packetData pd = new packetData(msg);
             bool isRowSelected = CaputureData.SelectedItems.Count > 0;
@@ -347,9 +309,9 @@ namespace BrownieHound
 
             return null;
         }
-        private void PrintpacketByThread(string msg)
+        private void PrintTextBoxByThread(string msg)
         {
-            Dispatcher.Invoke(new Action(() => Printpacket(msg)));
+            Dispatcher.Invoke(new Action(() => PrintText(msg)));
         }
         private void closing()
         {
