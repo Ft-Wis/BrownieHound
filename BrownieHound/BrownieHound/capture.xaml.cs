@@ -63,46 +63,6 @@ namespace BrownieHound
                 ruleSplit(ruleSeet);
             }
         }
-        //public class packetData
-        //{
-        //    public int Number { get; set; }
-        //    public string time { get; set; }
-        //    public string Source { get; set; }
-        //    public string Destination { get; set; }
-        //    public string Protocol { get; set; }
-        //    public int Length { get; set; }
-        //    public string Info { get; set; }
-
-        //    private void packetSplit(string msg)
-        //    {
-        //        string[] data = msg.Trim().Split(' ');
-        //        int i = 0;
-        //        if (Int32.TryParse(data[i], out int num)) {
-        //            Number = num;
-        //            time = data[++i];
-        //            while (data[++i] == "");
-        //            Source = data[i];
-        //            Destination = data[i += 2];
-        //            while (data[++i] == "");
-        //            Protocol = data[i++];
-        //            if (Int32.TryParse(data[i],out int length))
-        //            {
-        //                Length = length;
-        //                i++;
-        //            }
-        //        }
-
-        //        for(; i < data.Length; i++)
-        //        {
-        //            Info += $" {data[i]}";
-        //        }
-
-        //    }
-        //    public packetData(string msg)
-        //    {
-        //        packetSplit(msg);
-        //    }
-        //}
         public class packetData
         {
             public int Number { get; set; }
@@ -130,10 +90,13 @@ namespace BrownieHound
                     //Debug.WriteLine(layer.Key);
                 }
                 Number = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_number"]);
-                string day = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_time"];
-                day = day.Substring(0, 27);
+                //frame_frame_number
 
-                time = DateTime.ParseExact(day, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+                string caputureTime = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_time"];
+                caputureTime = caputureTime.Substring(0, 27);
+                //精度が高すぎるので落とす
+
+                time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
                 time = time.AddHours(9);
 
                 string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
@@ -329,7 +292,7 @@ namespace BrownieHound
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintTextBoxByThread("ERR:" + packetText);
+                PrintpacketByThread("ERR:" + packetText);
             }
         }
 
@@ -338,10 +301,10 @@ namespace BrownieHound
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintTextBoxByThread(packetText);
+                PrintpacketByThread(packetText);
             }
         }
-        private void PrintText(string msg)
+        private void Printpacket(string msg)
         {
             try
             {
@@ -392,9 +355,9 @@ namespace BrownieHound
 
             return null;
         }
-        private void PrintTextBoxByThread(string msg)
+        private void PrintpacketByThread(string msg)
         {
-            Dispatcher.Invoke(new Action(() => PrintText(msg)));
+            Dispatcher.Invoke(new Action(() => Printpacket(msg)));
         }
         private void closing()
         {
