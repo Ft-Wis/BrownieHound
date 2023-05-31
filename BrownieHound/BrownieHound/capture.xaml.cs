@@ -99,8 +99,11 @@ namespace BrownieHound
                 time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
                 time = time.AddHours(9);
 
+
                 string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
                 string eDestination = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_dst"];
+                //ethレベルのアドレス（MACアドレス）
+
                 Source = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_src"];
                 Destination = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_dst"];
 
@@ -318,6 +321,7 @@ namespace BrownieHound
             catch
             {
                 CData.Add(new packetData(msg));
+                //errなどはそのまま出力する
             }
             bool isRowSelected = CaputureData.SelectedItems.Count > 0;
             CaputureData.ItemsSource = CData;
