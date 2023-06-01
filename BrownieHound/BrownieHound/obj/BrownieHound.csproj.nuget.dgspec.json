@@ -13,6 +13,9 @@
         "packagesPath": "C:\\Users\\nkc20\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\nkc20\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -47,6 +50,10 @@
             "MaterialDesignThemes": {
               "target": "Package",
               "version": "[4.8.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             }
           },
           "imports": [
