@@ -7,13 +7,18 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="top">
-   
-    <Grid Background="White">
+    <Grid  Unloaded="Grid_Unloaded" Loaded="Page_loaded" Background="White">
         <Button x:Name="topTos_r" Content="解析実行"  HorizontalAlignment="Left" Height="43" Margin="617,0,0,22" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="topTos_r_Click"/>
         <Button x:Name="topTom_s" Content="メール設定" HorizontalAlignment="Left" Height="43" Margin="434,0,0,22" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic"  FontSize="25" Foreground="White" Click="topTom_s_Click"/>
         <Button x:Name="topTorg_s" Content="ルールグループ設定" HorizontalAlignment="Left" Height="43" Margin="160,0,0,22" VerticalAlignment="Bottom" Width="260" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Foreground="White" Click="topTorg_s_Click"/>
 
         <Label x:Name="title" Content="TOP画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-        <ListBox x:Name="interfaceList" HorizontalAlignment="Left" Height="210" Margin="63,0,0,0" VerticalAlignment="Center" Width="700" ScrollViewer.CanContentScroll="True"/>
+        <ListBox x:Name="interfaceList" HorizontalAlignment="Left" Height="210" Margin="63,0,0,0" VerticalAlignment="Center" Width="700" ScrollViewer.CanContentScroll="True">
+            <ListBox.ItemContainerStyle>
+                <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="{x:Type ListBoxItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="listBoxItem_MouseDoubleClick"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
     </Grid>
 </Page>

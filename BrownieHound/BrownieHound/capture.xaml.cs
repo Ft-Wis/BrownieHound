@@ -18,6 +18,14 @@ using System.Drawing;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Printing;
+using System.Windows.Interop;
+using System.Windows.Threading;
+using System.Globalization;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
+using System.Xml;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace BrownieHound
 {
@@ -26,34 +34,136 @@ namespace BrownieHound
     /// </summary>
     public partial class capture : Page
     {
-        public class packetData
+        public class detectRule
         {
-            public string Data { get; set; }
-            public packetData(string msg)
+            public int ruleGroupNo { get; set; }
+            public int ruleNo { get; set; }
+            public int interval { get; set; }
+            public int count { get; set; }
+            public string Source { get; set; }
+            public string Destination { get; set; }
+            public string Protocol { get; set;}
+            public int Length { get; set;}
+
+            private void ruleSplit(string ruleSeet)
             {
-                Data = msg;
+                string[] data = ruleSeet.Split(',');
+                int i = 0;
+                ruleGroupNo = Int32.Parse(data[i++]);
+                ruleNo = Int32.Parse(data[i++]);
+                interval = Int32.Parse(data[i++]);
+                count = Int32.Parse(data[i++]);
+                Source = data[i++];
+                Destination = data[i++];
+                Protocol = data[i++];
+                Length = Int32.Parse(data[i]);
+            }
+            public detectRule(string ruleSeet) 
+            {
+                ruleSplit(ruleSeet);
             }
         }
+        public class packetData
+        {
+            public int Number { get; set; }
+            public DateTime time { get; set; }
+            public string Source { get; set; }
+            public string Destination { get; set; }
+            public string SourcePort { get; set; }
+            public string DestinationPort { get; set; }
+            public string Protocol { get; set; }
+            public int Length { get; set; }
+            public string Info { get; set; }
+            public string Data { get; set; }
+            List<string> protocols = new List<string>();
+
+            public packetData(String err)
+            {
+                Info = err;
+            }
+            public packetData(JObject layersObject)
+            {
+                Data = JsonConvert.SerializeObject(layersObject, Newtonsoft.Json.Formatting.None);
+                foreach (var layer in layersObject)
+                {
+                    protocols.Add(layer.Key.ToString());
+                    //Debug.WriteLine(layer.Key);
+                }
+                Number = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_number"]);
+                //frame_frame_number
+
+                string caputureTime = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_time"];
+                caputureTime = caputureTime.Substring(0, 27);
+                //精度が高すぎるので落とす
+
+                time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+                time = time.AddHours(9);
+
+
+                string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
+                string eDestination = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_dst"];
+                //ethレベルのアドレス（MACアドレス）
+
+                Source = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_src"];
+                Destination = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_dst"];
+
+                if (Source == null)
+                {
+                    Source = eSource;
+                    Destination = eDestination;
+                }
+                if (protocols.Contains("tcp") || protocols.Contains("udp"))
+                {
+                    SourcePort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_srcport"];
+                    DestinationPort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_dstport"];
+                    Info += $"{SourcePort} → {DestinationPort}";
+                }
+
+                if (protocols.Last().Equals("data"))
+                {
+                    Protocol = protocols[protocols.Count - 2];
+                }
+                else
+                {
+                    Protocol = protocols.Last();
+                }
+
+                Length = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
+                Info += $" {protocols.Last()}";
+                //Debug.WriteLine($"{Number} : {time.TimeOfDay} : {Source} : {Destination} : {Protocol} : {Length} :: {Info}");
+
+            }
+
+        }
+
         Process processTscap = null;
+        string tsInterfaceNumber = "";
         private ObservableCollection<packetData> CData;
-        public capture()
+        DispatcherTimer detectTimer;
+        DispatcherTimer clockTimer;
+        int clock = 0;
+        //１秒単位の経過時間
+        List<int> countRows = new List<int>();
+        //秒数毎のCDataのカウント
+        List<List<List<int>>> detectionNumber = new List<List<List<int>>>();
+        //検出したキャプチャデータのナンバーをルールに対応付けて格納
+        //これを基に検知画面に表示したい
+
+
+        public capture(string tsINumber)
         {
             InitializeComponent();
             CaputureData.ItemsSource = CData;
             CData = new ObservableCollection<packetData> { };
+            this.tsInterfaceNumber = tsINumber;
         }
         
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
             closing();
         }
-
-        private void Page_loaded(object sender, RoutedEventArgs e)
+        private void tsStart(string Command, string args)
         {
-            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
-
-            string args = "-i 5";
-            //オプションとしてテスト用に固定値を指定
             processTscap = new Process();
             ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
             processSinfo.CreateNoWindow = true;
@@ -73,12 +183,119 @@ namespace BrownieHound
             processTscap.BeginOutputReadLine();
         }
 
+        private void Page_loaded(object sender, RoutedEventArgs e)
+        {
+            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
+
+            string args = $"-i {tsInterfaceNumber} -T ek";
+
+            countRows.Add(0);
+            for(int i = 0;i < 10; i++)
+            {
+                detectionNumber.Add(new List<List<int>>());
+            }
+            for(int i = 0;i < 10; i++)
+            {
+                detectionNumber[i].Add(new List<int>());
+            }
+
+            tsStart(Command, args);
+            detectRule rule = new detectRule("0,0,60,1,8.8.8.8,,,0");
+            //固定値のルールセットを渡す
+
+            clockTimer = new DispatcherTimer();
+            clockTimer.Interval = new TimeSpan(0, 0, 1);
+            clockTimer.Tick += new EventHandler(recordTime);
+            clockTimer.Start();
+            dtStart(rule);
+
+        }
+
+        private void recordTime(object sender,EventArgs e)
+        {
+            int countNumber = CData.Count;
+            if(countNumber > 0)
+            {
+                countNumber -= 1;
+            }
+            clock++;
+            countRows.Add(countNumber);
+        }
+        private void detectLogic(int start,int end,detectRule rule)
+        {
+            List<int> targets = new List<int>();
+            for (int i = start; i <= end; i++)
+            {
+                int flg = 0;
+                if (rule.Source == "" || rule.Source.Equals(CData[i].Source))
+                {
+                    flg++;
+                }
+                if (rule.Destination == "" || rule.Destination.Equals(CData[i].Destination))
+                {
+                    flg++;
+                }
+                if (rule.Protocol == "" || rule.Protocol.Equals(CData[i].Protocol))
+                {
+                    flg++;
+                }
+                if (CData[i].Length > rule.Length)
+                {
+                    flg++;
+                }
+                if (flg == 4)
+                {
+                    targets.Add(i);
+                }
+            }
+            if (targets.Count >= rule.count)
+            {
+                for (int i = 0; i < targets.Count; i++)
+                {
+                    if (!detectionNumber[rule.ruleGroupNo][rule.ruleNo].Contains(targets[i]))
+                    {
+                        detectionNumber[rule.ruleGroupNo][rule.ruleNo].Add(targets[i]);
+                    }
+                }
+            }
+        }
+        private void dtStart(detectRule rule)
+        {
+            detectTimer = new DispatcherTimer();
+            detectTimer.Interval = new TimeSpan(0, 0, 1);
+            detectTimer.Tick += new EventHandler(detection);
+            detectTimer.Start();
+            void detection(object sender, EventArgs e)
+            {
+                if (clock >= rule.interval)
+                {
+                    int start = countRows[clock - rule.interval];
+                    int end = countRows[clock] - 1;
+                    //想定としてインターバルは秒指定
+                    if (countRows[clock] == countRows[clock - 1])
+                    {
+                        end++;
+                    }
+                    if (clock > rule.interval && start == countRows[clock - rule.interval - 1] && start < end)
+                    {
+                        //検知する範囲内で出現したパケットのみを対象とする処理
+                        //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
+                        start++;
+                    }
+                    detectLogic(start, end, rule);
+
+                }
+            }
+        }
+
+
+
         private void errReceived(object sender, DataReceivedEventArgs e)
         {
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintTextBoxByThread("ERR:" + packetText);
+                PrintpacketByThread("ERR:" + packetText);
             }
         }
 
@@ -87,18 +304,64 @@ namespace BrownieHound
             string packetText = e.Data;
             if (packetText != null && packetText.Length > 0)
             {
-                PrintTextBoxByThread(packetText);
+                PrintpacketByThread(packetText);
             }
         }
-        private void PrintText(string msg)
+        private void Printpacket(string msg)
         {
-            CData.Add(new packetData(msg));
+            try
+            {
+                JObject packetObject = JObject.Parse(msg);
+                if (packetObject["layers"] != null)
+                {
+                    packetData pd = new packetData((JObject)packetObject["layers"]);
+                    CData.Add(pd);
+                }
+            }
+            catch
+            {
+                CData.Add(new packetData(msg));
+                //errなどはそのまま出力する
+            }
+            bool isRowSelected = CaputureData.SelectedItems.Count > 0;
             CaputureData.ItemsSource = CData;
-            CaputureData.ScrollIntoView(CaputureData.Items.GetItemAt(CaputureData.Items.Count - 1));
+
+            if (!isRowSelected)
+            {
+                CaputureData.ScrollIntoView(CaputureData.Items.GetItemAt(CaputureData.Items.Count - 1));
+            }
+
+
         }
-        private void PrintTextBoxByThread(string msg)
+        private void chaptureDataGrid_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            Dispatcher.Invoke(new Action(() => PrintText(msg)));
+            DataGrid dataGrid = (DataGrid)sender;
+            ScrollViewer scrollViewer = GetScrollViewer(dataGrid);
+
+            if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight)
+            {
+                dataGrid.UnselectAll(); // DataGrid自体から選択を解除する場合
+            }
+        }
+
+        private ScrollViewer GetScrollViewer(DependencyObject depObj)
+        {
+            if (depObj is ScrollViewer viewer)
+                return viewer;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(depObj, i);
+                var result = GetScrollViewer(child);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
+        private void PrintpacketByThread(string msg)
+        {
+            Dispatcher.Invoke(new Action(() => Printpacket(msg)));
         }
         private void closing()
         {
@@ -106,6 +369,8 @@ namespace BrownieHound
             {
                 processTscap.Kill();
             }
+            clockTimer.Stop();
+            detectTimer.Stop();
             Application.Current.Shutdown();
 
         }

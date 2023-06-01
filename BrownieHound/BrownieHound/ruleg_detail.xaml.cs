@@ -26,14 +26,29 @@ namespace BrownieHound
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            subWindow subWindow = new subWindow("edit");
-            subWindow.ShowDialog();
+            rule_edit_Window rule_Edit_Window = new rule_edit_Window();
+            if (rule_Edit_Window.ShowDialog() == true)
+            {
+
+            }
+            else
+            {
+
+            }
+            
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            subWindow subWindow = new subWindow("add");
-            subWindow.ShowDialog();
+            rule_add_Window rule_Add_Window = new rule_add_Window();
+            if (rule_Add_Window.ShowDialog() == true)
+            {
+
+            }
+            else
+            {
+
+            }
         }
 
         private void redoButton_Click(object sender, RoutedEventArgs e)

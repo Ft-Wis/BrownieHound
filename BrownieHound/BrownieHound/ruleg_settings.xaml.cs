@@ -37,12 +37,12 @@ namespace BrownieHound
 
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.GoBack();
+            
         }
 
         private void redoButton_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.GoBack();
         }
     }
 }
