@@ -82,14 +82,14 @@
             
         </TextBox>
         <TextBox x:Name="sizeTextBox" Text="{Binding FormattedNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,234,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="116">
-            <Validation.ErrorTemplate>
+            <!--<Validation.ErrorTemplate>
                 <ControlTemplate>
                     <StackPanel>
                         <AdornedElementPlaceholder x:Name="textBox"/>
                         <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" Margin="5,0,0,0"/>
                     </StackPanel>
                 </ControlTemplate>
-            </Validation.ErrorTemplate>
+            </Validation.ErrorTemplate>-->
         </TextBox>
 
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="224,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>

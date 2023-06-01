@@ -21,23 +21,25 @@ namespace BrownieHound
     /// </summary>
     /// 
 
-    public class NumericValidationRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            if (value == null || string.IsNullOrEmpty(value.ToString()))
-            {
-                return new ValidationResult(false, "数値を入力してください。");
-            }
 
-            if (!double.TryParse(value.ToString(), out _))
-            {
-                return new ValidationResult(false, "数値を入力してください。");
-            }
+    //数値判定用のクラス(未完成)
+    //public class NumericValidationRule : ValidationRule
+    //{
+    //    public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+    //    {
+    //        if (value == null || string.IsNullOrEmpty(value.ToString()))
+    //        {
+    //            return new ValidationResult(false, "数値を入力してください。");
+    //        }
 
-            return ValidationResult.ValidResult;
-        }
-    }
+    //        if (!double.TryParse(value.ToString(), out _))
+    //        {
+    //            return new ValidationResult(false, "数値を入力してください。");
+    //        }
+
+    //        return ValidationResult.ValidResult;
+    //    }
+    //}
 
     public partial class rule_add_Window : Window 
     {
@@ -233,7 +235,7 @@ namespace BrownieHound
 
 
 
-        //数値以外が入力された場合にエラーを出す
+        //数値以外が入力された場合にエラーを出す(未完成)
 
         //public int Number
         //{
