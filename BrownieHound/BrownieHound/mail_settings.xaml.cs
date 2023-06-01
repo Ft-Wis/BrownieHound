@@ -21,6 +21,7 @@ namespace BrownieHound
         public mail_settings()
         {
             InitializeComponent();
+
         }
 
         private void s_rTotop_redo_Click(object sender, RoutedEventArgs e)
@@ -33,6 +34,16 @@ namespace BrownieHound
         {
             var nextPage = new top();
             NavigationService.Navigate(nextPage);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

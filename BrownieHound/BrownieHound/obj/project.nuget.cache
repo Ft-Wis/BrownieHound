@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "PidCtfXHaVHuDDlCHGY/RKDosHlM+uaoPGiSiSnejskviEvp6nIjKau2wNoszliIJyLwt+Pe2rIawkaC+EEMvA==",
+  "dgSpecHash": "mF5Lq9Dj/SVEPBpYWKQj472NHpAbqyjeu7sTFFVlexqqPx3N4ohrTh8OyHkDNeE23MIkvokt/MXGNI4laoxIew==",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\Source\\Repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\materialdesigncolors\\2.1.2\\materialdesigncolors.2.1.2.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\materialdesignthemes\\4.8.0\\materialdesignthemes.4.8.0.nupkg.sha512",
-    "C:\\Users\\user\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }
