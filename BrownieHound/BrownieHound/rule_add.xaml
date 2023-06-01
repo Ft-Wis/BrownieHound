@@ -8,9 +8,10 @@
       Title="rule_add" Width="415" Height="461">
 
     <Grid Background="White" Margin="0,0,-17,-20">
-        <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+        <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Center" Height="44" Margin="0,20,0,0" VerticalAlignment="Top" Width="158" FontSize="24"/>
         <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="232,0,0,42" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
         <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="30,0,0,42" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="editButton_Click"/>
+        <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Left" Height="312" CornerRadius="10"   Margin="30,71,0,0" VerticalAlignment="Top" Width="379"/>
 
     </Grid>
 </Page>
