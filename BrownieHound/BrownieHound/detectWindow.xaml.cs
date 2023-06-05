@@ -17,7 +17,6 @@ namespace BrownieHound
     /// </summary>
     public partial class detectWindow : Window
     {
-        private const bool V = true;
 
         public detectWindow()
         {
