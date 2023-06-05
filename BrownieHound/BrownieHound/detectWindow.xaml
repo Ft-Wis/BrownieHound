@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
-        Title="detectWindow" Height="450" Width="800">
+        Title="detectWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
-        <Frame Name="frame" NavigationUIVisibility="Hidden"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Frame Name="frame" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

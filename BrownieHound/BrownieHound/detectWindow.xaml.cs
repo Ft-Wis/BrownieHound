@@ -17,12 +17,20 @@ namespace BrownieHound
     /// </summary>
     public partial class detectWindow : Window
     {
+        private const bool V = true;
+
         public detectWindow()
         {
             InitializeComponent();
 
             Uri uri = new Uri("/detect.xaml", UriKind.Relative);
             frame.Source = uri;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.WindowState = WindowState.Minimized;
         }
     }
 }
