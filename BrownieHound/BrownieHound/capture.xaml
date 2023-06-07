@@ -14,11 +14,11 @@
         <DataGrid x:Name="CaputureData" Margin="0,85,50,104" HorizontalAlignment="Right" Width="701" AutoGenerateColumns="False" ForceCursor="True"  ScrollViewer.ScrollChanged="chaptureDataGrid_ScrollChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No" Binding="{Binding Number}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="time" Binding="{Binding time.TimeOfDay}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="time" Binding="{Binding Time.TimeOfDay}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Length" Binding="{Binding Length}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Length" Binding="{Binding frameLength}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>

@@ -13,6 +13,38 @@ namespace BrownieHound
     /// </summary>
     public partial class App : Application
     {
+        public class ruleData
+        {
+            public int ruleGroupNo { get; set; }
+            public int ruleNo { get; set; }
+            public int detectionInterval { get; set; }
+            public int detectionCount { get; set; }
+            public string Source { get; set; }
+            public string Destination { get; set; }
+            public string Protocol { get; set; }
+            public string sourcePort { get; set; }
+            public string destinationPort { get; set; }
+            public int frameLength { get; set; }
 
+            private void ruleSplit(string ruleSeet)
+            {
+                string[] data = ruleSeet.Split(',');
+                int i = 0;
+                ruleGroupNo = Int32.Parse(data[i++]);
+                ruleNo = Int32.Parse(data[i++]);
+                detectionInterval = Int32.Parse(data[i++]);
+                detectionCount = Int32.Parse(data[i++]);
+                Source = data[i++];
+                Destination = data[i++];
+                Protocol = data[i++];
+                sourcePort = data[i++];
+                destinationPort = data[i++];
+                frameLength = Int32.Parse(data[i]);
+            }
+            public ruleData(string ruleSeet)
+            {
+                ruleSplit(ruleSeet);
+            }
+        }
     }
 }
