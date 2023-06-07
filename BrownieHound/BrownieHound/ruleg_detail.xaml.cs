@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +23,16 @@ namespace BrownieHound
         public ruleg_detail()
         {
             InitializeComponent();
+        }
+        public ruleg_detail(int no ,String name, String[] ruledata)
+        {
+            InitializeComponent();
+            title.Content = $"{title.Content} - {name}";
+            foreach (String s in ruledata)
+            {
+                Debug.WriteLine($"{s}");
+            }
+            
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
