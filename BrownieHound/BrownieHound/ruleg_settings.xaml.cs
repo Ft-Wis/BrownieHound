@@ -71,7 +71,7 @@ namespace BrownieHound
         {
             for(int i = 0; i < 10; i++)
             {
-                Data.Add(new ruleGroupData(i, "aaaa" + i, 5, "0,60,1,8.8.8.8,,,,,0:0,60,1,9.8.8.8,,,,,0:0,60,1,10.8.8.8,,tcp,80,,0"));
+                Data.Add(new ruleGroupData(i, "aaaa" + i, 5, "0,60,1,8.8.8.8,,,,,0:1,60,1,9.8.8.8,,,,,0:2,60,1,10.8.8.8,,tcp,80,,0"));
                 ruleGroupList.DataContext = Data;
             }
         }
