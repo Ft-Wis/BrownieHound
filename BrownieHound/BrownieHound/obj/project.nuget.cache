@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "p77debKg+LbXYvVaNvtx6o0xOCvpxR9wMXFjk3lEICGNfL/ZfF2pMXfw+wqPIPBMfR9UcKKPc/EbNqUIb0L+oA==",
+  "dgSpecHash": "NpXQAjWdxAlBPI5ySRWN/FjMkMblug/NYyu6dFzhK685ztxYC0cGG73TlnBvT/F5ctqeW3C6l1ghOWsMbZjWDA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+  "projectFilePath": "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\nkc20\\.nuget\\packages\\materialdesigncolors\\2.1.2\\materialdesigncolors.2.1.2.nupkg.sha512",
-    "C:\\Users\\nkc20\\.nuget\\packages\\materialdesignthemes\\4.8.0\\materialdesignthemes.4.8.0.nupkg.sha512",
-    "C:\\Users\\nkc20\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
-    "C:\\Users\\nkc20\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\sotsu\\.nuget\\packages\\materialdesigncolors\\2.1.2\\materialdesigncolors.2.1.2.nupkg.sha512",
+    "C:\\Users\\sotsu\\.nuget\\packages\\materialdesignthemes\\4.8.0\\materialdesignthemes.4.8.0.nupkg.sha512",
+    "C:\\Users\\sotsu\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
+    "C:\\Users\\sotsu\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }

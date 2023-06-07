@@ -26,6 +26,7 @@ using System.Xml.Linq;
 using System.Xml;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using static BrownieHound.App;
 
 namespace BrownieHound
 {
@@ -34,45 +35,16 @@ namespace BrownieHound
     /// </summary>
     public partial class capture : Page
     {
-        public class detectRule
-        {
-            public int ruleGroupNo { get; set; }
-            public int ruleNo { get; set; }
-            public int interval { get; set; }
-            public int count { get; set; }
-            public string Source { get; set; }
-            public string Destination { get; set; }
-            public string Protocol { get; set;}
-            public int Length { get; set;}
-
-            private void ruleSplit(string ruleSeet)
-            {
-                string[] data = ruleSeet.Split(',');
-                int i = 0;
-                ruleGroupNo = Int32.Parse(data[i++]);
-                ruleNo = Int32.Parse(data[i++]);
-                interval = Int32.Parse(data[i++]);
-                count = Int32.Parse(data[i++]);
-                Source = data[i++];
-                Destination = data[i++];
-                Protocol = data[i++];
-                Length = Int32.Parse(data[i]);
-            }
-            public detectRule(string ruleSeet) 
-            {
-                ruleSplit(ruleSeet);
-            }
-        }
         public class packetData
         {
             public int Number { get; set; }
-            public DateTime time { get; set; }
+            public DateTime Time { get; set; }
             public string Source { get; set; }
             public string Destination { get; set; }
-            public string SourcePort { get; set; }
-            public string DestinationPort { get; set; }
+            public string sourcePort { get; set; }
+            public string destinationPort { get; set; }
             public string Protocol { get; set; }
-            public int Length { get; set; }
+            public int frameLength { get; set; }
             public string Info { get; set; }
             public string Data { get; set; }
             List<string> protocols = new List<string>();
@@ -96,8 +68,8 @@ namespace BrownieHound
                 caputureTime = caputureTime.Substring(0, 27);
                 //精度が高すぎるので落とす
 
-                time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
-                time = time.AddHours(9);
+                Time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+                Time = Time.AddHours(9);
 
 
                 string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
@@ -114,9 +86,9 @@ namespace BrownieHound
                 }
                 if (protocols.Contains("tcp") || protocols.Contains("udp"))
                 {
-                    SourcePort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_srcport"];
-                    DestinationPort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_dstport"];
-                    Info += $"{SourcePort} → {DestinationPort}";
+                    sourcePort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_srcport"];
+                    destinationPort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_dstport"];
+                    Info += $"{sourcePort} → {destinationPort}";
                 }
 
                 if (protocols.Last().Equals("data"))
@@ -128,7 +100,7 @@ namespace BrownieHound
                     Protocol = protocols.Last();
                 }
 
-                Length = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
+                frameLength = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
                 Info += $" {protocols.Last()}";
                 //Debug.WriteLine($"{Number} : {time.TimeOfDay} : {Source} : {Destination} : {Protocol} : {Length} :: {Info}");
 
@@ -200,7 +172,7 @@ namespace BrownieHound
             }
 
             tsStart(Command, args);
-            detectRule rule = new detectRule("0,0,60,1,8.8.8.8,,,0");
+            ruleData rule = new ruleData("0,0,60,1,8.8.8.8,,,,,0");
             //固定値のルールセットを渡す
 
             clockTimer = new DispatcherTimer();
@@ -221,7 +193,7 @@ namespace BrownieHound
             clock++;
             countRows.Add(countNumber);
         }
-        private void detectLogic(int start,int end,detectRule rule)
+        private void detectLogic(int start,int end,ruleData rule)
         {
             List<int> targets = new List<int>();
             for (int i = start; i <= end; i++)
@@ -239,16 +211,24 @@ namespace BrownieHound
                 {
                     flg++;
                 }
-                if (CData[i].Length > rule.Length)
+                if(rule.sourcePort == "" || rule.sourcePort.Equals(CData[i].sourcePort))
                 {
                     flg++;
                 }
-                if (flg == 4)
+                if(rule.destinationPort == "" || rule.destinationPort.Equals(CData[i].destinationPort))
+                {
+                    flg++;
+                }
+                if (CData[i].frameLength > rule.frameLength)
+                {
+                    flg++;
+                }
+                if (flg == 6)
                 {
                     targets.Add(i);
                 }
             }
-            if (targets.Count >= rule.count)
+            if (targets.Count >= rule.detectionCount)
             {
                 for (int i = 0; i < targets.Count; i++)
                 {
@@ -259,7 +239,7 @@ namespace BrownieHound
                 }
             }
         }
-        private void dtStart(detectRule rule)
+        private void dtStart(ruleData rule)
         {
             detectTimer = new DispatcherTimer();
             detectTimer.Interval = new TimeSpan(0, 0, 1);
@@ -267,16 +247,16 @@ namespace BrownieHound
             detectTimer.Start();
             void detection(object sender, EventArgs e)
             {
-                if (clock >= rule.interval)
+                if (clock >= rule.detectionInterval)
                 {
-                    int start = countRows[clock - rule.interval];
+                    int start = countRows[clock - rule.detectionInterval];
                     int end = countRows[clock] - 1;
                     //想定としてインターバルは秒指定
                     if (countRows[clock] == countRows[clock - 1])
                     {
                         end++;
                     }
-                    if (clock > rule.interval && start == countRows[clock - rule.interval - 1] && start < end)
+                    if (clock > rule.detectionInterval && start == countRows[clock - rule.detectionInterval - 1] && start < end)
                     {
                         //検知する範囲内で出現したパケットのみを対象とする処理
                         //0,0,2,2,3...等の時に２回目の試行には0を入れたくない

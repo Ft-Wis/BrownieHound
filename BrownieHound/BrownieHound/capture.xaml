@@ -18,7 +18,7 @@
                 <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Length" Binding="{Binding Length}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Length" Binding="{Binding frameLength}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
