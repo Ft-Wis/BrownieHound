@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {}
+    "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {
+    "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+        "projectUniqueName": "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
         "projectName": "BrownieHound",
-        "projectPath": "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
+        "projectPath": "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+        "packagesPath": "C:\\Users\\sotsu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sotsu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -50,6 +52,10 @@
             "MaterialDesignThemes": {
               "target": "Package",
               "version": "[4.8.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             }
           },
           "imports": [
@@ -63,16 +69,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.10, 3.1.10]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[3.1.32, 3.1.32]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -81,7 +77,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
