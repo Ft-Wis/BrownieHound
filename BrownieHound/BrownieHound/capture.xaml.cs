@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -66,6 +67,7 @@ namespace BrownieHound
                 packetSplit(msg);
             }
         }
+
         Process processTscap = null;
         string tsInterfaceNumber = "";
         private ObservableCollection<packetData> CData;
@@ -76,11 +78,16 @@ namespace BrownieHound
             CData = new ObservableCollection<packetData> { };
             this.tsInterfaceNumber = tsINumber;
         }
-        
+
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
             closing();
         }
+        private void stop_Click(object sende, RoutedEventArgs e) 
+        {
+            processTscap.Kill();
+        }
+       
         private void tsStart(string Command, string args)
         {
             processTscap = new Process();

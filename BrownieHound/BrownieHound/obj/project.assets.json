@@ -147,6 +147,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "MaterialDesignColors >= 2.1.2",
       "MaterialDesignThemes >= 4.8.0"
     ]
   },
@@ -157,11 +158,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+      "projectUniqueName": "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
       "projectName": "BrownieHound",
-      "projectPath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+      "projectPath": "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
+      "outputPath": "C:\\Users\\user\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -193,6 +194,10 @@
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
         "dependencies": {
+          "MaterialDesignColors": {
+            "target": "Package",
+            "version": "[2.1.2, )"
+          },
           "MaterialDesignThemes": {
             "target": "Package",
             "version": "[4.8.0, )"
