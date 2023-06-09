@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static BrownieHound.App;
 
 namespace BrownieHound
 {
@@ -24,13 +25,13 @@ namespace BrownieHound
         {
             InitializeComponent();
         }
-        public ruleg_detail(int no ,String name, String[] ruledata)
+        public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
             InitializeComponent();
             title.Content = $"{title.Content} - {name}";
-            foreach (String s in ruledata)
+            foreach (ruleData rd in ruledata)
             {
-                Debug.WriteLine($"{s}");
+                Debug.WriteLine($"{rd}");
             }
             
         }
