@@ -172,7 +172,7 @@ namespace BrownieHound
             }
 
             tsStart(Command, args);
-            ruleData rule = new ruleData("0,0,60,1,8.8.8.8,,,,,0");
+            ruleData rule = new ruleData("60,1,8.8.8.8,,,,,0",0,0);
             //固定値のルールセットを渡す
 
             clockTimer = new DispatcherTimer();

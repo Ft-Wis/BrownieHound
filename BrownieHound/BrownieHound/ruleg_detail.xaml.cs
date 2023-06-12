@@ -1,7 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -13,8 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml;
-using BrownieHound;
+using static BrownieHound.App;
 
 namespace BrownieHound
 {
@@ -37,6 +36,16 @@ namespace BrownieHound
             var ruleList = new List<App.ruleData>();
             ruleList.Add(data);
             rule_DataGrid.ItemsSource = ruleList;
+        }
+        public ruleg_detail(int no ,String name, List<ruleData> ruledata)
+        {
+            InitializeComponent();
+            title.Content = $"{title.Content} - {name}";
+            foreach (ruleData rd in ruledata)
+            {
+                Debug.WriteLine($"{rd}");
+            }
+            
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
