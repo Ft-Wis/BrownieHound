@@ -49,7 +49,8 @@ namespace BrownieHound
         }
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ruleg_add_Window addWindow = new ruleg_add_Window();
+            addWindow.ShowDialog();
         }
 
         private void detailButton_Click(object sender, RoutedEventArgs e)
@@ -85,7 +86,7 @@ namespace BrownieHound
                 Directory.CreateDirectory(path);
             }
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
-            IEnumerable<System.IO.FileInfo> ruleFiles = di.EnumerateFiles("*.txt", System.IO.SearchOption.TopDirectoryOnly);
+            IEnumerable<System.IO.FileInfo> ruleFiles = di.EnumerateFiles("*.txt", System.IO.SearchOption.TopDirectoryOnly).OrderBy(f => f.CreationTime).ToList();
             foreach (var ruleFile in ruleFiles.Select((Value, Index) => new { Value, Index }))
             {
                 string ruleGroupName = ruleFile.Value.Name.Remove(ruleFile.Value.Name.Length - 4);

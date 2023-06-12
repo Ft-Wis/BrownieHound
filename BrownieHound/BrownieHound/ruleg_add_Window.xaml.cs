@@ -20,6 +20,17 @@ namespace BrownieHound
         public ruleg_add_Window()
         {
             InitializeComponent();
+            this.Owner = App.Current.MainWindow;
+        }
+
+        private void ruleg_add_submit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ruleg_add_redo_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
