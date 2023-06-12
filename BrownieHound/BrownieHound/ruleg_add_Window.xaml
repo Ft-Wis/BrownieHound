@@ -9,7 +9,7 @@
     <Grid>
         <Label Content="追加するルールグループ名を入力" HorizontalAlignment="Left" Height="41" Margin="10,10,0,0" VerticalAlignment="Top" Width="406" FontSize="24"/>
         <TextBox HorizontalAlignment="Left" Height="46" Margin="39,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="497" FontSize="36"/>
-        <Button x:Name="m_sTotop_submit" Content="確定" HorizontalAlignment="Left" Height="43" Margin="430,0,0,10" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White"   Click="s_rTotop_submit_Click" RenderTransformOrigin="-0.716,-5.28"/>
+        <Button x:Name="m_sTotop_submit" Content="確定" HorizontalAlignment="Left" Height="43" Margin="430,0,0,10" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White"    RenderTransformOrigin="-0.716,-5.28"/>
 
     </Grid>
 </Window>

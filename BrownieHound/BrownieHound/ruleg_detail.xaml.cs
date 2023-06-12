@@ -32,7 +32,7 @@ namespace BrownieHound
 
         private void AddToDatagrid()
         {
-            var data = new App.ruleData(ruleSheet);
+            var data = new ruleData(ruleSheet,1,1);
             var ruleList = new List<App.ruleData>();
             ruleList.Add(data);
             rule_DataGrid.ItemsSource = ruleList;
