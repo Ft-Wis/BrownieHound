@@ -49,8 +49,7 @@ namespace BrownieHound
         }
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            var nextPage = new rule_edit();
-            NavigationService.Navigate(nextPage);
+
         }
 
         private void detailButton_Click(object sender, RoutedEventArgs e)
