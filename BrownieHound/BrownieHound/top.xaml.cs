@@ -26,28 +26,33 @@ namespace BrownieHound
         Process processTsinterface = null;
         private void Page_loaded(object sender, RoutedEventArgs e)
         {
-            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
 
-            string args = "-D";
-            processTsinterface = new Process();
-            ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
-            processSinfo.CreateNoWindow = true;
-            processSinfo.UseShellExecute = false;
-            processSinfo.RedirectStandardOutput = true;
-            processSinfo.RedirectStandardError = true;
+                string Command = "C:\\Program Files\\ireshark\\tshark.exe";
+                string args = "-D";
+                processTsinterface = new Process();
+                ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
+                processSinfo.CreateNoWindow = true;
+                processSinfo.UseShellExecute = false;
+                processSinfo.RedirectStandardOutput = true;
+                processSinfo.RedirectStandardError = true;
 
-            processSinfo.StandardErrorEncoding = Encoding.UTF8;
-            processSinfo.StandardOutputEncoding = Encoding.UTF8;
+                processSinfo.StandardErrorEncoding = Encoding.UTF8;
+                processSinfo.StandardOutputEncoding = Encoding.UTF8;
+            try
+            {
+                processTsinterface = Process.Start(processSinfo);
+                processTsinterface.OutputDataReceived += dataReceived;
+                processTsinterface.ErrorDataReceived += errReceived;
+                processTsinterface.BeginErrorReadLine();
+                processTsinterface.BeginOutputReadLine();
+            }
+            catch
+            {
+                interfaceList.Items.Add("error");
+            }
 
-            processTsinterface = Process.Start(processSinfo);
 
-            processTsinterface.OutputDataReceived += dataReceived;
-            processTsinterface.ErrorDataReceived += errReceived;
-
-            processTsinterface.BeginErrorReadLine();
-            processTsinterface.BeginOutputReadLine();
-            
-        }
+            }
 
         private void errReceived(object sender, DataReceivedEventArgs e)
         {
