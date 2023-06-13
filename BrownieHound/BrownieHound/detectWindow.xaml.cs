@@ -30,9 +30,6 @@ namespace BrownieHound
             this.WindowState = WindowState.Minimized;
         }
 
-        private void frame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
-        {
-           
-        }
+        
     }
 }
