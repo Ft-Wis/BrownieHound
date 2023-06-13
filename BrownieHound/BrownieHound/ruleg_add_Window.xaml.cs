@@ -22,14 +22,17 @@ namespace BrownieHound
             InitializeComponent();
             this.Owner = App.Current.MainWindow;
         }
-
+        public string newGroupName { get; set; } = "";
         private void ruleg_add_submit_Click(object sender, RoutedEventArgs e)
         {
-
+            newGroupName = ruleGroupNameText.Text;
+            this.DialogResult = true;
+            this.Close();
         }
 
         private void ruleg_add_redo_Click(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = false;
             this.Close();
         }
     }
