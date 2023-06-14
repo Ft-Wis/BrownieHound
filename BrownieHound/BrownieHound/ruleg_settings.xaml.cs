@@ -27,26 +27,7 @@ namespace BrownieHound
         {
             InitializeComponent();
         }
-        public class ruleGroupData
-        {
-            public bool isCheck { get; set; } = false;
-            public int No { get; set; }
-            public String Name { get; set; }
-            public int ruleItems { get; set; } = 0;
-            public List<ruleData> ruleDatas { get; set; } = new List<ruleData>();
-
-            public ruleGroupData(int no, String name)
-            {
-                this.No = no;
-                this.Name = name;
-            }
-
-            public void ruleSet(string ruleLine)
-            {
-                ruleDatas.Add(new ruleData(ruleLine,this.No, this.ruleItems++));
-                
-            }
-        }
+        
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             ruleg_add_Window addWindow = new ruleg_add_Window();
