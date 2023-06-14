@@ -11,6 +11,6 @@
             <ColumnDefinition Width="15*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Frame Name="frame" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2"/>
+        <Label x:Name="title" Content="検知画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
     </Grid>
 </Window>
