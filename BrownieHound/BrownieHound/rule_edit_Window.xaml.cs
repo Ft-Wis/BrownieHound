@@ -20,12 +20,7 @@ namespace BrownieHound
     {
         public rule_edit_Window()
         {
-            //this.SizeToContent = SizeToContent.WidthAndHeight;
-            //this.SizeToContent = SizeToContent.Width;
-            //this.SizeToContent = SizeToContent.Manual;
-            //this.SizeToContent = SizeToContent.Height;
             InitializeComponent();
-            Loaded += Window_Loaded;
             
         }
 
@@ -46,31 +41,7 @@ namespace BrownieHound
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-            double windowWidth = Width;
-            double windowHeight = Height;
-
-            if (windowWidth > screenWidth)
-            {
-                Width = screenWidth;
-                Left = 0;
-            }
-            else
-            {
-                Left = (screenWidth - windowWidth) / 2;
-            }
-
-            if (windowHeight > screenHeight)
-            {
-                Height = screenHeight;
-                Top = 0;
-            }
-            else
-            {
-                Top = (screenHeight - windowHeight) / 2;
-            }
+           
         }
     }
 }
