@@ -59,9 +59,9 @@ namespace BrownieHound
         {
             if(ruleGroupList.SelectedItems.Count == 1) 
             {
-                ruleGroupData lvi = (ruleGroupData)ruleGroupList.SelectedItem;
-                Debug.WriteLine(lvi.Name);
-                var nextPage = new ruleg_detail(lvi.No, lvi.Name, lvi.ruleDatas);
+                ruleGroupData listViewItems = (ruleGroupData)ruleGroupList.SelectedItem;
+                Debug.WriteLine(listViewItems.Name);
+                var nextPage = new ruleg_detail(listViewItems.No, listViewItems.Name, listViewItems.ruleDatas);
                 NavigationService.Navigate(nextPage);
             }
 
@@ -117,8 +117,8 @@ namespace BrownieHound
 
         private void ListViewItem_DoubleClikck(object sender, MouseButtonEventArgs e)
         {
-            var lvi = sender as ListViewItem;
-            ruleGroupData rgData = lvi.DataContext as ruleGroupData;
+            var listViewItems = sender as ListViewItem;
+            ruleGroupData rgData = listViewItems.DataContext as ruleGroupData;
             var nextPage = new ruleg_detail(rgData.No, rgData.Name,rgData.ruleDatas);
             NavigationService.Navigate(nextPage);
         }

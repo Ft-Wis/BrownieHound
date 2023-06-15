@@ -27,7 +27,6 @@ namespace BrownieHound
         public ruleg_detail()
         {
             InitializeComponent();
-            AddToDatagrid();
         }
 
         private void AddToDatagrid()
@@ -40,6 +39,7 @@ namespace BrownieHound
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
             InitializeComponent();
+            AddToDatagrid();
             title.Content = $"{title.Content} - {name}";
             foreach (ruleData rd in ruledata)
             {
@@ -48,18 +48,38 @@ namespace BrownieHound
             
         }
 
+
+
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            rule_edit_Window rule_Edit_Window = new rule_edit_Window();
-            if (rule_Edit_Window.ShowDialog() == true)
+            // 1列だけ選択していた場合のみ
+            if (rule_DataGrid.SelectedItems.Count == 1)
             {
-
+                var selectedItem = rule_DataGrid.SelectedItem;
+                if (selectedItem is ruleData ruleData)
+                {
+                    MessageBox.Show(ruleData.Source);
+                    rule_edit_Window rule_Edit_Window = new rule_edit_Window();
+                    if (rule_Edit_Window.ShowDialog() == true)
+                    {
+                        // OKボタンがクリックされた場合の処理
+                    }
+                    else
+                    {
+                        // キャンセルされた場合の処理
+                    }
+                }
+                else
+                {
+                    // 選択された項目を ruleData 型にキャストできません
+                }
             }
             else
             {
-
+                // 1列以外が選択されている場合の処理
             }
-            
+
+
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
