@@ -1,21 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Z3ec9vgGlEe0yd1UOe+ohDhW+j/tRHp7aap0W7X3DY/pO/baCC4QaRMrdMu9UgLzKwinkjUye/ivZOHClJvdfw==",
+  "dgSpecHash": "8YHoiOMGAdfAIAieiiWYtxQleMUqLBoW8P/+7xAronUaaVNasKuXGG9XdWtEC905khfiDMjbtB31Nn3e7lZU+A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+  "projectFilePath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\materialdesigncolors\\2.1.2\\materialdesigncolors.2.1.2.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\materialdesignthemes\\4.8.0\\materialdesignthemes.4.8.0.nupkg.sha512",
-    "C:\\Users\\user\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
-    "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
-    "C:\\Users\\user\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.32\\microsoft.netcore.app.host.win-x64.3.1.32.nupkg.sha512"
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "キャッシュ ファイルの読み取りの問題 C:\\Users\\user\\Documents\\卒業研究\\sotsuken\\BrownieHound\\BrownieHound\\obj\\project.nuget.cache : 値を Null にすることはできません。\r\nパラメーター名:value"
-    }
-  ]
+  "logs": []
 }
