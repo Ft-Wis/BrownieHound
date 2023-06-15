@@ -10,6 +10,9 @@
     <Compile Update="detectWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ruleg_add_Window.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="rule_add_Window.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -18,6 +21,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="ruleg_add_Window.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="rule_add_Window.xaml">
       <SubType>Designer</SubType>
     </Page>
