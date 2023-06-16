@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -21,9 +22,20 @@ namespace BrownieHound
     /// </summary>
     public partial class ruleg_detail : Page
     {
+        private string ruleSheet = "1,1,10,5,209.152.76.123,172.0.0.1,TCP,80,8080,300000";
+
         public ruleg_detail()
         {
             InitializeComponent();
+            AddToDatagrid();
+        }
+
+        private void AddToDatagrid()
+        {
+            var data = new ruleData(ruleSheet,1,1);
+            var ruleList = new List<App.ruleData>();
+            ruleList.Add(data);
+            rule_DataGrid.ItemsSource = ruleList;
         }
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
@@ -71,6 +83,23 @@ namespace BrownieHound
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        public class IntervalConverter : IValueConverter
+        {
+            public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+                if (value is int interval && parameter is int count)
+                {
+                    return $"{interval}秒間に{count}回";
+                }
+                return null;
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
         }
 
     }
