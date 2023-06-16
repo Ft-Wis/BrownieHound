@@ -13,6 +13,19 @@ namespace BrownieHound
     /// </summary>
     public partial class App : Application
     {
+        public class mailData
+        {
+            public bool enabled { get; set; }
+            public int sendSpan { get; set; }
+            public string mailAddress { get; set; }
+            public mailData(bool enabled,int sendSpan,string mailAddress)
+            { 
+                this.enabled = enabled;
+                this.sendSpan = sendSpan;
+                this.mailAddress = mailAddress;
+            }
+        }
+
         public class ruleData
         {
             public int ruleGroupNo { get; set; }
