@@ -92,11 +92,6 @@ namespace BrownieHound
 
         }
 
-        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (!Directory.Exists(@"conf"))

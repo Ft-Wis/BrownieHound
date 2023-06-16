@@ -18,11 +18,13 @@ namespace BrownieHound
             public bool enabled { get; set; }
             public int sendSpan { get; set; }
             public string mailAddress { get; set; }
-            public mailData(bool enabled,int sendSpan,string mailAddress)
+            public bool authorized{get;set;} = false;
+            public mailData(bool enabled,int sendSpan,string mailAddress,bool authorized)
             { 
                 this.enabled = enabled;
                 this.sendSpan = sendSpan;
                 this.mailAddress = mailAddress;
+                this.authorized = authorized;
             }
         }
 
