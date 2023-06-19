@@ -104,16 +104,20 @@ namespace BrownieHound
             }
             using (StreamReader sr = new StreamReader(path, Encoding.GetEncoding("UTF-8")))
             {
-                if (bool.TryParse(sr.ReadLine().Split(":")[1], out var isEnabled))
+                try
                 {
-                    mailValidation.isEnabled.Value = isEnabled;
+                    if (bool.TryParse(sr.ReadLine().Split(":")[1], out var isEnabled))
+                    {
+                        mailValidation.isEnabled.Value = isEnabled;
+                    }
+                    if (int.TryParse(sr.ReadLine().Split(":")[1], out var span))
+                    {
+                        mailValidation.span.Value = span.ToString();
+                    }
+                    mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
+                    authorize = sr.ReadLine().Split(":")[1];
                 }
-                if (int.TryParse(sr.ReadLine().Split(":")[1],out var span))
-                {
-                    mailValidation.span.Value = span.ToString();
-                }
-                mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
-                authorize = sr.ReadLine().Split(":")[1];
+                catch { }
             }
             //Debug.WriteLine(authorize);
         }
