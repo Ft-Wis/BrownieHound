@@ -88,8 +88,13 @@
         </ComboBox>
         <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="58,185,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="74" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="2"/>
         <TextBox HorizontalAlignment="Left" Height="26" Margin="91,235,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116" Grid.ColumnSpan="2" Grid.Column="1"/>
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="28,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="2" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+            <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="91,278,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75" Grid.Column="1"/>
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="169,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34" Grid.Column="1" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
+            <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="34,278,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="50" Grid.Column="2" Grid.ColumnSpan="2"/>
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="26,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43" Grid.Column="3" Grid.ColumnSpan="3"><Run Language="ja-jp" Text="回以上"/></TextBlock>
 
 
-    </Grid>
+        </Grid>
     </DockPanel>
 </Window>
