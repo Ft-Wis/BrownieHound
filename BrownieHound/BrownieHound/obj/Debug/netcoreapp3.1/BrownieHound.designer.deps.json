@@ -41,7 +41,50 @@
             "fileVersion": "13.0.3.27908"
           }
         }
-      }
+      },
+      "ReactiveProperty/8.1.2": {
+        "dependencies": {
+          "ReactiveProperty.Core": "8.1.2",
+          "System.ComponentModel.Annotations": "5.0.0",
+          "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
+        }
+      },
+      "ReactiveProperty.Core/8.1.2": {
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.Core.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
+        }
+      },
+      "ReactiveProperty.WPF/8.1.2": {
+        "dependencies": {
+          "Microsoft.Xaml.Behaviors.Wpf": "1.1.39",
+          "ReactiveProperty": "8.1.2",
+          "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.WPF.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
+        }
+      },
+      "System.ComponentModel.Annotations/5.0.0": {
+        "runtime": {
+          "lib/netstandard2.1/System.ComponentModel.Annotations.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        }
+      },
+      "System.Reactive/5.0.0": {}
     }
   },
   "libraries": {
@@ -72,6 +115,41 @@
       "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "path": "newtonsoft.json/13.0.3",
       "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
+    },
+    "ReactiveProperty/8.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5ZT18XKz+7RP/izaIq1KV16cUz8YFjPzlmSs3A2qEdR25PLxI8UYMIRGaXPhJbfrM00V8WxWGGAQk8t8xIEwKA==",
+      "path": "reactiveproperty/8.1.2",
+      "hashPath": "reactiveproperty.8.1.2.nupkg.sha512"
+    },
+    "ReactiveProperty.Core/8.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7YAOZUtHzh8IBUChSb3/l5OnRJFU9TpxBl522UwnHZiLjsQJE+mjMmREgjJy1I8SpZeamqsor654ZNq47W46hw==",
+      "path": "reactiveproperty.core/8.1.2",
+      "hashPath": "reactiveproperty.core.8.1.2.nupkg.sha512"
+    },
+    "ReactiveProperty.WPF/8.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OuVVYHO/PQLx/1ZiqCLCU2IvT4VH4Lkl8eUxiFYNEa87woTtLY9pbQdtJSgPXMdjmNMfFOjUzS9AiSfDkQZnAw==",
+      "path": "reactiveproperty.wpf/8.1.2",
+      "hashPath": "reactiveproperty.wpf.8.1.2.nupkg.sha512"
+    },
+    "System.ComponentModel.Annotations/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg==",
+      "path": "system.componentmodel.annotations/5.0.0",
+      "hashPath": "system.componentmodel.annotations.5.0.0.nupkg.sha512"
+    },
+    "System.Reactive/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-erBZjkQHWL9jpasCE/0qKAryzVBJFxGHVBAvgRN1bzM0q2s1S4oYREEEL0Vb+1kA/6BKb5FjUZMp5VXmy+gzkQ==",
+      "path": "system.reactive/5.0.0",
+      "hashPath": "system.reactive.5.0.0.nupkg.sha512"
     }
   }
 }
