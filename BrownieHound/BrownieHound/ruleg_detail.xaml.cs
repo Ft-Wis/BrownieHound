@@ -22,7 +22,20 @@ namespace BrownieHound
     /// </summary>
     public partial class ruleg_detail : Page
     {
-        private string ruleSheet = "1,1,10,5,209.152.76.123,172.0.0.1,TCP,80,8080,300000";
+        private string ruleSheet = "1,5,209.152.76.123,172.0.0.1,TCP,80,8080,300000";
+
+        public struct DataGridItem
+        {
+            public int ruleNo { get; set; }
+            public int detectionInterval { get; set; }
+            public int detectionCount { get; set; }
+            public string source { get; set; }
+            public string protocol { get; set; }
+            public string destination { get; set; }
+            public string sourcePort { get; set; }
+            public string port { get; set; }
+            public int frameLength { get; set; }
+        }
 
         public ruleg_detail()
         {
@@ -32,9 +45,20 @@ namespace BrownieHound
         private void AddToDatagrid()
         {
             var data = new ruleData(ruleSheet,1,1);
-            var ruleList = new List<App.ruleData>();
-            ruleList.Add(data);
-            rule_DataGrid.ItemsSource = ruleList;
+            var gridData = new DataGridItem
+            { 
+                ruleNo=data.ruleNo,
+                detectionInterval=data.detectionInterval,
+                detectionCount=data.detectionCount,
+                source=data.Source,
+                protocol=data.Protocol,
+                port=data.sourcePort,
+                destination=data.Destination,
+                frameLength=data.frameLength
+
+            };
+            MessageBox.Show(gridData.destination);
+            rule_DataGrid.Items.Add(gridData);
         }
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
@@ -52,22 +76,17 @@ namespace BrownieHound
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
+            rule_edit_Window rule_Edit_Window = new rule_edit_Window();
+            rule_Edit_Window.ShowDialog();
+
             // 1列だけ選択していた場合のみ
             if (rule_DataGrid.SelectedItems.Count == 1)
             {
                 var selectedItem = rule_DataGrid.SelectedItem;
                 if (selectedItem is ruleData ruleData)
                 {
-                    MessageBox.Show(ruleData.Source);
-                    rule_edit_Window rule_Edit_Window = new rule_edit_Window();
-                    if (rule_Edit_Window.ShowDialog() == true)
-                    {
-                        // OKボタンがクリックされた場合の処理
-                    }
-                    else
-                    {
-                        // キャンセルされた場合の処理
-                    }
+                    
+
                 }
                 else
                 {
@@ -76,6 +95,7 @@ namespace BrownieHound
             }
             else
             {
+                
                 // 1列以外が選択されている場合の処理
             }
 
@@ -84,15 +104,7 @@ namespace BrownieHound
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            rule_add_Window rule_Add_Window = new rule_add_Window();
-            if (rule_Add_Window.ShowDialog() == true)
-            {
-
-            }
-            else
-            {
-
-            }
+            showPopup();
         }
 
         private void redoButton_Click(object sender, RoutedEventArgs e)
@@ -105,22 +117,30 @@ namespace BrownieHound
 
         }
 
-        public class IntervalConverter : IValueConverter
+        private void showPopup(ruleData data)
         {
-            public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            rule_edit_Window rule_Edit_Window = new rule_edit_Window();
+            if (rule_Edit_Window.ShowDialog() == true)
             {
-                if (value is int interval && parameter is int count)
-                {
-                    return $"{interval}秒間に{count}回";
-                }
-                return null;
+                // OKボタンがクリックされた場合の処理
             }
-
-            public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            else
             {
-                throw new NotImplementedException();
+                // キャンセルされた場合の処理
             }
         }
 
+        private void showPopup()
+        {
+            rule_add_Window ruleAddWin= new rule_add_Window();
+            if(ruleAddWin.ShowDialog() == true)
+            {
+                // OKボタンがクリックされた場合の処理
+            }
+            else
+            {
+                // キャンセルされた場合の処理
+            }
+        }
     }
 }

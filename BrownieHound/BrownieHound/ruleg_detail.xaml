@@ -19,10 +19,10 @@
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn x:Name="ableToDelete" Header="" IsReadOnly="False" MinWidth="20"/>
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
-                <DataGridTextColumn Header="送信元IP" Binding="{Binding Source}" IsReadOnly="True" MinWidth="50" />
-                <DataGridTextColumn Header="送信先IP" Binding="{Binding Destination}" IsReadOnly="True" MinWidth="50"/>
-                <DataGridTextColumn Header="プロトコル" Binding="{Binding Protocol}" IsReadOnly="True" MinWidth="20"/>
-                <DataGridTextColumn Header="ポート番号" Binding="{Binding sourcePort}" IsReadOnly="True" MinWidth="20"/>
+                <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50" />
+                <DataGridTextColumn Header="送信先IP" Binding="{Binding destination}" IsReadOnly="True" MinWidth="50"/>
+                <DataGridTextColumn Header="プロトコル" Binding="{Binding protocol}" IsReadOnly="True" MinWidth="20"/>
+                <DataGridTextColumn Header="ポート番号" Binding="{Binding port}" IsReadOnly="True" MinWidth="20"/>
                 <DataGridTextColumn Header="検知時間(s)" Binding="{Binding detectionInterval}" IsReadOnly="True" MinWidth="25"/>
                 <DataGridTextColumn Header="検知回数" Binding="{Binding detectionCount}" IsReadOnly="True" MinWidth="20"/>
                 <DataGridTextColumn Header="サイズ" Binding="{Binding frameLength}" IsReadOnly="True" MinWidth="60"/>
