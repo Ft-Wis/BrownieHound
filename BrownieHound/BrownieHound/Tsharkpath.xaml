@@ -7,12 +7,6 @@
         mc:Ignorable="d"
         Title="Tsharkpath" Height="220" Width="600">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="78*"/>
-            <ColumnDefinition Width="24*"/>
-            <ColumnDefinition Width="325*"/>
-            <ColumnDefinition Width="373*"/>
-        </Grid.ColumnDefinitions>
         <Button x:Name="Tshark_path_submit" Content="確定" HorizontalAlignment="Right" Height="43" Margin="0,0,43,30" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="Tshark_path_submit_Click" IsDefault="True" Grid.Column="3"/>
         <Button x:Name="Tshark_path_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="29,0,0,30" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" IsCancel="True" Grid.ColumnSpan="3" Click="Tshark_path_redo_Click"/>
         <Label Content="Tsharkのパスを入力してください" HorizontalAlignment="Left" Height="41" Margin="10,10,0,0" VerticalAlignment="Top" Width="295" FontSize="24" Grid.ColumnSpan="4"/>
