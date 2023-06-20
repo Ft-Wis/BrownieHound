@@ -22,6 +22,7 @@ namespace BrownieHound
         public top()
         {
             InitializeComponent();
+
         }
         Process processTsinterface = null;
         private void Page_loaded(object sender, RoutedEventArgs e)
