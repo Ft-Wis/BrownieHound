@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -134,12 +135,20 @@ namespace BrownieHound
             Window dwindow = new detectWindow();
             dwindow.Show();
         }
-        
+
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
             closing();
             
         }
+        bool stopflag = false;
+        private void stop_Click(object sende, RoutedEventArgs e) 
+        {
+            processTscap.Kill();
+            stopflag = true;
+
+        }
+       
         private void tsStart(string Command, string args)
         {
             processTscap = new Process();
@@ -306,8 +315,17 @@ namespace BrownieHound
             }
             catch
             {
-                CData.Add(new packetData(msg));
+                
+                //CData.Add(new packetData(msg));
                 //errなどはそのまま出力する
+                if (stopflag==true)
+                {
+                    stopstatus.Content = "中断中";
+                }
+                else
+                {
+                    CData.Add(new packetData(msg));
+                }
             }
             bool isRowSelected = CaputureData.SelectedItems.Count > 0;
             CaputureData.ItemsSource = CData;

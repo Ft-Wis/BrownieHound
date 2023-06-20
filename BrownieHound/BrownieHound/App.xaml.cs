@@ -13,6 +13,21 @@ namespace BrownieHound
     /// </summary>
     public partial class App : Application
     {
+        public class mailData
+        {
+            public bool enabled { get; set; }
+            public int sendSpan { get; set; }
+            public string mailAddress { get; set; }
+            public bool authorized{get;set;} = false;
+            public mailData(bool enabled,int sendSpan,string mailAddress,bool authorized)
+            { 
+                this.enabled = enabled;
+                this.sendSpan = sendSpan;
+                this.mailAddress = mailAddress;
+                this.authorized = authorized;
+            }
+        }
+
         public class ruleData
         {
             public int ruleGroupNo { get; set; }
@@ -44,6 +59,27 @@ namespace BrownieHound
                 this.ruleGroupNo = ruleGroupNo;
                 this.ruleNo = ruleNo;
                 ruleSplit(ruleSeet);
+            }
+        }
+
+        public class ruleGroupData
+        {
+            public bool isCheck { get; set; } = false;
+            public int No { get; set; }
+            public String Name { get; set; }
+            public int ruleItems { get; set; } = 0;
+            public List<ruleData> ruleDatas { get; set; } = new List<ruleData>();
+
+            public ruleGroupData(int no, String name)
+            {
+                this.No = no;
+                this.Name = name;
+            }
+
+            public void ruleSet(string ruleLine)
+            {
+                ruleDatas.Add(new ruleData(ruleLine, this.No, this.ruleItems++));
+
             }
         }
     }

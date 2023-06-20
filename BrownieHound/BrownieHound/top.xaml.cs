@@ -23,6 +23,7 @@ namespace BrownieHound
         public top()
         {
             InitializeComponent();
+
         }
         Process processTsinterface = null;
         string path = @"conf";
