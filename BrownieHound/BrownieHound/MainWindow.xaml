@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
-        Title="BrownieHound" Height="450" Width="800">
+        Title="BrownieHound"
+        MinWidth="800"
+        MinHeight="400"
+        Height="450" Width="800">
     <Grid>
-        <Frame Name="frame" NavigationUIVisibility="Hidden"/>
+        <Frame Name="frame" NavigationUIVisibility="Hidden" MinWidth="800"/>
 
     </Grid>
 </Window>
