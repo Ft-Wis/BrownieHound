@@ -30,7 +30,7 @@ namespace BrownieHound
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-
+           
         }
     }
 }
