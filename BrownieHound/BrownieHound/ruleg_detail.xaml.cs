@@ -76,8 +76,19 @@ namespace BrownieHound
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            rule_edit_Window rule_Edit_Window = new rule_edit_Window();
-            rule_Edit_Window.ShowDialog();
+            DataGridItem data = new DataGridItem {
+                ruleNo = 1,
+                source = "209.152.76.123",
+                destination = "172.0.0.1",
+                protocol = "TCP",
+                sourcePort = "80",
+                port = "8080",
+                frameLength = 300000,
+                detectionInterval = 1,
+                detectionCount  = 5
+            };
+
+            showPopup(data);
 
             // 1列だけ選択していた場合のみ
             if (rule_DataGrid.SelectedItems.Count == 1)
@@ -117,9 +128,10 @@ namespace BrownieHound
 
         }
 
-        private void showPopup(ruleData data)
+        private void showPopup(DataGridItem sendData)
         {
-            rule_edit_Window rule_Edit_Window = new rule_edit_Window();
+            rule_edit_Window rule_Edit_Window = new rule_edit_Window(sendData);
+            
             if (rule_Edit_Window.ShowDialog() == true)
             {
                 // OKボタンがクリックされた場合の処理
