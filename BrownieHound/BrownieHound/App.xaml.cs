@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace BrownieHound
 {
@@ -82,5 +87,39 @@ namespace BrownieHound
 
             }
         }
+
+        public static List<ruleGroupData> Read(string path)
+        {
+            List<ruleGroupData> data = new List<ruleGroupData>();
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
+            IEnumerable<System.IO.FileInfo> ruleFiles = di.EnumerateFiles("*.txt", System.IO.SearchOption.TopDirectoryOnly).OrderBy(f => f.CreationTime).ToList();
+            foreach (var ruleFile in ruleFiles.Select((Value, Index) => new { Value, Index }))
+            {
+                string ruleGroupName = ruleFile.Value.Name.Remove(ruleFile.Value.Name.Length - 4);
+                ruleGroupData ruleGroup = new ruleGroupData(ruleFile.Index, ruleGroupName);
+                string filePath = $"{path}\\{ruleFile.Value.Name}";
+                try
+                {
+                    using (StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding("UTF-8")))
+                    {
+                        while (sr.Peek() != -1)
+                        {
+                            ruleGroup.ruleSet(sr.ReadLine());
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+                data.Add(ruleGroup);
+            }
+            return data;
+        }
+        
     }
 }
