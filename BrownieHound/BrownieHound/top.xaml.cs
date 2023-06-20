@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,20 +25,36 @@ namespace BrownieHound
             InitializeComponent();
         }
         Process processTsinterface = null;
-        private void Page_loaded(object sender, RoutedEventArgs e)
+        string path = @"conf";
+        private void tsharkconnect()
         {
+            string command = "";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
 
-                string Command = "C:\\Program Files\\ireshark\\tshark.exe";
-                string args = "-D";
-                processTsinterface = new Process();
-                ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
-                processSinfo.CreateNoWindow = true;
-                processSinfo.UseShellExecute = false;
-                processSinfo.RedirectStandardOutput = true;
-                processSinfo.RedirectStandardError = true;
+            }
+            if (!File.Exists(@$"{path}\path.conf"))
+            {
+                using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
+                {
+                    sw.WriteLine(@"C:\Program Files\Wireshark\tshark.exe");
+                }
+            }
+            using (StreamReader sr = new StreamReader(@$"{path}\path.conf", Encoding.GetEncoding("UTF-8")))
+            {
+                command=sr.ReadLine();
+            }
+            string args = "-D";
+            processTsinterface = new Process();
+            ProcessStartInfo processSinfo = new ProcessStartInfo(command, args);
+            processSinfo.CreateNoWindow = true;
+            processSinfo.UseShellExecute = false;
+            processSinfo.RedirectStandardOutput = true;
+            processSinfo.RedirectStandardError = true;
 
-                processSinfo.StandardErrorEncoding = Encoding.UTF8;
-                processSinfo.StandardOutputEncoding = Encoding.UTF8;
+            processSinfo.StandardErrorEncoding = Encoding.UTF8;
+            processSinfo.StandardOutputEncoding = Encoding.UTF8;
             try
             {
                 processTsinterface = Process.Start(processSinfo);
@@ -48,11 +65,26 @@ namespace BrownieHound
             }
             catch
             {
-                interfaceList.Items.Add("error");
+                Tsharkpath tsharkPathInput = new Tsharkpath();
+                if(tsharkPathInput.ShowDialog()==true)
+                {
+                    using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
+                    {
+                        sw.WriteLine(tsharkPathInput.tsharkPath);
+                    }
+                    tsharkconnect();
+                }
+                else
+                {
+                    interfaceList.Items.Add("パスが通っていません");
+                }
             }
+        }
+        private void Page_loaded(object sender, RoutedEventArgs e)
+        {
 
-
-            }
+            tsharkconnect();
+        }
 
         private void errReceived(object sender, DataReceivedEventArgs e)
         {
