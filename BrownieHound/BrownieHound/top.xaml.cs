@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,13 +26,29 @@ namespace BrownieHound
 
         }
         Process processTsinterface = null;
-        private void Page_loaded(object sender, RoutedEventArgs e)
+        string path = @"conf";
+        private void tsharkconnect()
         {
-            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
+            string command = "";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
 
+            }
+            if (!File.Exists(@$"{path}\path.conf"))
+            {
+                using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
+                {
+                    sw.WriteLine(@"C:\Program Files\Wireshark\tshark.exe");
+                }
+            }
+            using (StreamReader sr = new StreamReader(@$"{path}\path.conf", Encoding.GetEncoding("UTF-8")))
+            {
+                command=sr.ReadLine();
+            }
             string args = "-D";
             processTsinterface = new Process();
-            ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
+            ProcessStartInfo processSinfo = new ProcessStartInfo(command, args);
             processSinfo.CreateNoWindow = true;
             processSinfo.UseShellExecute = false;
             processSinfo.RedirectStandardOutput = true;
@@ -39,15 +56,35 @@ namespace BrownieHound
 
             processSinfo.StandardErrorEncoding = Encoding.UTF8;
             processSinfo.StandardOutputEncoding = Encoding.UTF8;
+            try
+            {
+                processTsinterface = Process.Start(processSinfo);
+                processTsinterface.OutputDataReceived += dataReceived;
+                processTsinterface.ErrorDataReceived += errReceived;
+                processTsinterface.BeginErrorReadLine();
+                processTsinterface.BeginOutputReadLine();
+            }
+            catch
+            {
+                Tsharkpath tsharkPathInput = new Tsharkpath();
+                if(tsharkPathInput.ShowDialog()==true)
+                {
+                    using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
+                    {
+                        sw.WriteLine(tsharkPathInput.tsharkPath);
+                    }
+                    tsharkconnect();
+                }
+                else
+                {
+                    interfaceList.Items.Add("パスが通っていません");
+                }
+            }
+        }
+        private void Page_loaded(object sender, RoutedEventArgs e)
+        {
 
-            processTsinterface = Process.Start(processSinfo);
-
-            processTsinterface.OutputDataReceived += dataReceived;
-            processTsinterface.ErrorDataReceived += errReceived;
-
-            processTsinterface.BeginErrorReadLine();
-            processTsinterface.BeginOutputReadLine();
-            
+            tsharkconnect();
         }
 
         private void errReceived(object sender, DataReceivedEventArgs e)
