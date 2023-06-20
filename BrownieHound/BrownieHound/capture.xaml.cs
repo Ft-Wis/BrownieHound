@@ -53,6 +53,7 @@ namespace BrownieHound
             public packetData(String err)
             {
                 Info = err;
+                
             }
             public packetData(JObject layersObject)
             {
@@ -121,6 +122,7 @@ namespace BrownieHound
         List<List<List<int>>> detectionNumber = new List<List<List<int>>>();
         //検出したキャプチャデータのナンバーをルールに対応付けて格納
         //これを基に検知画面に表示したい
+        Window dwindow;
 
 
         public capture(string tsINumber)
@@ -129,11 +131,15 @@ namespace BrownieHound
             CaputureData.ItemsSource = CData;
             CData = new ObservableCollection<packetData> { };
             this.tsInterfaceNumber = tsINumber;
+
+            Window dwindow = new detectWindow();
+            dwindow.Show();
         }
 
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
             closing();
+            
         }
         bool stopflag = false;
         private void stop_Click(object sende, RoutedEventArgs e) 
@@ -181,7 +187,7 @@ namespace BrownieHound
             }
 
             tsStart(Command, args);
-            ruleData rule = new ruleData("0,0,60,1,8.8.8.8,,,,,0");
+            ruleData rule = new ruleData("60,1,8.8.8.8,,,,,0",0,0);
             //固定値のルールセットを渡す
 
             clockTimer = new DispatcherTimer();
