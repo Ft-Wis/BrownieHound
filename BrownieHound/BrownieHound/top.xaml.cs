@@ -29,7 +29,7 @@ namespace BrownieHound
         string path = @"conf";
         private void tsharkconnect()
         {
-            string command = "";
+            string tsDirectory = "";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -39,16 +39,16 @@ namespace BrownieHound
             {
                 using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
                 {
-                    sw.WriteLine(@"C:\Program Files\Wireshark\tshark.exe");
+                    sw.WriteLine(@"C:\Program Files\Wireshark");
                 }
             }
             using (StreamReader sr = new StreamReader(@$"{path}\path.conf", Encoding.GetEncoding("UTF-8")))
             {
-                command=sr.ReadLine();
+                tsDirectory=sr.ReadLine();
             }
             string args = "-D";
             processTsinterface = new Process();
-            ProcessStartInfo processSinfo = new ProcessStartInfo(command, args);
+            ProcessStartInfo processSinfo = new ProcessStartInfo(@$"{tsDirectory}\tshark.exe", args);
             processSinfo.CreateNoWindow = true;
             processSinfo.UseShellExecute = false;
             processSinfo.RedirectStandardOutput = true;
@@ -78,12 +78,14 @@ namespace BrownieHound
                 else
                 {
                     interfaceList.Items.Add("パスが通っていません");
+                    processTsinterface = null;
+                    topTos_r.IsEnabled = false;
                 }
             }
         }
         private void Page_loaded(object sender, RoutedEventArgs e)
         {
-
+            interfaceList.Items.Clear();
             tsharkconnect();
         }
 
@@ -148,7 +150,7 @@ namespace BrownieHound
         private void listBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var listBoxItem = sender as ListBoxItem;
-            if (listBoxItem != null)
+            if (listBoxItem != null && processTsinterface != null)
             {
                 sendTos_r(listBoxItem.Content.ToString());
             }
