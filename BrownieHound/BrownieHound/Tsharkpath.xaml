@@ -5,12 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
-        Title="Tsharkpath" Height="220" Width="600">
+        Title="Tsharkpath" Height="240" Width="600"
+        MinWidth="490" MinHeight="240"
+        MaxHeight="300" ResizeMode="CanMinimize">
     <Grid>
-        <Button x:Name="Tshark_path_submit" Content="確定" HorizontalAlignment="Right" Height="43" Margin="0,0,43,30" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="Tshark_path_submit_Click" IsDefault="True" Grid.Column="3"/>
-        <Button x:Name="Tshark_path_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="29,0,0,30" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" IsCancel="True" Grid.ColumnSpan="3" Click="Tshark_path_redo_Click"/>
-        <Label Content="Tsharkのパスを入力してください" HorizontalAlignment="Left" Height="41" Margin="10,10,0,0" VerticalAlignment="Top" Width="295" FontSize="24" Grid.ColumnSpan="4"/>
-        <TextBox x:Name="TsharkpathText" Height="36" Margin="14,63,14,0" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="300" FontSize="30" Grid.ColumnSpan="4"/>
-
+        <Button x:Name="Tshark_path_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" IsCancel="True" Grid.ColumnSpan="3" Click="Tshark_path_redo_Click"/>
+        <TextBox x:Name="TsharkpathText" Height="46" Margin="14,0,14,80" TextWrapping="Wrap" VerticalAlignment="Bottom" MinWidth="300" FontSize="30"/>
+        <Button x:Name="Tshark_path_submit" Content="確定" HorizontalAlignment="Right" Height="43" Margin="0,0,20,10" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="Tshark_path_submit_Click" IsDefault="True" Grid.Column="3"/>
+        <Label Content="エラー：tsharkのパスが通りません" Foreground="IndianRed" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="365" FontSize="20"/>
+        <Label Content="tsharkをインストールするか、正しいパスを入力してください。" Foreground="IndianRed" HorizontalAlignment="Left" Height="32" Margin="10,45,0,0" VerticalAlignment="Top" Width="477" FontSize="20"/>
     </Grid>
 </Window>
