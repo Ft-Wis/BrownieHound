@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static BrownieHound.ruleg_detail;
 using System.Text.RegularExpressions;
+using System.Drawing.Imaging;
 
 namespace BrownieHound
 {
@@ -21,6 +22,7 @@ namespace BrownieHound
     public partial class rule_edit_Window : Window
     {
         private DataGridItem ruleItem;
+        private DataGridItem sendData;
 
         //ipアドレスの正規表現
         private static readonly string ipAddressPattern =@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$";
@@ -95,8 +97,84 @@ namespace BrownieHound
             }
 
             //プロトコルに値を代入
+            switch (ruleItem.protocol) 
+            {
+                case "allProtocol":
+                    protocolComboBox.SelectedIndex = 0;
+                    switch (ruleItem.sourcePort)
+                    {
+                        case "allPort":
+                            protocolComboBox.SelectedIndex = 0;
+                            break;
+                        case "80":
+                            protocolComboBox.SelectedIndex= 1;
+                            break;
+                        case "443":
+                            protocolComboBox.SelectedIndex = 2;
+                            break;
+                        case "162":
+                            protocolComboBox.SelectedIndex = 3;
+                            break;
+                        case "53":
+                            protocolComboBox.SelectedIndex= 4; 
+                            break;
+                        default:
+                            protocolComboBox.SelectedIndex = 5;
+                            protocolTextBox.Text = ruleItem.sourcePort;
+                            break;
+                    }
+
+            break;
+                case "TCP":
+                    protocolComboBox.SelectedIndex = 1;
+                    switch (ruleItem.sourcePort)
+                    {
+                        case "allPort":
+                            portnumberComboBox.SelectedIndex = 0;
+                            break;
+                        case "80":
+
+                            portnumberComboBox.SelectedIndex = 1;
+                            break;
+                        case "443":
+                            portnumberComboBox.SelectedIndex= 2;
+                            break;
+                        default:
+                            portnumberComboBox.SelectedIndex = 3;
+                            protocolTextBox.Text= ruleItem.sourcePort;
+                            break;
+                    }
+                    break;
+                case "UDP":
+                    protocolComboBox.SelectedIndex = 2;
+                    switch (ruleItem.sourcePort)
+                    {
+                        case "allPort":
+                            protocolComboBox.SelectedIndex = 0;
+                            break;
+                        case "162":
+                            protocolComboBox.SelectedIndex = 1;
+                            break;
+                        case "53":
+                            protocolComboBox.SelectedIndex = 2;
+                            break;
+                        default:
+                            protocolComboBox.SelectedIndex = 3;
+                            protocolTextBox.Text = ruleItem.sourcePort;
+                            break;
+                    }
+                    break;
+                default:
+                    //「手動で設定」のときの処理
+                    protocolComboBox.SelectedIndex = 3;
+                    protocolTextBox.IsEnabled = true;
+                    protocolTextBox.Text = ruleItem.protocol;
+                    break;
+            }
+
 
             //ポート番号に値を代入
+          
 
             //サイズに値を代入
             sizeTextBox.Text = ruleItem.frameLength.ToString();
@@ -113,6 +191,77 @@ namespace BrownieHound
             return regex.IsMatch(ip);
         }
 
+        private void setSendData()
+        {
+            string sourceIP;
+            string destinationIP;
+            string protocolName;
+            string portNum;
+
+            if (sourceComboBox.SelectedIndex.ToString() == "2")
+            {
+                sourceIP=sourceTextBox.Text;
+            }
+            else
+            {
+                if(sourceComboBox.SelectedIndex.ToString() == "1")
+                {
+                    sourceIP = "myAddress";
+                }
+                else
+                {
+                    sourceIP = "allIP";
+                }
+            }
+
+            if(destinationComboBox.SelectedIndex.ToString() == "2") 
+            {
+                destinationIP = destinationTextBox.Text;
+            }
+            else
+            {
+                if(destinationComboBox.SelectedIndex.ToString() == "1")
+                {
+                    destinationIP = "myAddress";
+                }
+                else
+                {
+                    destinationIP = "allIP";
+                }
+            }
+
+            if(protocolComboBox.SelectedIndex.ToString() == "0") 
+            {
+                protocolName = "allProtocol";
+            }
+            else
+            {
+                protocolName = protocolTextBox.Text;
+            }
+
+            if(portnumberComboBox.SelectedIndex.ToString() == "0") 
+            {
+                portNum = "allPortnumber";
+            }
+            else
+            {
+                portNum = portnumberTextBox.Text;
+            }
+
+            //sendDataに格納
+            sendData = new DataGridItem {
+                ruleNo = ruleItem.ruleNo,
+                source = sourceIP,
+                destination = destinationIP,
+                protocol = protocolName,
+                sourcePort = portNum,
+                frameLength =int.Parse(sizeTextBox.Text),
+
+
+            };
+
+        }
+
         private void sourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
@@ -124,7 +273,6 @@ namespace BrownieHound
             //「手動で設定」を選択したときにIPアドレスを入力できるようにする。
             if (sourceComboBox.SelectedIndex.ToString() == "2")
             {
-                MessageBox.Show(sourceComboBox.Text);
                 sourceTextBox.IsEnabled = true;
             }
         }
@@ -132,15 +280,15 @@ namespace BrownieHound
         private void distinationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (distinationComboBox.Text == "手動で設定")
+            if (destinationComboBox.Text == "手動で設定")
             {
-                distinationTextBox.IsEnabled = true;
+                destinationTextBox.IsEnabled = true;
             }
 
             //「手動で設定」を選択したときにIPアドレスを入力できるようにする。
-            if (distinationComboBox.SelectedIndex.ToString() == "2")
+            if (destinationComboBox.SelectedIndex.ToString() == "2")
             {
-                distinationTextBox.IsEnabled = false;
+                destinationTextBox.IsEnabled = false;
             }
         }
 
@@ -240,6 +388,11 @@ namespace BrownieHound
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
            
+        }
+
+        private void protocolComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

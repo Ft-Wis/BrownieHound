@@ -17,7 +17,7 @@
 
         <DataGrid x:Name="rule_DataGrid" HorizontalAlignment="Center" Height="254" VerticalAlignment="Center" Width="742"  AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn x:Name="ableToDelete" Header="" IsReadOnly="False" MinWidth="20"/>
+                <DataGridCheckBoxColumn x:Name="ableToDelete" Binding="{Binding isCheck}" Header="" IsReadOnly="False" MinWidth="20"/>
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
                 <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50" />
                 <DataGridTextColumn Header="送信先IP" Binding="{Binding destination}" IsReadOnly="True" MinWidth="50"/>

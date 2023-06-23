@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -26,6 +27,7 @@ namespace BrownieHound
 
         public struct DataGridItem
         {
+            public bool isCheck { get; set; }
             public int ruleNo { get; set; }
             public int detectionInterval { get; set; }
             public int detectionCount { get; set; }
@@ -37,6 +39,8 @@ namespace BrownieHound
             public int frameLength { get; set; }
         }
 
+        ObservableCollection<DataGridItem> gridItem;
+
         public ruleg_detail()
         {
             InitializeComponent();
@@ -45,8 +49,10 @@ namespace BrownieHound
         private void AddToDatagrid()
         {
             var data = new ruleData(ruleSheet,1,1);
+            gridItem = new ObservableCollection<DataGridItem>();
             var gridData = new DataGridItem
             { 
+                isCheck = false,
                 ruleNo=data.ruleNo,
                 detectionInterval=data.detectionInterval,
                 detectionCount=data.detectionCount,
@@ -57,8 +63,8 @@ namespace BrownieHound
                 frameLength=data.frameLength
 
             };
-            MessageBox.Show(gridData.destination);
-            rule_DataGrid.Items.Add(gridData);
+            gridItem.Add(gridData);
+            rule_DataGrid.ItemsSource = gridItem;
         }
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
