@@ -48,7 +48,6 @@ namespace BrownieHound
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             setSendData();
-            MessageBox.Show(sendData.frameLength.ToString());
             this.DialogResult = true;
         }
 
