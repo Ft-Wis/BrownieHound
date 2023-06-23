@@ -183,54 +183,6 @@ namespace BrownieHound
                         break;
                 }
             }
-
-
-        
-
-
-            //ComboBox comboBox = (ComboBox)sender;
-            //string selectedValue = comboBox.SelectedItem as string;
-
-            //MessageBox.Show(((ComboBoxItem)comboBox.SelectedItem).Content.ToString());
-            //MessageBox.Show(selectedValue);
-
-            //switch (selectedValue)
-            //{
-            //    case "すべて":
-
-            //        break;
-            //    case "HTTP(80)":
-            //        portnumberTextBox.Text= "80";
-            //        break;
-            //    case "HTTPS(443)":
-            //        portnumberTextBox.Text = "443";
-            //        break;
-            //    case "SNMP(162)":
-            //        portnumberTextBox.Text = "162";
-            //        break;
-            //    case "DNS(53)":
-            //        portnumberTextBox.Text = "53";
-            //        break;
-            //    case "手動で設定":
-            //        portnumberTextBox.IsEnabled = true ;
-            //        break;
-            //    default:
-            //        break;
-            //}
-
-
-            //if (selectedValue != "手動で設定" && portnumberTextBox.IsEnabled)
-            //{
-            //    portnumberTextBox.IsEnabled = false;
-            //}
-            //if (portnumberComboBox.SelectedIndex == portnumberComboBox.Items.Count-1)
-            //{
-            //    portnumberTextBox.IsEnabled= true;
-            //}
-            //else
-            //{
-
-            //}
         }
 
 
