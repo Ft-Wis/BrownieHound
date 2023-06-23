@@ -222,7 +222,6 @@ namespace BrownieHound
 
 
             tsStart(tsDirectory, args);
-            //固定値のルールセットを渡す
 
             clockTimer = new DispatcherTimer();
             clockTimer.Interval = new TimeSpan(0, 0, 1);
