@@ -13,10 +13,4 @@
     <PackageReference Include="ReactiveProperty.WPF" Version="8.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="subWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
 </Project>

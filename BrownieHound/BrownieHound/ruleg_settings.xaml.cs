@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -26,8 +27,8 @@ namespace BrownieHound
         public ruleg_settings()
         {
             InitializeComponent();
+
         }
-        
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             ruleg_add_Window addWindow = new ruleg_add_Window();
@@ -46,7 +47,7 @@ namespace BrownieHound
                     }
                     using (File.Create($"{path}\\{newGroupName}.txt")) { }
                     MessageBox.Show($"以下のルールグループを追加しました。\n{newGroupName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
-                    ruleGroupRead();
+                    Show_Group(Read(path));
                 }
                 else
                 {
@@ -76,43 +77,18 @@ namespace BrownieHound
         string path = @"ruleGroup";
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ruleGroupRead();
+
+            Show_Group(Read(path));
 
         }
-        private void ruleGroupRead()
+        private void Show_Group(List<ruleGroupData> datas)
         {
             Data = new ObservableCollection<ruleGroupData>();
-
-            if (!Directory.Exists(path))
+            foreach (ruleGroupData data in datas)
             {
-                Directory.CreateDirectory(path);
+                Data.Add(data); 
             }
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
-            IEnumerable<System.IO.FileInfo> ruleFiles = di.EnumerateFiles("*.txt", System.IO.SearchOption.TopDirectoryOnly).OrderBy(f => f.CreationTime).ToList();
-            foreach (var ruleFile in ruleFiles.Select((Value, Index) => new { Value, Index }))
-            {
-                string ruleGroupName = ruleFile.Value.Name.Remove(ruleFile.Value.Name.Length - 4);
-                ruleGroupData ruleGroup = new ruleGroupData(ruleFile.Index, ruleGroupName);
-                string filePath = $"{path}\\{ruleFile.Value.Name}";
-                try
-                {
-                    using (StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding("UTF-8")))
-                    {
-                        while (sr.Peek() != -1)
-                        {
-                            ruleGroup.ruleSet(sr.ReadLine());
-                        }
-                    }
-                }
-                catch
-                {
-
-                }
-
-                Data.Add(ruleGroup);
-                ruleGroupList.DataContext = Data;
-
-            }
+            ruleGroupList.DataContext = Data;
         }
 
         private void ListViewItem_DoubleClikck(object sender, MouseButtonEventArgs e)
@@ -146,7 +122,7 @@ namespace BrownieHound
                         file.Delete();
                         
                     }
-                    ruleGroupRead();
+                    Show_Group(Read(path));
                 }
             }
             else
