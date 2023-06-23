@@ -301,11 +301,11 @@ namespace BrownieHound
             {
                 detectionNumbers[detectionNumber].Add(new List<int>());
                 //2次要素を格納　ルールグループの中のルールの数
-                dtStart(rule,detectionNumber);
+                detectionSet(rule,detectionNumber);
             }
         }
 
-        private void dtStart(ruleData rule,int detectionNumber)
+        private void detectionSet(ruleData rule,int detectionNumber)
         {
             DispatcherTimer detectTimer = new DispatcherTimer();
             detectTimer.Interval = new TimeSpan(0, 0, 1);
