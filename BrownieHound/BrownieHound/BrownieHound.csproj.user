@@ -33,9 +33,6 @@
     <Page Update="rule_edit_Window.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="subWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="detectWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
