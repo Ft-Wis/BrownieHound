@@ -22,6 +22,8 @@
                 <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
+        <Button x:Name="stop" Content="中断" Height="43" Margin="201,0,0,22" VerticalAlignment="Bottom" Click="stop_Click"  FontFamily="Yu Gothic" Background="Gray" FontSize="25" Foreground="White" FontWeight="Medium" BorderBrush="Gray" Width="146" HorizontalAlignment="Left" />
+        <Label x:Name="stopstatus" Content="検知中" Height="44" Margin="0,0,67,22"  Width="82" FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
     </Grid>
 </Page>
