@@ -33,7 +33,7 @@
             <TextBox x:Name="protocolTextBox" HorizontalAlignment="Left" Height="24" Margin="57,157,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="プロトコル名" IsEnabled="False" VerticalAlignment="Top"  Width="75" Grid.ColumnSpan="4" Grid.Column="2"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="19,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Grid.Column="1"><Run Language="ja-jp" Text="送信元IPアドレス"/></TextBlock>
-            <ComboBox x:Name="sourceComboBox"  HorizontalAlignment="Left" Margin="136,77,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.ColumnSpan="2" Grid.Column="1">
+            <ComboBox x:Name="sourceComboBox"  HorizontalAlignment="Left" Margin="136,77,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.ColumnSpan="2" Grid.Column="1" SelectionChanged="sourceComboBox_SelectionChanged">
                 <ComboBox.Resources>
                     <Style TargetType="{x:Type materialDesign:SmartHint}">
                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -44,8 +44,8 @@
                 <ComboBoxItem Content="手動で設定" />
             </ComboBox>
             <TextBox x:Name="sourceTextBox"  HorizontalAlignment="Left" Margin="3,75,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="3"/>
-            <TextBlock x:Name="destinationTextBlock" HorizontalAlignment="Left" Margin="19,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Grid.Column="1"><Run Language="ja-jp" Text="送信元IPアドレス"/></TextBlock>
-            <ComboBox x:Name="destinationComboBox"  HorizontalAlignment="Left" Margin="136,109,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.ColumnSpan="2" Grid.Column="1">
+            <TextBlock x:Name="destinationTextBlock" HorizontalAlignment="Left" Margin="19,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Grid.Column="1"><Run Language="ja-jp" Text="送信先IPアドレス"/></TextBlock>
+            <ComboBox x:Name="destinationComboBox"  HorizontalAlignment="Left" Margin="136,109,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.ColumnSpan="2" Grid.Column="1" SelectionChanged="destinationComboBox_SelectionChanged">
                 <ComboBox.Resources>
                     <Style TargetType="{x:Type materialDesign:SmartHint}">
                         <Setter Property="HorizontalAlignment" Value="Center"/>

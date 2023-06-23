@@ -22,7 +22,7 @@ namespace BrownieHound
     public partial class rule_edit_Window : Window
     {
         private DataGridItem ruleItem;
-        private DataGridItem sendData;
+        public DataGridItem sendData;
 
         //ipアドレスの正規表現
         private static readonly string ipAddressPattern =@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$";
@@ -47,7 +47,9 @@ namespace BrownieHound
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
+            setSendData();
+            MessageBox.Show(sendData.frameLength.ToString());
+            this.DialogResult = true;
         }
 
         private void setItem()
@@ -256,37 +258,32 @@ namespace BrownieHound
                 protocol = protocolName,
                 sourcePort = portNum,
                 frameLength =int.Parse(sizeTextBox.Text),
-
-
+                detectionInterval = int.Parse(secondsTextBox.Text),
+                detectionCount = int.Parse(timesTextBox.Text)
             };
-
         }
 
         private void sourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (sourceComboBox.Text == "手動で設定")
-            {
-                sourceTextBox.IsEnabled = false;
-            }
-
-            //「手動で設定」を選択したときにIPアドレスを入力できるようにする。
-            if (sourceComboBox.SelectedIndex.ToString() == "2")
+            if (sourceComboBox.SelectedIndex == 2)
             {
                 sourceTextBox.IsEnabled = true;
             }
+            else
+            {
+                sourceTextBox.IsEnabled = false;
+            }
         }
 
-        private void distinationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void destinationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (destinationComboBox.Text == "手動で設定")
+            if (destinationComboBox.SelectedIndex == 2)
             {
                 destinationTextBox.IsEnabled = true;
             }
-
-            //「手動で設定」を選択したときにIPアドレスを入力できるようにする。
-            if (destinationComboBox.SelectedIndex.ToString() == "2")
+            else
             {
                 destinationTextBox.IsEnabled = false;
             }
@@ -349,9 +346,6 @@ namespace BrownieHound
         private void portnumberComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selectedValue = portnumberComboBox.SelectedItem as string;
-
-            MessageBox.Show(selectedValue);
-
             if (selectedValue != null)
             {
                 switch (selectedValue)
@@ -388,11 +382,6 @@ namespace BrownieHound
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
            
-        }
-
-        private void protocolComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

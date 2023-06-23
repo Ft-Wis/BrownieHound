@@ -141,6 +141,8 @@ namespace BrownieHound
             if (rule_Edit_Window.ShowDialog() == true)
             {
                 // OKボタンがクリックされた場合の処理
+                DataGridItem receivedData = rule_Edit_Window.sendData;
+                MessageBox.Show(receivedData.destination);
             }
             else
             {
