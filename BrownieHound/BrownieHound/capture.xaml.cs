@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -26,6 +27,8 @@ using System.Xml.Linq;
 using System.Xml;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using static BrownieHound.App;
+using System.IO;
 
 namespace BrownieHound
 {
@@ -34,45 +37,16 @@ namespace BrownieHound
     /// </summary>
     public partial class capture : Page
     {
-        public class detectRule
-        {
-            public int ruleGroupNo { get; set; }
-            public int ruleNo { get; set; }
-            public int interval { get; set; }
-            public int count { get; set; }
-            public string Source { get; set; }
-            public string Destination { get; set; }
-            public string Protocol { get; set;}
-            public int Length { get; set;}
-
-            private void ruleSplit(string ruleSeet)
-            {
-                string[] data = ruleSeet.Split(',');
-                int i = 0;
-                ruleGroupNo = Int32.Parse(data[i++]);
-                ruleNo = Int32.Parse(data[i++]);
-                interval = Int32.Parse(data[i++]);
-                count = Int32.Parse(data[i++]);
-                Source = data[i++];
-                Destination = data[i++];
-                Protocol = data[i++];
-                Length = Int32.Parse(data[i]);
-            }
-            public detectRule(string ruleSeet) 
-            {
-                ruleSplit(ruleSeet);
-            }
-        }
         public class packetData
         {
             public int Number { get; set; }
-            public DateTime time { get; set; }
+            public DateTime Time { get; set; }
             public string Source { get; set; }
             public string Destination { get; set; }
-            public string SourcePort { get; set; }
-            public string DestinationPort { get; set; }
+            public string sourcePort { get; set; }
+            public string destinationPort { get; set; }
             public string Protocol { get; set; }
-            public int Length { get; set; }
+            public int frameLength { get; set; }
             public string Info { get; set; }
             public string Data { get; set; }
             List<string> protocols = new List<string>();
@@ -80,6 +54,7 @@ namespace BrownieHound
             public packetData(String err)
             {
                 Info = err;
+                
             }
             public packetData(JObject layersObject)
             {
@@ -96,8 +71,8 @@ namespace BrownieHound
                 caputureTime = caputureTime.Substring(0, 27);
                 //精度が高すぎるので落とす
 
-                time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
-                time = time.AddHours(9);
+                Time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+                Time = Time.AddHours(9);
 
 
                 string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
@@ -114,9 +89,9 @@ namespace BrownieHound
                 }
                 if (protocols.Contains("tcp") || protocols.Contains("udp"))
                 {
-                    SourcePort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_srcport"];
-                    DestinationPort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_dstport"];
-                    Info += $"{SourcePort} → {DestinationPort}";
+                    sourcePort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_srcport"];
+                    destinationPort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_dstport"];
+                    Info += $"{sourcePort} → {destinationPort}";
                 }
 
                 if (protocols.Last().Equals("data"))
@@ -128,7 +103,7 @@ namespace BrownieHound
                     Protocol = protocols.Last();
                 }
 
-                Length = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
+                frameLength = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
                 Info += $" {protocols.Last()}";
                 //Debug.WriteLine($"{Number} : {time.TimeOfDay} : {Source} : {Destination} : {Protocol} : {Length} :: {Info}");
 
@@ -139,33 +114,63 @@ namespace BrownieHound
         Process processTscap = null;
         string tsInterfaceNumber = "";
         private ObservableCollection<packetData> CData;
-        DispatcherTimer detectTimer;
+        List<DispatcherTimer> detectTimerList = new List<DispatcherTimer>();
         DispatcherTimer clockTimer;
         int clock = 0;
         //１秒単位の経過時間
         List<int> countRows = new List<int>();
         //秒数毎のCDataのカウント
-        List<List<List<int>>> detectionNumber = new List<List<List<int>>>();
+        List<List<List<int>>> detectionNumbers = new List<List<List<int>>>();
         //検出したキャプチャデータのナンバーをルールに対応付けて格納
         //これを基に検知画面に表示したい
+        Window dWindow;
+        string path = @"conf";
+        List<string> ruleGroupNames = new List<string>();
+        List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
 
 
         public capture(string tsINumber)
         {
             InitializeComponent();
             CaputureData.ItemsSource = CData;
-            CData = new ObservableCollection<packetData> { };
+            CData = new ObservableCollection<packetData>();
             this.tsInterfaceNumber = tsINumber;
+
+            dWindow = new detectWindow();
+            dWindow.Show();
         }
-        
+        public capture(string tsINumber,List<ruleGroupData> detectionRuleGroups)
+        {
+            InitializeComponent();
+            CaputureData.ItemsSource = CData;
+            CData = new ObservableCollection<packetData>();
+            this.tsInterfaceNumber = tsINumber;
+            this.detectionRuleGroups = detectionRuleGroups;
+            dWindow = new detectWindow();
+            dWindow.Show();
+        }
+
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
             closing();
+            
         }
-        private void tsStart(string Command, string args)
+        bool stopflag = false;
+        private void stop_Click(object sende, RoutedEventArgs e) 
+        {
+            processTscap.Kill();
+            stopflag = true;
+            foreach (var detectTimer in detectTimerList)
+            {
+                detectTimer.Stop();
+            }
+
+        }
+       
+        private void tsStart(string tsDirectory, string args)
         {
             processTscap = new Process();
-            ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
+            ProcessStartInfo processSinfo = new ProcessStartInfo($@"{tsDirectory}\tshark.exe", args);
             processSinfo.CreateNoWindow = true;
             processSinfo.UseShellExecute = false;
             processSinfo.RedirectStandardOutput = true;
@@ -185,29 +190,47 @@ namespace BrownieHound
 
         private void Page_loaded(object sender, RoutedEventArgs e)
         {
-            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
+
+            string tsDirectory = "";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+
+            }
+            if (!File.Exists(@$"{path}\path.conf"))
+            {
+                using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
+                {
+                    sw.WriteLine(@"C:\Program Files\Wireshark");
+                }
+            }
+            using (StreamReader sr = new StreamReader(@$"{path}\path.conf", Encoding.GetEncoding("UTF-8")))
+            {
+                tsDirectory = sr.ReadLine();
+            }
 
             string args = $"-i {tsInterfaceNumber} -T ek";
 
             countRows.Add(0);
-            for(int i = 0;i < 10; i++)
+            foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new {Value,Index }))
             {
-                detectionNumber.Add(new List<List<int>>());
-            }
-            for(int i = 0;i < 10; i++)
-            {
-                detectionNumber[i].Add(new List<int>());
+                ruleGroupNames.Add(detectionRuleGroup.Value.Name);
+                detectionNumbers.Add(new List<List<int>>());
+                //一番上位の要素を格納　ルールグループの数
+                ruleGroupDataSplit(detectionRuleGroup.Value, detectionRuleGroup.Index);
             }
 
-            tsStart(Command, args);
-            detectRule rule = new detectRule("0,0,60,1,8.8.8.8,,,0");
-            //固定値のルールセットを渡す
+
+            tsStart(tsDirectory, args);
 
             clockTimer = new DispatcherTimer();
             clockTimer.Interval = new TimeSpan(0, 0, 1);
             clockTimer.Tick += new EventHandler(recordTime);
             clockTimer.Start();
-            dtStart(rule);
+            for(int i = 0;i<detectTimerList.Count;i++)
+            {
+                detectTimerList[i].Start();
+            }
 
         }
 
@@ -221,7 +244,7 @@ namespace BrownieHound
             clock++;
             countRows.Add(countNumber);
         }
-        private void detectLogic(int start,int end,detectRule rule)
+        private void detectLogic(int start,int end,ruleData rule,int detectionNumber)
         {
             List<int> targets = new List<int>();
             for (int i = start; i <= end; i++)
@@ -239,50 +262,73 @@ namespace BrownieHound
                 {
                     flg++;
                 }
-                if (CData[i].Length > rule.Length)
+                if(rule.sourcePort == "" || rule.sourcePort.Equals(CData[i].sourcePort))
                 {
                     flg++;
                 }
-                if (flg == 4)
+                if(rule.destinationPort == "" || rule.destinationPort.Equals(CData[i].destinationPort))
+                {
+                    flg++;
+                }
+                if (CData[i].frameLength > rule.frameLength)
+                {
+                    flg++;
+                }
+                if (flg == 6)
                 {
                     targets.Add(i);
                 }
             }
-            if (targets.Count >= rule.count)
+            if (targets.Count >= rule.detectionCount)
             {
                 for (int i = 0; i < targets.Count; i++)
                 {
-                    if (!detectionNumber[rule.ruleGroupNo][rule.ruleNo].Contains(targets[i]))
+                    if (!detectionNumbers[detectionNumber][rule.ruleNo].Contains(targets[i]))
                     {
-                        detectionNumber[rule.ruleGroupNo][rule.ruleNo].Add(targets[i]);
+                        detectionNumbers[detectionNumber][rule.ruleNo].Add(targets[i]);
+
+                        //以下テスト用
+                        Debug.WriteLine(ruleGroupNames[detectionNumber] +"::" + rule.ruleNo);
+                        //Debug.WriteLine(detectionRuleGroups[detectionNumber].ruleDatas[rule.ruleNo].Source +"::" + detectionRuleGroups[detectionNumber].ruleDatas[rule.ruleNo].Protocol);
+                        Debug.WriteLine(CData[targets[i]].Source + "::" + CData[targets[i]].Protocol);
                     }
                 }
             }
         }
-        private void dtStart(detectRule rule)
+        private void ruleGroupDataSplit(ruleGroupData ruleGroup,int detectionNumber)
         {
-            detectTimer = new DispatcherTimer();
+            foreach(ruleData rule in ruleGroup.ruleDatas)
+            {
+                detectionNumbers[detectionNumber].Add(new List<int>());
+                //2次要素を格納　ルールグループの中のルールの数
+                detectionSet(rule,detectionNumber);
+            }
+        }
+
+        private void detectionSet(ruleData rule,int detectionNumber)
+        {
+            DispatcherTimer detectTimer = new DispatcherTimer();
             detectTimer.Interval = new TimeSpan(0, 0, 1);
             detectTimer.Tick += new EventHandler(detection);
-            detectTimer.Start();
+            detectTimerList.Add(detectTimer);
             void detection(object sender, EventArgs e)
             {
-                if (clock >= rule.interval)
+                if (clock >= rule.detectionInterval)
                 {
-                    int start = countRows[clock - rule.interval];
+                    int start = countRows[clock - rule.detectionInterval];
                     int end = countRows[clock] - 1;
                     //想定としてインターバルは秒指定
                     if (countRows[clock] == countRows[clock - 1])
                     {
                         end++;
                     }
-                    if (clock > rule.interval && start == countRows[clock - rule.interval - 1] && start < end)
+                    if (clock > rule.detectionInterval && start == countRows[clock - rule.detectionInterval - 1] && start < end)
                     {
                         //検知する範囲内で出現したパケットのみを対象とする処理
                         //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
                         start++;
                     }
-                    detectLogic(start, end, rule);
+                    detectLogic(start, end, rule,detectionNumber);
 
                 }
             }
@@ -320,8 +366,17 @@ namespace BrownieHound
             }
             catch
             {
-                CData.Add(new packetData(msg));
+                
+                //CData.Add(new packetData(msg));
                 //errなどはそのまま出力する
+                if (stopflag==true)
+                {
+                    stopstatus.Content = "中断中";
+                }
+                else
+                {
+                    CData.Add(new packetData(msg));
+                }
             }
             bool isRowSelected = CaputureData.SelectedItems.Count > 0;
             CaputureData.ItemsSource = CData;
@@ -370,7 +425,10 @@ namespace BrownieHound
                 processTscap.Kill();
             }
             clockTimer.Stop();
-            detectTimer.Stop();
+            foreach(var detectTimer in detectTimerList)
+            {
+                detectTimer.Stop();
+            }
             Application.Current.Shutdown();
 
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,15 +23,32 @@ namespace BrownieHound
         public top()
         {
             InitializeComponent();
+
         }
         Process processTsinterface = null;
-        private void Page_loaded(object sender, RoutedEventArgs e)
+        string path = @"conf";
+        private void tsharkconnect()
         {
-            string Command = "C:\\Program Files\\Wireshark\\tshark.exe";
+            string tsDirectory = "";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
 
+            }
+            if (!File.Exists(@$"{path}\path.conf"))
+            {
+                using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
+                {
+                    sw.WriteLine(@"C:\Program Files\Wireshark");
+                }
+            }
+            using (StreamReader sr = new StreamReader(@$"{path}\path.conf", Encoding.GetEncoding("UTF-8")))
+            {
+                tsDirectory=sr.ReadLine();
+            }
             string args = "-D";
             processTsinterface = new Process();
-            ProcessStartInfo processSinfo = new ProcessStartInfo(Command, args);
+            ProcessStartInfo processSinfo = new ProcessStartInfo(@$"{tsDirectory}\tshark.exe", args);
             processSinfo.CreateNoWindow = true;
             processSinfo.UseShellExecute = false;
             processSinfo.RedirectStandardOutput = true;
@@ -38,15 +56,37 @@ namespace BrownieHound
 
             processSinfo.StandardErrorEncoding = Encoding.UTF8;
             processSinfo.StandardOutputEncoding = Encoding.UTF8;
-
-            processTsinterface = Process.Start(processSinfo);
-
-            processTsinterface.OutputDataReceived += dataReceived;
-            processTsinterface.ErrorDataReceived += errReceived;
-
-            processTsinterface.BeginErrorReadLine();
-            processTsinterface.BeginOutputReadLine();
-            
+            try
+            {
+                processTsinterface = Process.Start(processSinfo);
+                processTsinterface.OutputDataReceived += dataReceived;
+                processTsinterface.ErrorDataReceived += errReceived;
+                processTsinterface.BeginErrorReadLine();
+                processTsinterface.BeginOutputReadLine();
+            }
+            catch
+            {
+                Tsharkpath tsharkPathInput = new Tsharkpath();
+                if(tsharkPathInput.ShowDialog()==true)
+                {
+                    using (StreamWriter sw = new StreamWriter(@$"{path}\path.conf", false, Encoding.GetEncoding("UTF-8")))
+                    {
+                        sw.WriteLine(tsharkPathInput.tsharkPath);
+                    }
+                    tsharkconnect();
+                }
+                else
+                {
+                    interfaceList.Items.Add("パスが通っていません");
+                    processTsinterface = null;
+                    topTos_r.IsEnabled = false;
+                }
+            }
+        }
+        private void Page_loaded(object sender, RoutedEventArgs e)
+        {
+            interfaceList.Items.Clear();
+            tsharkconnect();
         }
 
         private void errReceived(object sender, DataReceivedEventArgs e)
@@ -110,7 +150,7 @@ namespace BrownieHound
         private void listBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var listBoxItem = sender as ListBoxItem;
-            if (listBoxItem != null)
+            if (listBoxItem != null && processTsinterface != null)
             {
                 sendTos_r(listBoxItem.Content.ToString());
             }

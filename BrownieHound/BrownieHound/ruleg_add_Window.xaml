@@ -1,0 +1,17 @@
+﻿<Window x:Class="BrownieHound.ruleg_add_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BrownieHound"
+        mc:Ignorable="d"
+        Title="ruleg_add_Window" Height="220" Width="600"
+        MinWidth="400" MinHeight="210">
+    <Grid>
+        <Label Content="追加するルールグループ名を入力" HorizontalAlignment="Left" Height="41" Margin="10,10,0,0" VerticalAlignment="Top" Width="406" FontSize="24"/>
+        <TextBox x:Name="ruleGroupNameText" Height="46" Margin="14,0,14,80" TextWrapping="Wrap" VerticalAlignment="Bottom" MinWidth="300" FontSize="30"/>
+        <Button x:Name="ruleg_add_submit" Content="確定" HorizontalAlignment="Right" Height="43" Margin="0,0,20,10" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="ruleg_add_submit_Click" IsDefault="True"/>
+        <Button x:Name="ruleg_add_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="ruleg_add_redo_Click" IsCancel="True"/>
+
+    </Grid>
+</Window>

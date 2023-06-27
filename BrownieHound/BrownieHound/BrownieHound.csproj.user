@@ -10,27 +10,36 @@
     <Compile Update="detectWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ruleg_add_Window.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="rule_add_Window.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="rule_edit_Window.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Tsharkpath.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="ruleg_add_Window.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="rule_add_Window.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="rule_edit_Window.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="subWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="detectWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Tsharkpath.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
