@@ -98,34 +98,32 @@ namespace BrownieHound
             }
 
             //プロトコルに値を代入
-            switch (ruleItem.protocol) 
+            switch (ruleItem.protocol)
             {
                 case "allProtocol":
                     protocolComboBox.SelectedIndex = 0;
                     switch (ruleItem.sourcePort)
                     {
                         case "allPort":
-                            protocolComboBox.SelectedIndex = 0;
                             break;
                         case "80":
-                            protocolComboBox.SelectedIndex= 1;
+                            portnumberComboBox.SelectedIndex = 1;
                             break;
                         case "443":
-                            protocolComboBox.SelectedIndex = 2;
+                            portnumberComboBox.SelectedIndex = 2;
                             break;
                         case "162":
-                            protocolComboBox.SelectedIndex = 3;
+                            portnumberComboBox.SelectedIndex = 3;
                             break;
                         case "53":
-                            protocolComboBox.SelectedIndex= 4; 
+                            portnumberComboBox.SelectedIndex = 4;
                             break;
                         default:
-                            protocolComboBox.SelectedIndex = 5;
+                            portnumberComboBox.SelectedIndex = 5;
                             protocolTextBox.Text = ruleItem.sourcePort;
                             break;
                     }
-
-            break;
+                    break;
                 case "TCP":
                     protocolComboBox.SelectedIndex = 1;
                     switch (ruleItem.sourcePort)
@@ -134,39 +132,38 @@ namespace BrownieHound
                             portnumberComboBox.SelectedIndex = 0;
                             break;
                         case "80":
-
                             portnumberComboBox.SelectedIndex = 1;
                             break;
                         case "443":
-                            portnumberComboBox.SelectedIndex= 2;
+                            portnumberComboBox.SelectedIndex = 2;
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            protocolTextBox.Text= ruleItem.sourcePort;
+                            protocolTextBox.Text = ruleItem.sourcePort;
                             break;
                     }
                     break;
                 case "UDP":
                     protocolComboBox.SelectedIndex = 2;
+                    MessageBox.Show(ruleItem.sourcePort);
                     switch (ruleItem.sourcePort)
                     {
                         case "allPort":
-                            protocolComboBox.SelectedIndex = 0;
                             break;
                         case "162":
-                            protocolComboBox.SelectedIndex = 1;
+                            portnumberComboBox.SelectedIndex = 1;
                             break;
                         case "53":
-                            protocolComboBox.SelectedIndex = 2;
+                            portnumberComboBox.SelectedIndex = 2;
                             break;
                         default:
-                            protocolComboBox.SelectedIndex = 3;
+                            portnumberComboBox.SelectedIndex = 3;
                             protocolTextBox.Text = ruleItem.sourcePort;
                             break;
                     }
                     break;
                 default:
-                    //「手動で設定」のときの処理
+                    // 「手動で設定」のときの処理
                     protocolComboBox.SelectedIndex = 3;
                     protocolTextBox.IsEnabled = true;
                     protocolTextBox.Text = ruleItem.protocol;
@@ -175,7 +172,7 @@ namespace BrownieHound
 
 
             //ポート番号に値を代入
-          
+
 
             //サイズに値を代入
             sizeTextBox.Text = ruleItem.frameLength.ToString();
@@ -291,12 +288,14 @@ namespace BrownieHound
         private void protocolComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             portnumberComboBox.IsEnabled = true;
+            
 
             portnumberComboBox.SelectedIndex = -1;
 
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
             if (protocolComboBox.SelectedIndex.ToString() == "1")
             {
+                MessageBox.Show("a");
                 protocolTextBox.Text = "TCP";
 
                 portnumberComboBox.Items.Clear();
@@ -347,6 +346,7 @@ namespace BrownieHound
             string selectedValue = portnumberComboBox.SelectedItem as string;
             if (selectedValue != null)
             {
+                portnumberTextBox.IsEnabled = false;
                 switch (selectedValue)
                 {
                     case "HTTP(80)":
