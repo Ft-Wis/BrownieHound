@@ -123,7 +123,7 @@ namespace BrownieHound
         List<List<List<int>>> detectionNumbers = new List<List<List<int>>>();
         //検出したキャプチャデータのナンバーをルールに対応付けて格納
         //これを基に検知画面に表示したい
-        Window dWindow;
+        detectWindow dWindow;
         string path = @"conf";
         List<string> ruleGroupNames = new List<string>();
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
@@ -136,8 +136,6 @@ namespace BrownieHound
             CData = new ObservableCollection<packetData>();
             this.tsInterfaceNumber = tsINumber;
 
-            dWindow = new detectWindow();
-            dWindow.Show();
         }
         public capture(string tsINumber,List<ruleGroupData> detectionRuleGroups)
         {
@@ -146,7 +144,7 @@ namespace BrownieHound
             CData = new ObservableCollection<packetData>();
             this.tsInterfaceNumber = tsINumber;
             this.detectionRuleGroups = detectionRuleGroups;
-            dWindow = new detectWindow();
+            dWindow = new detectWindow(detectionRuleGroups);
             dWindow.Show();
         }
 
@@ -286,7 +284,7 @@ namespace BrownieHound
                     if (!detectionNumbers[detectionNumber][rule.ruleNo].Contains(targets[i]))
                     {
                         detectionNumbers[detectionNumber][rule.ruleNo].Add(targets[i]);
-
+                        dWindow.show_detection(CData[targets[i]],detectionNumber,rule.ruleNo);
                         //以下テスト用
                         Debug.WriteLine(ruleGroupNames[detectionNumber] +"::" + rule.ruleNo);
                         //Debug.WriteLine(detectionRuleGroups[detectionNumber].ruleDatas[rule.ruleNo].Source +"::" + detectionRuleGroups[detectionNumber].ruleDatas[rule.ruleNo].Protocol);
