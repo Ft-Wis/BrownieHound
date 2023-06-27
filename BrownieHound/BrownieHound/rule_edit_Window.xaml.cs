@@ -196,55 +196,10 @@ namespace BrownieHound
             string protocolName;
             string portNum;
 
-            if (sourceComboBox.SelectedIndex.ToString() == "2")
-            {
-                sourceIP=sourceTextBox.Text;
-            }
-            else
-            {
-                if(sourceComboBox.SelectedIndex.ToString() == "1")
-                {
-                    sourceIP = "myAddress";
-                }
-                else
-                {
-                    sourceIP = "allIP";
-                }
-            }
-
-            if(destinationComboBox.SelectedIndex.ToString() == "2") 
-            {
-                destinationIP = destinationTextBox.Text;
-            }
-            else
-            {
-                if(destinationComboBox.SelectedIndex.ToString() == "1")
-                {
-                    destinationIP = "myAddress";
-                }
-                else
-                {
-                    destinationIP = "allIP";
-                }
-            }
-
-            if(protocolComboBox.SelectedIndex.ToString() == "0") 
-            {
-                protocolName = "allProtocol";
-            }
-            else
-            {
-                protocolName = protocolTextBox.Text;
-            }
-
-            if(portnumberComboBox.SelectedIndex.ToString() == "0") 
-            {
-                portNum = "allPortnumber";
-            }
-            else
-            {
-                portNum = portnumberTextBox.Text;
-            }
+            sourceIP = sourceTextBox.Text;
+            destinationIP = destinationTextBox.Text;
+            protocolName = protocolTextBox.Text;
+            portNum = portnumberTextBox.Text;
 
             //sendDataに格納
             sendData = new DataGridItem {
@@ -262,26 +217,54 @@ namespace BrownieHound
         private void sourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (sourceComboBox.SelectedIndex == 2)
+            var selectedIdx = sourceComboBox.SelectedIndex;
+            switch (selectedIdx)
             {
-                sourceTextBox.IsEnabled = true;
-            }
-            else
-            {
-                sourceTextBox.IsEnabled = false;
+                //「すべて」
+                case 0:
+                    sourceTextBox.IsEnabled = false;
+                    sourceTextBox.Text = "allIP";
+                    break;
+                //「このPCのアドレス」
+                case 1:
+                    sourceTextBox.IsEnabled = false;
+                    sourceTextBox.Text = "myAddress";
+                    break;
+                //「手動で設定」
+                case 2:
+                    sourceTextBox.IsEnabled = true;
+                    sourceTextBox.Focus();
+                    sourceTextBox.SelectAll();
+                    break;
+                default:
+                    break;
             }
         }
 
         private void destinationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (destinationComboBox.SelectedIndex == 2)
+            var selectedIdx = destinationComboBox.SelectedIndex;
+            switch (selectedIdx)
             {
-                destinationTextBox.IsEnabled = true;
-            }
-            else
-            {
-                destinationTextBox.IsEnabled = false;
+                //「すべて」
+                case 0:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "allIP";
+                    break;
+                //「このPCのアドレス」
+                case 1:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "myAddress";
+                    break;
+                //「手動で設定」
+                case 2:
+                    destinationTextBox.IsEnabled = true;
+                    destinationTextBox.Focus();
+                    destinationTextBox.SelectAll();
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -326,9 +309,13 @@ namespace BrownieHound
                 if (protocolComboBox.SelectedIndex.ToString().Equals("3"))
                 {
                     protocolTextBox.IsEnabled = true;
+                    protocolTextBox.Focus();
+                    protocolTextBox.SelectAll();
                 }
                 else
                 {
+                    //「すべてのプロトコル」のとき
+                    protocolTextBox.Text = "allProtocol";
                     protocolTextBox.IsEnabled = false;
                 }
 
@@ -362,11 +349,12 @@ namespace BrownieHound
                         portnumberTextBox.Text = "162";
                         break;
                     case "手動で設定":
-                        portnumberTextBox.Text = "";
                         portnumberTextBox.IsEnabled = true;
+                        portnumberTextBox.Focus();
+                        portnumberTextBox.SelectAll();
                         break;
                     default:
-                        portnumberTextBox.Text = "";
+                        portnumberTextBox.Text = "allPortnumber";
                         portnumberTextBox.IsEnabled = false;
                         break;
                 }

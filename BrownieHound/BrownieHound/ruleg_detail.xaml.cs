@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -24,8 +25,6 @@ namespace BrownieHound
     /// </summary>
     public partial class ruleg_detail : Page
     {
-        private string ruleSheet = "1,5,209.152.76.123,172.0.0.1,TCP,80,8080,300000";
-
         public struct DataGridItem
         {
             public bool isCheck { get; set; }
@@ -42,37 +41,13 @@ namespace BrownieHound
 
         ObservableCollection<DataGridItem> gridItem;
 
-        public ruleg_detail()
-        {
-            InitializeComponent();
-        }
+        private string fileName;
 
-        private void AddToDatagrid()
-        {
-            var data = new ruleData(ruleSheet,1,1);
-
-            gridItem = new ObservableCollection<DataGridItem>();
-            var gridData = new DataGridItem
-            { 
-                isCheck = false,
-                ruleNo=data.ruleNo,
-                detectionInterval=data.detectionInterval,
-                detectionCount=data.detectionCount,
-                source=data.Source,
-                protocol=data.Protocol,
-                sourcePort=data.sourcePort,
-                destination=data.Destination,
-                frameLength=data.frameLength
-
-            };
-            gridItem.Add(gridData);
-            rule_DataGrid.ItemsSource = gridItem;
-        }
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
             InitializeComponent();
-            //AddToDatagrid();
             title.Content = $"{title.Content} - {name}";
+            fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
             foreach (ruleData rd in ruledata)
             {
@@ -157,7 +132,11 @@ namespace BrownieHound
             {
                 // OKボタンがクリックされた場合の処理
                 DataGridItem receivedData = rule_Edit_Window.sendData;
-                MessageBox.Show(receivedData.destination);
+                //MessageBox.Show(receivedData.protocol+receivedData.source+receivedData.destination);
+                string filePath = "./ruleGroup"+fileName;
+                int editLineNumber = receivedData.ruleNo - 1;
+                string insertText = exchangeText(receivedData);
+
             }
             else
             {
@@ -177,6 +156,102 @@ namespace BrownieHound
             {
                 // キャンセルされた場合の処理
             }
+        }
+
+        private string exchangeText(DataGridItem originalData)
+        {
+            string exchangeText="";
+
+            exchangeText += originalData.detectionInterval + ",";
+            exchangeText += originalData.detectionCount + ",";
+            exchangeText += originalData.source + ",";
+            exchangeText += originalData.destination + ",";
+            exchangeText += originalData.protocol + ",";
+            exchangeText += originalData.sourcePort + ",";
+            exchangeText += originalData.frameLength;
+
+            return exchangeText;
+        }
+
+        static void RemoveAndInsertLine(string filePath,int lineNumber,string insertText)
+        {
+            string[]  lines=File.ReadAllLines(filePath);
+            if (lineNumber >= 1 && lineNumber <= lines.Length)
+            {
+                // 行の削除
+                lines = RemoveLine(lines, lineNumber);
+                // 行の挿入
+                lines = InsertLine(lines, lineNumber, insertText);
+                // ファイルを上書きする
+                File.WriteAllLines(filePath, lines);
+            }
+            else
+            {
+
+            }
+        }
+
+        static string[] RemoveLine(string[] lines, int lineNumber)
+        {
+            // 指定された行を削除して新しい配列を作成
+            string[] newLines = new string[lines.Length - 1];
+
+            int currentIndex = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                // 削除する行以外を新しい配列に追加
+                if (i + 1 != lineNumber)  
+                {
+                    newLines[currentIndex] = lines[i];
+                    currentIndex++;
+                }
+            }
+
+            return newLines;
+        }
+
+        static string[] PackLines(string[] lines)
+        {
+            // 行を詰めるために、削除された行以降の行を1つずつ前に詰める
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (string.IsNullOrEmpty(lines[i]))
+                {
+                    int j = i + 1;
+                    while (j < lines.Length && string.IsNullOrEmpty(lines[j]))
+                    {
+                        j++;
+                    }
+                    if (j < lines.Length)
+                    {
+                        lines[i] = lines[j];
+                        lines[j] = null;
+                    }
+                }
+            }
+
+            return lines;
+        }
+
+        static string[] InsertLine(string[] lines, int lineNumber, string insertText)
+        {
+            // 指定された行にテキストを挿入して新しい配列を作成
+            string[] newLines = new string[lines.Length + 1];
+
+            int currentIndex = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                // 挿入する行の位置にテキストを挿入
+                if (i + 1 == lineNumber)  
+                {
+                    newLines[currentIndex] = insertText;
+                    currentIndex++;
+                }
+                newLines[currentIndex] = lines[i];
+                currentIndex++;
+            }
+
+            return newLines;
         }
     }
 }

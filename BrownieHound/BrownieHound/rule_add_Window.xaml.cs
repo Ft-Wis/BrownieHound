@@ -47,9 +47,6 @@ namespace BrownieHound
         private string[] udpChoiced = { "すべて", "SNMP(162)", "DNS(53)", "手動で設定" };
         private string[] otherChoiced = { "すべて", "HTTP(80)", "HTTPS(443)", "SNMP(162)", "DNS(53)", "手動で設定" };
 
-        private int _number;
-        //public string FormattedNumber => Number.ToString("N0");
-
         public rule_add_Window()
         {
             InitializeComponent();

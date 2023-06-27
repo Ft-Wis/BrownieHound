@@ -30,7 +30,7 @@
             <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Left" Height="300" CornerRadius="10"   Margin="4,55,0,0" VerticalAlignment="Top" Width="379" Grid.ColumnSpan="6" Grid.Column="1">
 
             </Border>
-            <TextBox x:Name="protocolTextBox" HorizontalAlignment="Left" Height="24" Margin="57,157,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="プロトコル名" IsEnabled="False" VerticalAlignment="Top"  Width="75" Grid.ColumnSpan="4" Grid.Column="2"/>
+            <TextBox x:Name="protocolTextBox" HorizontalAlignment="Left" Height="24" Margin="57,157,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="プロトコル名" IsEnabled="False" VerticalAlignment="Top"  Width="88" Grid.ColumnSpan="5" Grid.Column="2"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="19,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Grid.Column="1"><Run Language="ja-jp" Text="送信元IPアドレス"/></TextBlock>
             <ComboBox x:Name="sourceComboBox"  HorizontalAlignment="Left" Margin="136,77,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.ColumnSpan="2" Grid.Column="1" SelectionChanged="sourceComboBox_SelectionChanged">
@@ -86,7 +86,7 @@
                 <ComboBoxItem Content="DNS(53)" />
                 <ComboBoxItem Content="手動で設定" />
             </ComboBox>
-            <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="58,203,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="74" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="2"/>
+            <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="58,203,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="87" IsEnabled="False" Grid.ColumnSpan="5" Grid.Column="2"/>
             <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="91,253,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116" Grid.ColumnSpan="2" Grid.Column="1"/>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="28,261,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="2" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
             <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="91,296,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75" Grid.Column="1"/>
