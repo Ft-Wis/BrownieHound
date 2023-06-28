@@ -32,7 +32,7 @@ namespace BrownieHound
             InitializeComponent();
             for(int i = 0; i < ruleGroupDatas.Count; i++)
             {
-                detectionDatas.Add(new detectionData() { data = ruleGroupDatas[i].Name,color= "#e6e6fa" });
+                detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
                     string message = $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";

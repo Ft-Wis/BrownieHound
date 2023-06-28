@@ -11,7 +11,7 @@
         <TreeView  ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding children}">
-                    <TextBlock Text="{Binding data}"/>
+                    <TextBlock Text="{Binding data}" Foreground="{Binding color}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
