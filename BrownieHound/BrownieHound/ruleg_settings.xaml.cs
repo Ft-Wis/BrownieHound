@@ -130,10 +130,5 @@ namespace BrownieHound
                 MessageBox.Show("ルールグループが選択されていません", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private void ruleGroupList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }
