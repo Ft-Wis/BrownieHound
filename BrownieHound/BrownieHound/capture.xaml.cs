@@ -113,7 +113,6 @@ namespace BrownieHound
 
         Process processTscap = null;
         string tsInterfaceNumber = "";
-        private ObservableCollection<packetData> CData;
         List<DispatcherTimer> detectTimerList = new List<DispatcherTimer>();
         DispatcherTimer clockTimer;
         int clock = 0;
@@ -132,16 +131,12 @@ namespace BrownieHound
         public capture(string tsINumber)
         {
             InitializeComponent();
-            CaputureData.ItemsSource = CData;
-            CData = new ObservableCollection<packetData>();
             this.tsInterfaceNumber = tsINumber;
 
         }
         public capture(string tsINumber,List<ruleGroupData> detectionRuleGroups)
         {
             InitializeComponent();
-            CaputureData.ItemsSource = CData;
-            CData = new ObservableCollection<packetData>();
             this.tsInterfaceNumber = tsINumber;
             this.detectionRuleGroups = detectionRuleGroups;
             dWindow = new detectWindow(detectionRuleGroups);
@@ -234,7 +229,7 @@ namespace BrownieHound
 
         private void recordTime(object sender,EventArgs e)
         {
-            int countNumber = CData.Count;
+            int countNumber = CaptureData.Items.Count;
             if(countNumber > 0)
             {
                 countNumber -= 1;
@@ -247,28 +242,29 @@ namespace BrownieHound
             List<int> targets = new List<int>();
             for (int i = start; i <= end; i++)
             {
+                packetData packet = (packetData)CaptureData.Items[i];
                 int flg = 0;
-                if (rule.Source == "" || rule.Source.Equals(CData[i].Source))
+                if (rule.Source == "" || rule.Source.Equals(packet.Source))
                 {
                     flg++;
                 }
-                if (rule.Destination == "" || rule.Destination.Equals(CData[i].Destination))
+                if (rule.Destination == "" || rule.Destination.Equals(packet.Destination))
                 {
                     flg++;
                 }
-                if (rule.Protocol == "" || rule.Protocol.Equals(CData[i].Protocol))
+                if (rule.Protocol == "" || rule.Protocol.Equals(packet.Protocol))
                 {
                     flg++;
                 }
-                if(rule.sourcePort == "" || rule.sourcePort.Equals(CData[i].sourcePort))
+                if(rule.sourcePort == "" || rule.sourcePort.Equals(packet.sourcePort))
                 {
                     flg++;
                 }
-                if(rule.destinationPort == "" || rule.destinationPort.Equals(CData[i].destinationPort))
+                if(rule.destinationPort == "" || rule.destinationPort.Equals(packet.destinationPort))
                 {
                     flg++;
                 }
-                if (CData[i].frameLength > rule.frameLength)
+                if (packet.frameLength > rule.frameLength)
                 {
                     flg++;
                 }
@@ -284,11 +280,8 @@ namespace BrownieHound
                     if (!detectionNumbers[detectionNumber][rule.ruleNo].Contains(targets[i]))
                     {
                         detectionNumbers[detectionNumber][rule.ruleNo].Add(targets[i]);
-                        dWindow.show_detection(CData[targets[i]],detectionNumber,rule.ruleNo);
+                        dWindow.show_detection((packetData)CaptureData.Items[targets[i]],detectionNumber,rule.ruleNo);
                         //以下テスト用
-                        Debug.WriteLine(ruleGroupNames[detectionNumber] +"::" + rule.ruleNo);
-                        //Debug.WriteLine(detectionRuleGroups[detectionNumber].ruleDatas[rule.ruleNo].Source +"::" + detectionRuleGroups[detectionNumber].ruleDatas[rule.ruleNo].Protocol);
-                        Debug.WriteLine(CData[targets[i]].Source + "::" + CData[targets[i]].Protocol);
                     }
                 }
             }
@@ -359,13 +352,12 @@ namespace BrownieHound
                 if (packetObject["layers"] != null)
                 {
                     packetData pd = new packetData((JObject)packetObject["layers"]);
-                    CData.Add(pd);
+                    CaptureData.Items.Add(pd);
                 }
             }
             catch
             {
                 
-                //CData.Add(new packetData(msg));
                 //errなどはそのまま出力する
                 if (stopflag==true)
                 {
@@ -373,15 +365,14 @@ namespace BrownieHound
                 }
                 else
                 {
-                    CData.Add(new packetData(msg));
+                    CaptureData.Items.Add(new packetData(msg));
                 }
             }
-            bool isRowSelected = CaputureData.SelectedItems.Count > 0;
-            CaputureData.ItemsSource = CData;
+            bool isRowSelected = CaptureData.SelectedItems.Count > 0;
 
             if (!isRowSelected)
             {
-                CaputureData.ScrollIntoView(CaputureData.Items.GetItemAt(CaputureData.Items.Count - 1));
+                CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
             }
 
 
