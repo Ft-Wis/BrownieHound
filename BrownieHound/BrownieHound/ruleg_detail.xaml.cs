@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -35,7 +36,7 @@ namespace BrownieHound
             public string protocol { get; set; }
             public string destination { get; set; }
             public string sourcePort { get; set; }
-            public string port { get; set; }
+            public string destinationPort { get; set; }
             public int frameLength { get; set; }
         }
 
@@ -49,6 +50,7 @@ namespace BrownieHound
         private void AddToDatagrid()
         {
             var data = new ruleData(ruleSheet,1,1);
+
             gridItem = new ObservableCollection<DataGridItem>();
             var gridData = new DataGridItem
             { 
@@ -58,7 +60,7 @@ namespace BrownieHound
                 detectionCount=data.detectionCount,
                 source=data.Source,
                 protocol=data.Protocol,
-                port=data.sourcePort,
+                sourcePort=data.sourcePort,
                 destination=data.Destination,
                 frameLength=data.frameLength
 
@@ -69,53 +71,65 @@ namespace BrownieHound
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
             InitializeComponent();
-            AddToDatagrid();
+            //AddToDatagrid();
             title.Content = $"{title.Content} - {name}";
+            gridItem = new ObservableCollection<DataGridItem>();
             foreach (ruleData rd in ruledata)
             {
-                Debug.WriteLine($"{rd}");
+                var gridData = new DataGridItem
+                {
+                    isCheck = false,
+                    ruleNo = rd.ruleNo,
+                    detectionInterval = rd.detectionInterval,
+                    detectionCount = rd.detectionCount,
+                    source = rd.Source,
+                    protocol = rd.Protocol,
+                    sourcePort = rd.sourcePort,
+                    destination = rd.Destination,
+                    frameLength = rd.frameLength
+                };
+                gridItem.Add(gridData);
             }
-            
+
+            rule_DataGrid.ItemsSource = gridItem;
+
         }
 
 
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            DataGridItem data = new DataGridItem {
-                ruleNo = 1,
-                source = "209.152.76.123",
-                destination = "172.0.0.1",
-                protocol = "TCP",
-                sourcePort = "80",
-                port = "8080",
-                frameLength = 300000,
-                detectionInterval = 1,
-                detectionCount  = 5
-            };
-
-            showPopup(data);
-
-            // 1列だけ選択していた場合のみ
-            if (rule_DataGrid.SelectedItems.Count == 1)
+            var selectedItems = rule_DataGrid.SelectedItems;
+            if (selectedItems.Count==1)
             {
-                var selectedItem = rule_DataGrid.SelectedItem;
-                if (selectedItem is ruleData ruleData)
-                {
-                    
+                var selectedGridItem = (DataGridItem)rule_DataGrid.SelectedItem;
 
-                }
-                else
+                DataGridItem data = new DataGridItem 
                 {
-                    // 選択された項目を ruleData 型にキャストできません
-                }
-            }
-            else
-            {
-                
-                // 1列以外が選択されている場合の処理
-            }
+                    ruleNo = selectedGridItem.ruleNo,
+                    source = selectedGridItem.source,
+                    destination = selectedGridItem.destination,
+                    protocol = selectedGridItem.protocol,
+                    sourcePort = selectedGridItem.sourcePort,
+                    destinationPort=selectedGridItem.destinationPort,
+                    frameLength=selectedGridItem.frameLength,
+                    detectionInterval=selectedGridItem.detectionInterval,
+                    detectionCount = selectedGridItem.detectionCount
+                };
 
+                //{
+                //    ruleNo = 1,
+                //    source = "209.152.76.123",
+                //    destination = "172.0.0.1",
+                //    protocol = "TCP",
+                //    sourcePort = "80",
+                //    port = "8080",
+                //    frameLength = 300000,
+                //    detectionInterval = 1,
+                //    detectionCount = 5
+                //};
+                showPopup(data);
+            }
 
         }
 
@@ -134,6 +148,7 @@ namespace BrownieHound
 
         }
 
+        //「編集」ボタンを押したとき
         private void showPopup(DataGridItem sendData)
         {
             rule_edit_Window rule_Edit_Window = new rule_edit_Window(sendData);
@@ -150,6 +165,7 @@ namespace BrownieHound
             }
         }
 
+        //「追加」ボタンを押したとき
         private void showPopup()
         {
             rule_add_Window ruleAddWin= new rule_add_Window();
