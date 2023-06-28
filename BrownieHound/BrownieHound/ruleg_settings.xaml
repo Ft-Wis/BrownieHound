@@ -10,10 +10,10 @@
 
     <Grid Background="White" Loaded="Page_Loaded">
         <Label x:Name="title" Content="ルールグループ設定画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="652,0,0,20" VerticalAlignment="Bottom" Width="121" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
-        <Button x:Name="detail" Content="詳細"  HorizontalAlignment="Left" Height="43" Margin="507,0,0,20" VerticalAlignment="Bottom" Width="121" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="detailButton_Click"/>
+        <Button x:Name="add" Content="追加" Height="43" Margin="0,0,55,20" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" HorizontalAlignment="Right" Width="121"/>
+        <Button x:Name="detail" Content="詳細" Height="43" Margin="0,0,200,20" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="detailButton_Click" HorizontalAlignment="Right" Width="121"/>
         <Button x:Name="delete" Content="削除" HorizontalAlignment="Left" Height="43" Margin="276,0,0,20" VerticalAlignment="Bottom" Width="116" Click="delete_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" />
-        <ListView x:Name="ruleGroupList" Height="230" VerticalAlignment="Center" ItemsSource="{Binding}" Width="697" HorizontalAlignment="Center">
+        <ListView x:Name="ruleGroupList" ItemsSource="{Binding}" Margin="40,110,40,110" SelectionChanged="ruleGroupList_SelectionChanged" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="{x:Type ListViewItem}">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_DoubleClikck"/>
@@ -33,7 +33,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    
+
                     <GridViewColumn Header="No" DisplayMemberBinding="{Binding No}" />
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
                     <GridViewColumn Header="ruleItems" DisplayMemberBinding="{Binding ruleItems}"/>
