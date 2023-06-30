@@ -97,6 +97,18 @@ namespace BrownieHound
                 }
             }
 
+            string setPort;
+            if(ruleItem.source is null)
+            {
+                destinationRadioButton.IsChecked = true;
+                setPort = ruleItem.destinationPort;
+            }
+            else
+            {
+                sourceRadioButton.IsChecked = true;
+                setPort = ruleItem.source;
+            }
+
             //プロトコルに値を代入
             switch (ruleItem.protocol)
             {
@@ -120,7 +132,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 5;
-                            protocolTextBox.Text = ruleItem.sourcePort;
+                            protocolTextBox.Text = setPort;
                             break;
                     }
                     break;
@@ -139,13 +151,12 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            protocolTextBox.Text = ruleItem.sourcePort;
+                            protocolTextBox.Text = setPort;
                             break;
                     }
                     break;
                 case "UDP":
                     protocolComboBox.SelectedIndex = 2;
-                    MessageBox.Show(ruleItem.sourcePort);
                     switch (ruleItem.sourcePort)
                     {
                         case "allPort":
@@ -158,7 +169,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            protocolTextBox.Text = ruleItem.sourcePort;
+                            protocolTextBox.Text = setPort;
                             break;
                     }
                     break;
@@ -194,12 +205,24 @@ namespace BrownieHound
             string sourceIP;
             string destinationIP;
             string protocolName;
-            string portNum;
+            string sourcePortNum;
+            string destinationPortNum;
 
             sourceIP = sourceTextBox.Text;
             destinationIP = destinationTextBox.Text;
             protocolName = protocolTextBox.Text;
-            portNum = portnumberTextBox.Text;
+            
+            //送信元ポートにチェックがされている場合
+            if ((bool)sourceRadioButton.IsChecked)
+            {
+                sourcePortNum = portnumberTextBox.Text;
+                destinationPortNum = null;
+            }
+            else
+            {
+                sourcePortNum = null;
+                destinationPortNum = portnumberTextBox.Text;
+            }
 
             //sendDataに格納
             sendData = new DataGridItem {
@@ -207,7 +230,8 @@ namespace BrownieHound
                 source = sourceIP,
                 destination = destinationIP,
                 protocol = protocolName,
-                sourcePort = portNum,
+                sourcePort = sourcePortNum,
+                destinationPort = destinationPortNum,
                 frameLength =int.Parse(sizeTextBox.Text),
                 detectionInterval = int.Parse(secondsTextBox.Text),
                 detectionCount = int.Parse(timesTextBox.Text)
@@ -278,7 +302,6 @@ namespace BrownieHound
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
             if (protocolComboBox.SelectedIndex.ToString() == "1")
             {
-                MessageBox.Show("a");
                 protocolTextBox.Text = "TCP";
 
                 portnumberComboBox.Items.Clear();

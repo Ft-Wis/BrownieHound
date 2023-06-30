@@ -42,6 +42,7 @@ namespace BrownieHound
         ObservableCollection<DataGridItem> gridItem;
 
         private string fileName;
+        private List<ruleData> ruledata;
 
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
@@ -69,8 +70,6 @@ namespace BrownieHound
             rule_DataGrid.ItemsSource = gridItem;
 
         }
-
-
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
@@ -133,9 +132,13 @@ namespace BrownieHound
                 // OKボタンがクリックされた場合の処理
                 DataGridItem receivedData = rule_Edit_Window.sendData;
                 //MessageBox.Show(receivedData.protocol+receivedData.source+receivedData.destination);
-                string filePath = "./ruleGroup"+fileName;
+                string filePath = "./ruleGroup/"+fileName+".txt";
                 int editLineNumber = receivedData.ruleNo - 1;
                 string insertText = exchangeText(receivedData);
+                //MessageBox.Show(insertText);
+
+                RemoveAndInsertLine(filePath,editLineNumber,insertText);
+                ReadFileByLine(filePath);
 
             }
             else
@@ -156,6 +159,49 @@ namespace BrownieHound
             {
                 // キャンセルされた場合の処理
             }
+        }
+
+        private void ReadFileByLine(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        Debug.WriteLine(line);
+                        
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("ファイルが存在しません。");
+            }
+        }
+
+        private void Draw()
+        {
+            gridItem = new ObservableCollection<DataGridItem>();
+            foreach (ruleData rd in ruledata)
+            {
+                var gridData = new DataGridItem
+                {
+                    isCheck = false,
+                    ruleNo = rd.ruleNo,
+                    detectionInterval = rd.detectionInterval,
+                    detectionCount = rd.detectionCount,
+                    source = rd.Source,
+                    protocol = rd.Protocol,
+                    sourcePort = rd.sourcePort,
+                    destination = rd.Destination,
+                    frameLength = rd.frameLength
+                };
+                gridItem.Add(gridData);
+            }
+
+            rule_DataGrid.ItemsSource = gridItem;
         }
 
         private string exchangeText(DataGridItem originalData)
@@ -253,5 +299,7 @@ namespace BrownieHound
 
             return newLines;
         }
+
+
     }
 }
