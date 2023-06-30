@@ -50,6 +50,7 @@ namespace BrownieHound
             title.Content = $"{title.Content} - {name}";
             fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
+            
             foreach (ruleData rd in ruledata)
             {
                 var gridData = new DataGridItem
@@ -61,14 +62,16 @@ namespace BrownieHound
                     source = rd.Source,
                     protocol = rd.Protocol,
                     sourcePort = rd.sourcePort,
+                    destinationPort = rd.destinationPort,
                     destination = rd.Destination,
                     frameLength = rd.frameLength
                 };
                 gridItem.Add(gridData);
+                
             }
 
             rule_DataGrid.ItemsSource = gridItem;
-
+            
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
@@ -135,7 +138,6 @@ namespace BrownieHound
                 string filePath = "./ruleGroup/"+fileName+".txt";
                 int editLineNumber = receivedData.ruleNo - 1;
                 string insertText = exchangeText(receivedData);
-                //MessageBox.Show(insertText);
 
                 RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 ReadFileByLine(filePath);

@@ -98,13 +98,15 @@ namespace BrownieHound
             }
 
             string setPort;
-            if(ruleItem.source is null)
+            if (ruleItem.source == null)
             {
+                
                 destinationRadioButton.IsChecked = true;
                 setPort = ruleItem.destinationPort;
             }
             else
             {
+
                 sourceRadioButton.IsChecked = true;
                 setPort = ruleItem.source;
             }
