@@ -54,7 +54,7 @@ namespace BrownieHound {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BrownieHound;component/packet_detail.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BrownieHound;V1.0.0.0;component/packet_detail.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\packet_detail.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
