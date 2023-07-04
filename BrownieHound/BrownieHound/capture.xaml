@@ -12,6 +12,11 @@
         <Label x:Name="title" Content="キャプチャ画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
         <Button x:Name="inactivate" Content="停止" Margin="28,0,0,22" Click="inactivate_Click"  FontFamily="Yu Gothic" Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="43" Width="146"/>
         <DataGrid x:Name="CaptureData" Margin="49,85,50,104" AutoGenerateColumns="False" ForceCursor="True"  ScrollViewer.ScrollChanged="chaptureDataGrid_ScrollChanged">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No" Binding="{Binding Number}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="time" Binding="{Binding Time.TimeOfDay}" IsReadOnly="True"/>
