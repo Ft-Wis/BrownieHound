@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 
 using BrownieHound;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -102,7 +103,7 @@ namespace BrownieHound {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BrownieHound;component/standby_rule.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BrownieHound;V1.0.0.0;component/standby_rule.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\standby_rule.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
@@ -169,7 +170,7 @@ namespace BrownieHound {
         }
         
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.5.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.7.0")]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
