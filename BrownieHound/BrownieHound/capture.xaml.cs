@@ -235,6 +235,11 @@ namespace BrownieHound
                 countNumber -= 1;
             }
             clock++;
+
+            if(clock == 300)
+            {
+                Debug.WriteLine(clock);
+            }
             countRows.Add(countNumber);
         }
         private void detectLogic(int start,int end,ruleData rule,int detectionNumber)
@@ -424,6 +429,16 @@ namespace BrownieHound
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
         {
             closing();
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            packetData packet = (packetData)CaptureData.SelectedItem;
+            if (packet != null)
+            {
+                packet_detail_Window packet_detail = new packet_detail_Window(packet.Data);
+                packet_detail.Show();
+            }
         }
     }
 }
