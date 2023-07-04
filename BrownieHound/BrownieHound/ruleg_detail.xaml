@@ -15,7 +15,7 @@
         <Button x:Name="redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click"/>
         <Button x:Name="inactivate" Content="削除" HorizontalAlignment="Left" Height="43" Margin="276,0,0,20" VerticalAlignment="Bottom" Width="124" Click="inactivate_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" />
 
-        <DataGrid x:Name="rule_DataGrid"  AutoGenerateColumns="False" Margin="50,98,50,98" SelectionChanged="rule_DataGrid_SelectionChanged">
+        <DataGrid x:Name="rule_DataGrid"  AutoGenerateColumns="False" Margin="50,98,50,98">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn x:Name="ableToDelete" Binding="{Binding isCheck}" Header="" IsReadOnly="False" MinWidth="20"/>
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
