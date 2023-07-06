@@ -98,17 +98,19 @@ namespace BrownieHound
             }
 
             string setPort;
-            if (ruleItem.source == null)
+
+            MessageBox.Show(ruleItem.protocol);
+            MessageBox.Show(ruleItem.sourcePort);
+            
+            if (String.IsNullOrEmpty(ruleItem.sourcePort))
             {
-                
                 destinationRadioButton.IsChecked = true;
                 setPort = ruleItem.destinationPort;
             }
             else
             {
-
                 sourceRadioButton.IsChecked = true;
-                setPort = ruleItem.source;
+                setPort = ruleItem.sourcePort;
             }
 
             //プロトコルに値を代入
