@@ -136,7 +136,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 5;
-                            protocolTextBox.Text = setPort;
+                            portnumberTextBox.Text = setPort;
                             break;
                     }
                     break;
@@ -155,7 +155,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            protocolTextBox.Text = setPort;
+                            portnumberTextBox.Text = setPort;
                             break;
                     }
                     break;
@@ -173,7 +173,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            protocolTextBox.Text = setPort;
+                            portnumberTextBox.Text = setPort;
                             break;
                     }
                     break;
