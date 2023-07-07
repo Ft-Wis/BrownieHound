@@ -29,6 +29,9 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using static BrownieHound.App;
 using System.IO;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit;
 
 namespace BrownieHound
 {
@@ -115,6 +118,7 @@ namespace BrownieHound
         string tsInterfaceNumber = "";
         List<DispatcherTimer> detectTimerList = new List<DispatcherTimer>();
         DispatcherTimer clockTimer;
+        DispatcherTimer mailTimer;
         int clock = 0;
         //１秒単位の経過時間
         List<int> countRows = new List<int>();
@@ -124,8 +128,8 @@ namespace BrownieHound
         //これを基に検知画面に表示したい
         detectWindow dWindow;
         string path = @"conf";
-        List<string> ruleGroupNames = new List<string>();
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
+        string mailAddress = null;
 
 
         public capture(string tsINumber)
@@ -156,6 +160,10 @@ namespace BrownieHound
             foreach (var detectTimer in detectTimerList)
             {
                 detectTimer.Stop();
+            }
+            if (mailTimer != null)
+            {
+                mailTimer.Stop();
             }
 
         }
@@ -197,6 +205,38 @@ namespace BrownieHound
                     sw.WriteLine(@"C:\Program Files\Wireshark");
                 }
             }
+            if (dWindow != null && File.Exists(@$"{path}\mail.conf"))
+            {
+                Mail_Validation mailValidation = new Mail_Validation();
+                using (StreamReader sr = new StreamReader(@$"{path}\mail.conf", Encoding.GetEncoding("UTF-8")))
+                {
+
+                    if (bool.TryParse(sr.ReadLine().Split(":")[1], out var isEnabled))
+                    {
+                        mailValidation.isEnabled.Value = isEnabled;
+                    }
+                    if (int.TryParse(sr.ReadLine().Split(":")[1], out var span))
+                    {
+                        mailValidation.span.Value = span.ToString();
+                    }
+                    mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
+                    string authorized = sr.ReadLine().Split(":")[1];
+                    if (mailValidation.isEnabled.Value && authorized.Equals("Authorized"))
+                    {
+                        if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
+                        {
+                            mailAddress = mailValidation.mailAddress.Value;
+                            Debug.WriteLine($"{mailValidation.mailAddress.Value}:{mailValidation.isEnabled.Value}:{mailValidation.span.Value}:{authorized}");
+                            mailTimer = new DispatcherTimer();
+                            mailTimer.Interval = new TimeSpan(0, int.Parse(mailValidation.span.Value), 0);
+                            mailTimer.Tick += new EventHandler(mailSend);
+                            mailTimer.Start();
+                            
+                        }
+
+                    }
+                }
+            }
             using (StreamReader sr = new StreamReader(@$"{path}\path.conf", Encoding.GetEncoding("UTF-8")))
             {
                 tsDirectory = sr.ReadLine();
@@ -207,7 +247,6 @@ namespace BrownieHound
             countRows.Add(0);
             foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new {Value,Index }))
             {
-                ruleGroupNames.Add(detectionRuleGroup.Value.Name);
                 detectionNumbers.Add(new List<List<int>>());
                 //一番上位の要素を格納　ルールグループの数
                 ruleGroupDataSplit(detectionRuleGroup.Value, detectionRuleGroup.Index);
@@ -225,6 +264,48 @@ namespace BrownieHound
                 detectTimerList[i].Start();
             }
 
+        }
+
+        private void mailSend(object sender, EventArgs e)
+        {
+            Debug.WriteLine("メール送信処理");
+            //Debug.Write(dWindow.detection_tree);
+            _ = SendEmailNew();
+        }
+        private async Task SendEmailNew()
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("browniehound", "browniehound2024@gmail.com"));
+            email.To.Add(new MailboxAddress(mailAddress, mailAddress));
+
+            email.Subject = "テスト送信";
+            var body = new BodyBuilder();
+            body.HtmlBody = $"<html><body><h1>userの定期メール</h1><br><br>";
+
+            for(int i = 0;i < detectionRuleGroups.Count;i++)
+            {
+                body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
+                foreach(ruleData detectionRule in detectionRuleGroups[i].ruleDatas)
+                {
+                    body.HtmlBody += $"<table><thead><tr><th>間隔(s)</th><th>頻度</th><th>Source</th><th>Destination</th><th>Protocol</th><th>sourcePort</th><th>destPort</th><th>Length</th></tr></thead>";
+                }
+                
+            }
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                
+                Text = "MailKit を使ってメールを送ってみるテストです。"
+            };
+
+            using (var smtp = new SmtpClient())
+            {
+                await smtp.ConnectAsync("smtp.gmail.com", 587, false);
+                await smtp.AuthenticateAsync("browniehound2024", "eszyyyyhrwarlsns");
+                await smtp.SendAsync(email);
+                await smtp.DisconnectAsync(true);
+            }
         }
 
         private void recordTime(object sender,EventArgs e)
@@ -422,6 +503,10 @@ namespace BrownieHound
             foreach(var detectTimer in detectTimerList)
             {
                 detectTimer.Stop();
+            }
+            if(mailTimer != null)
+            {
+                mailTimer.Stop();
             }
             Application.Current.Shutdown();
 
