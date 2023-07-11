@@ -130,6 +130,7 @@ namespace BrownieHound
         string path = @"conf";
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
         string mailAddress = null;
+        List<List<int>> streamStart = new List<List<int>>();
 
 
         public capture(string tsINumber)
@@ -247,6 +248,7 @@ namespace BrownieHound
             countRows.Add(0);
             foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new {Value,Index }))
             {
+                streamStart.Add(new List<int>());
                 detectionNumbers.Add(new List<List<int>>());
                 //一番上位の要素を格納　ルールグループの数
                 ruleGroupDataSplit(detectionRuleGroup.Value, detectionRuleGroup.Index);
@@ -275,29 +277,40 @@ namespace BrownieHound
         private async Task SendEmailNew()
         {
             var email = new MimeMessage();
-
+            int addCount = 0;
             email.From.Add(new MailboxAddress("browniehound", "browniehound2024@gmail.com"));
             email.To.Add(new MailboxAddress(mailAddress, mailAddress));
-
-            email.Subject = "テスト送信";
+            packetData pd = (packetData)CaptureData.Items[CaptureData.Items.Count - 1];
+            email.Subject = "userの定期検知メール";
             var body = new BodyBuilder();
-            body.HtmlBody = $"<html><body><h1>userの定期メール</h1><br><br>";
+            body.HtmlBody = $"<html><style>th{{padding-left: 10;padding-right: 10;}}\r\ntd{{padding :5;}}\r\nthead{{background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);}}\r\ntable{{margin-left:5%;border-collapse: collapse;border-color: brown;}}</style><body><h1>userの定期検知メール</h1><br>";
+            body.HtmlBody += $"<p><bold>総キャプチャ数：{pd.Number}</bold></p>";
 
             for(int i = 0;i < detectionRuleGroups.Count;i++)
             {
                 body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
-                foreach(ruleData detectionRule in detectionRuleGroups[i].ruleDatas)
+                for(int j = 0; j < detectionRuleGroups[i].ruleDatas.Count;j++)
                 {
-                    body.HtmlBody += $"<table><thead><tr><th>間隔(s)</th><th>頻度</th><th>Source</th><th>Destination</th><th>Protocol</th><th>sourcePort</th><th>destPort</th><th>Length</th></tr></thead>";
+                    body.HtmlBody += $"<table border='1'><thead><tr><th>No</th><th>Time</th><th>間隔(s)</th><th>頻度</th><th>Source</th><th>Destination</th><th>Protocol</th><th>sourcePort</th><th>destPort</th><th>Length</th></tr></thead>";
+                    body.HtmlBody += $"<thead><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
+                    while(streamStart[i][j] < dWindow.detectionDatas[i].children[j].children.Count)
+                    {
+                        addCount++;
+                        int k = streamStart[i][j];
+                        packetData detectionPacketData = dWindow.detectionDatas[i].children[j].children[k].packet;
+                        body.HtmlBody += $"<tbody><tr><td>{detectionPacketData.Number}</td><td>{detectionPacketData.Time.TimeOfDay}</td><td></td><td></td><td>{detectionPacketData.Source}</td><td>{detectionPacketData.Destination}</td><td>{detectionPacketData.Protocol}</td><td>{detectionPacketData.sourcePort}</td><td>{detectionPacketData.destinationPort}</td><td>{detectionPacketData.frameLength}</td></tr></tbody>";
+                        streamStart[i][j]++;
+                        Debug.WriteLine(streamStart[i][j]);
+                    }
+                    body.HtmlBody += "</table><br>";
+                    
                 }
-                
-            }
+                body.HtmlBody += $"<p><bold>検知増分：{addCount}</bold></p>";
 
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                
-                Text = "MailKit を使ってメールを送ってみるテストです。"
-            };
+            }
+            body.HtmlBody += "</body></html>";
+
+            email.Body = body.ToMessageBody();
 
             using (var smtp = new SmtpClient())
             {
@@ -376,6 +389,7 @@ namespace BrownieHound
         {
             foreach(ruleData rule in ruleGroup.ruleDatas)
             {
+                streamStart[detectionNumber].Add(0);
                 detectionNumbers[detectionNumber].Add(new List<int>());
                 //2次要素を格納　ルールグループの中のルールの数
                 detectionSet(rule,detectionNumber);
