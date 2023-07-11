@@ -48,6 +48,7 @@ namespace BrownieHound
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             setSendData();
+            MessageBox.Show(sendData.source);
             this.DialogResult = true;
         }
 
@@ -99,9 +100,6 @@ namespace BrownieHound
 
             string setPort;
 
-            MessageBox.Show(ruleItem.protocol);
-            MessageBox.Show(ruleItem.sourcePort);
-            
             if (String.IsNullOrEmpty(ruleItem.sourcePort))
             {
                 destinationRadioButton.IsChecked = true;

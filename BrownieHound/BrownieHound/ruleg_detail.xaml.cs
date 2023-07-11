@@ -93,18 +93,6 @@ namespace BrownieHound
                     detectionInterval=selectedGridItem.detectionInterval,
                     detectionCount = selectedGridItem.detectionCount
                 };
-
-                //{
-                //    ruleNo = 1,
-                //    source = "209.152.76.123",
-                //    destination = "172.0.0.1",
-                //    protocol = "TCP",
-                //    sourcePort = "80",
-                //    port = "8080",
-                //    frameLength = 300000,
-                //    detectionInterval = 1,
-                //    detectionCount = 5
-                //};
                 showPopup(data);
             }
 
@@ -120,6 +108,7 @@ namespace BrownieHound
             NavigationService.GoBack();
         }
 
+        //「削除」ボタンを押したとき
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
 
@@ -136,12 +125,13 @@ namespace BrownieHound
                 DataGridItem receivedData = rule_Edit_Window.sendData;
                 //MessageBox.Show(receivedData.protocol+receivedData.source+receivedData.destination);
                 string filePath = "./ruleGroup/"+fileName+".txt";
-                int editLineNumber = receivedData.ruleNo - 1;
+                int editLineNumber = receivedData.ruleNo;
                 string insertText = exchangeText(receivedData);
 
-                RemoveAndInsertLine(filePath,editLineNumber,insertText);
+                //RemoveAndInsertLine(filePath,editLineNumber,insertText);
+                replaceLine(filePath,editLineNumber,insertText);
                 ReadFileByLine(filePath);
-
+                reDraw();
             }
             else
             {
@@ -202,7 +192,33 @@ namespace BrownieHound
                 };
                 gridItem.Add(gridData);
             }
+            rule_DataGrid.ItemsSource = gridItem;
+        }
 
+        private void reDraw()
+        {
+            string filePath = "./ruleGroup/" + fileName + ".txt";
+            string[] lines = File.ReadAllLines(filePath);
+            rule_DataGrid.Items.Clear();
+            gridItem = new ObservableCollection<DataGridItem>();
+            for(int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
+            {
+                ruleData rd = new ruleData(lines[ruleNum]);
+                var gridData = new DataGridItem
+                {
+                    isCheck = false,
+                    ruleNo = ruleNum,
+                    detectionInterval = rd.detectionInterval,
+                    detectionCount = rd.detectionCount,
+                    source = rd.Source,
+                    protocol = rd.Protocol,
+                    sourcePort = rd.sourcePort,
+                    destinationPort = rd.destinationPort,
+                    destination = rd.Destination,
+                    frameLength = rd.frameLength
+                };
+                gridItem.Add(gridData);
+            }
             rule_DataGrid.ItemsSource = gridItem;
         }
 
@@ -216,15 +232,31 @@ namespace BrownieHound
             exchangeText += originalData.destination + ",";
             exchangeText += originalData.protocol + ",";
             exchangeText += originalData.sourcePort + ",";
+            exchangeText += originalData.destinationPort + ",";
             exchangeText += originalData.frameLength;
 
             return exchangeText;
         }
 
+        static void replaceLine(string filePath,int lineNumber,string insertText)
+        {
+            string[] lines=File.ReadAllLines(filePath);
+            if (lineNumber >= 0 && lineNumber <= lines.Length)
+            {
+                MessageBox.Show(insertText+" を書き込みます");
+                lines[lineNumber] = insertText;
+                File.WriteAllLines(filePath, lines);
+            }
+            else
+            {
+
+            }
+        }
+
         static void RemoveAndInsertLine(string filePath,int lineNumber,string insertText)
         {
             string[]  lines=File.ReadAllLines(filePath);
-            if (lineNumber >= 1 && lineNumber <= lines.Length)
+            if (lineNumber >= 0 && lineNumber <= lines.Length)
             {
                 // 行の削除
                 lines = RemoveLine(lines, lineNumber);
