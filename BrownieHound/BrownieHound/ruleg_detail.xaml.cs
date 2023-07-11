@@ -131,7 +131,7 @@ namespace BrownieHound
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 replaceLine(filePath,editLineNumber,insertText);
                 ReadFileByLine(filePath);
-                reDraw();
+                //reDraw();
             }
             else
             {
