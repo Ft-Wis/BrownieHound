@@ -65,6 +65,11 @@ namespace BrownieHound
                 this.ruleNo = ruleNo;
                 ruleSplit(ruleSeet);
             }
+
+            public ruleData(string ruleSheet)
+            {
+                ruleSplit(ruleSheet);
+            }
         }
 
         public class ruleGroupData
