@@ -277,22 +277,25 @@ namespace BrownieHound
         private async Task SendEmailNew()
         {
             var email = new MimeMessage();
-            int addCount = 0;
+            int addCount;
             email.From.Add(new MailboxAddress("browniehound", "browniehound2024@gmail.com"));
-            email.To.Add(new MailboxAddress(mailAddress, mailAddress));
+            email.To.Add(new MailboxAddress("", mailAddress));
             packetData pd = (packetData)CaptureData.Items[CaptureData.Items.Count - 1];
             email.Subject = "userの定期検知メール";
             var body = new BodyBuilder();
-            body.HtmlBody = $"<html><style>th{{padding-left: 10;padding-right: 10;}}\r\ntd{{padding :5;}}\r\nthead{{background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);}}\r\ntable{{margin-left:5%;border-collapse: collapse;border-color: brown;}}</style><body><h1>userの定期検知メール</h1><br>";
-            body.HtmlBody += $"<p><bold>総キャプチャ数：{pd.Number}</bold></p>";
+            body.HtmlBody = $"<html><body><h1>userの定期検知メール</h1><br>";
+            body.HtmlBody += $"<p><b>総キャプチャ数：{pd.Number}</b></p>";
+            
 
             for(int i = 0;i < detectionRuleGroups.Count;i++)
             {
+                
                 body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
                 for(int j = 0; j < detectionRuleGroups[i].ruleDatas.Count;j++)
                 {
-                    body.HtmlBody += $"<table border='1'><thead><tr><th>No</th><th>Time</th><th>間隔(s)</th><th>頻度</th><th>Source</th><th>Destination</th><th>Protocol</th><th>sourcePort</th><th>destPort</th><th>Length</th></tr></thead>";
-                    body.HtmlBody += $"<thead><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
+                    addCount = 0;
+                    body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: brown;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
+                    body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
                     while(streamStart[i][j] < dWindow.detectionDatas[i].children[j].children.Count)
                     {
                         addCount++;
@@ -300,12 +303,11 @@ namespace BrownieHound
                         packetData detectionPacketData = dWindow.detectionDatas[i].children[j].children[k].packet;
                         body.HtmlBody += $"<tbody><tr><td>{detectionPacketData.Number}</td><td>{detectionPacketData.Time.TimeOfDay}</td><td></td><td></td><td>{detectionPacketData.Source}</td><td>{detectionPacketData.Destination}</td><td>{detectionPacketData.Protocol}</td><td>{detectionPacketData.sourcePort}</td><td>{detectionPacketData.destinationPort}</td><td>{detectionPacketData.frameLength}</td></tr></tbody>";
                         streamStart[i][j]++;
-                        Debug.WriteLine(streamStart[i][j]);
                     }
                     body.HtmlBody += "</table><br>";
-                    
+                    body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
                 }
-                body.HtmlBody += $"<p><bold>検知増分：{addCount}</bold></p>";
+                
 
             }
             body.HtmlBody += "</body></html>";
@@ -329,11 +331,6 @@ namespace BrownieHound
                 countNumber -= 1;
             }
             clock++;
-
-            if(clock == 300)
-            {
-                Debug.WriteLine(clock);
-            }
             countRows.Add(countNumber);
         }
         private void detectLogic(int start,int end,ruleData rule,int detectionNumber)
