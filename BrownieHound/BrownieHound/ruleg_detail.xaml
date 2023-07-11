@@ -19,7 +19,7 @@
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn x:Name="ableToDelete" Binding="{Binding isCheck}" Header="" IsReadOnly="False" MinWidth="20"/>
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
-                <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50" />
+                <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="送信先IP" Binding="{Binding destination}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="プロトコル" Binding="{Binding protocol}" IsReadOnly="True" MinWidth="20"/>
                 <DataGridTextColumn Header="送信元ポート番号" Binding="{Binding sourcePort}" IsReadOnly="True" MinWidth="20"/>
