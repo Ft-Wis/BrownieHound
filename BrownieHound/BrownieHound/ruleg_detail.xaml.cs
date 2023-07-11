@@ -46,6 +46,7 @@ namespace BrownieHound
 
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
+
             InitializeComponent();
             title.Content = $"{title.Content} - {name}";
             fileName = name;
@@ -131,7 +132,7 @@ namespace BrownieHound
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 replaceLine(filePath,editLineNumber,insertText);
                 ReadFileByLine(filePath);
-                //reDraw();
+                reDraw();
             }
             else
             {
@@ -199,9 +200,8 @@ namespace BrownieHound
         {
             string filePath = "./ruleGroup/" + fileName + ".txt";
             string[] lines = File.ReadAllLines(filePath);
-            rule_DataGrid.Items.Clear();
-            gridItem = new ObservableCollection<DataGridItem>();
-            for(int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
+            gridItem.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
+            for (int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
             {
                 ruleData rd = new ruleData(lines[ruleNum]);
                 var gridData = new DataGridItem
@@ -219,7 +219,6 @@ namespace BrownieHound
                 };
                 gridItem.Add(gridData);
             }
-            rule_DataGrid.ItemsSource = gridItem;
         }
 
         private string exchangeText(DataGridItem originalData)

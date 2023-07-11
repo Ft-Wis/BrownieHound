@@ -5,10 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BrownieHound"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="887.6"
-      Title="ruleg_detail">
+      d:DesignHeight="450" d:DesignWidth="1036.4"
+      
+      Title="ruleg_detail" Cursor="">
 
-    <Grid Background="White" Margin="0,0,-127,0">
+    
+    
+    <Grid Background="White">
         <Label x:Name="title" Content="ルール詳細" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="729" FontSize="24"/>
         <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="837,0,0,22" VerticalAlignment="Bottom" Width="153" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
         <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="612,0,0,22" VerticalAlignment="Bottom" Width="156" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click"/>
