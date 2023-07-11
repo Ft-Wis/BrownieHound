@@ -112,7 +112,22 @@ namespace BrownieHound
         //「削除」ボタンを押したとき
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
+            var selectedItems = rule_DataGrid.SelectedItems;
+            if (selectedItems.Count == 1)
+            {
+                var selectedGridItem = (DataGridItem)rule_DataGrid.SelectedItem;
 
+                int selectedRuleNo= selectedGridItem.ruleNo;
+                string filePath = "./ruleGroup/" + fileName + ".txt";
+                string[] lines = File.ReadAllLines(filePath);
+                string[] result=RemoveLine(lines,selectedRuleNo);
+                foreach (string line in result)
+                {
+                    Debug.WriteLine(line);
+                }
+                File.WriteAllLines(filePath, result);
+                reDraw();
+            }
         }
 
         //「編集」ボタンを押したとき
@@ -124,7 +139,6 @@ namespace BrownieHound
             {
                 // OKボタンがクリックされた場合の処理
                 DataGridItem receivedData = rule_Edit_Window.sendData;
-                //MessageBox.Show(receivedData.protocol+receivedData.source+receivedData.destination);
                 string filePath = "./ruleGroup/"+fileName+".txt";
                 int editLineNumber = receivedData.ruleNo;
                 string insertText = exchangeText(receivedData);
@@ -143,10 +157,18 @@ namespace BrownieHound
         //「追加」ボタンを押したとき
         private void showPopup()
         {
-            rule_add_Window ruleAddWin= new rule_add_Window();
+            int newRuleNo = rule_DataGrid.Items.Count;
+            rule_add_Window ruleAddWin= new rule_add_Window(newRuleNo);
             if(ruleAddWin.ShowDialog() == true)
             {
                 // OKボタンがクリックされた場合の処理
+                DataGridItem addData = ruleAddWin.sendData;
+                string filePath = "./ruleGroup/" + fileName + ".txt";
+                string addText = exchangeText(addData);
+                string[] lines = File.ReadAllLines(filePath);
+                string[] result = addLine(lines,addText);
+                File.WriteAllLines(filePath, result);
+                reDraw();
             }
             else
             {
@@ -172,28 +194,6 @@ namespace BrownieHound
             {
                 Console.WriteLine("ファイルが存在しません。");
             }
-        }
-
-        private void Draw()
-        {
-            gridItem = new ObservableCollection<DataGridItem>();
-            foreach (ruleData rd in ruledata)
-            {
-                var gridData = new DataGridItem
-                {
-                    isCheck = false,
-                    ruleNo = rd.ruleNo,
-                    detectionInterval = rd.detectionInterval,
-                    detectionCount = rd.detectionCount,
-                    source = rd.Source,
-                    protocol = rd.Protocol,
-                    sourcePort = rd.sourcePort,
-                    destination = rd.Destination,
-                    frameLength = rd.frameLength
-                };
-                gridItem.Add(gridData);
-            }
-            rule_DataGrid.ItemsSource = gridItem;
         }
 
         private void reDraw()
@@ -252,24 +252,6 @@ namespace BrownieHound
             }
         }
 
-        static void RemoveAndInsertLine(string filePath,int lineNumber,string insertText)
-        {
-            string[]  lines=File.ReadAllLines(filePath);
-            if (lineNumber >= 0 && lineNumber <= lines.Length)
-            {
-                // 行の削除
-                lines = RemoveLine(lines, lineNumber);
-                // 行の挿入
-                lines = InsertLine(lines, lineNumber, insertText);
-                // ファイルを上書きする
-                File.WriteAllLines(filePath, lines);
-            }
-            else
-            {
-
-            }
-        }
-
         static string[] RemoveLine(string[] lines, int lineNumber)
         {
             // 指定された行を削除して新しい配列を作成
@@ -279,7 +261,7 @@ namespace BrownieHound
             for (int i = 0; i < lines.Length; i++)
             {
                 // 削除する行以外を新しい配列に追加
-                if (i + 1 != lineNumber)  
+                if (i != lineNumber)  
                 {
                     newLines[currentIndex] = lines[i];
                     currentIndex++;
@@ -289,46 +271,17 @@ namespace BrownieHound
             return newLines;
         }
 
-        static string[] PackLines(string[] lines)
-        {
-            // 行を詰めるために、削除された行以降の行を1つずつ前に詰める
-            for (int i = 0; i < lines.Length; i++)
-            {
-                if (string.IsNullOrEmpty(lines[i]))
-                {
-                    int j = i + 1;
-                    while (j < lines.Length && string.IsNullOrEmpty(lines[j]))
-                    {
-                        j++;
-                    }
-                    if (j < lines.Length)
-                    {
-                        lines[i] = lines[j];
-                        lines[j] = null;
-                    }
-                }
-            }
-
-            return lines;
-        }
-
-        static string[] InsertLine(string[] lines, int lineNumber, string insertText)
+        static string[] addLine(string[] lines, string insertText)
         {
             // 指定された行にテキストを挿入して新しい配列を作成
             string[] newLines = new string[lines.Length + 1];
+            int lastIndex=lines.Length;
 
-            int currentIndex = 0;
             for (int i = 0; i < lines.Length; i++)
             {
-                // 挿入する行の位置にテキストを挿入
-                if (i + 1 == lineNumber)  
-                {
-                    newLines[currentIndex] = insertText;
-                    currentIndex++;
-                }
-                newLines[currentIndex] = lines[i];
-                currentIndex++;
+                newLines[i] = lines[i];
             }
+            newLines[lastIndex]= insertText;
 
             return newLines;
         }

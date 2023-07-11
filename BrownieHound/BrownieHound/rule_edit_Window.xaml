@@ -60,7 +60,7 @@
             <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="3,107,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="3"/>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Grid.Column="1"><Run Language="ja-jp" Text="プロトコル"/></TextBlock>
 
-            <TextBlock HorizontalAlignment="Left" Height="16" Margin="21,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="66" Grid.Column="1"><Run Language="ja-jp" Text="ポート番号"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66" Grid.Column="1"><Run Language="ja-jp" Text="ポート番号"/></TextBlock>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,261,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="1"><Run Language="ja-jp" Text="サイズ"/></TextBlock>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="1"><Run Language="ja-jp" Text="間隔"/></TextBlock>
             <ComboBox x:Name="protocolComboBox"  HorizontalAlignment="Left" Margin="163,156,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.Column="1" SelectionChanged="protocolComboBox_SelectionChanged" Grid.ColumnSpan="3">
