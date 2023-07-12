@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {}
+    "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {
+    "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+        "projectUniqueName": "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
         "projectName": "BrownieHound",
-        "projectPath": "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
-        "packagesPath": "C:\\Users\\nkc20\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
+        "projectPath": "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+        "packagesPath": "C:\\Users\\sotsu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sotsu\\source\\repos\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\nkc20\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sotsu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -40,6 +45,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
             "MaterialDesignColors": {
               "target": "Package",
               "version": "[2.1.2, )"

@@ -22,7 +22,7 @@ namespace BrownieHound
     /// </summary>
     public partial class detectWindow : Window
     {
-        List<detectionData> detectionDatas = new List<detectionData>();
+         public List<detectionData> detectionDatas = new List<detectionData>();
         public class detectionData
         {
             public string data { get; set; }
@@ -62,12 +62,19 @@ namespace BrownieHound
         {
             e.Handled = true;
             detectionData dD = (detectionData)detection_tree.SelectedValue as detectionData;
-            if(dD.packet != null)
+            try
             {
-                packet_detail_Window packet_detail = new packet_detail_Window(dD.packet.Data);
-                packet_detail.Show();
+                if (dD.packet != null)
+                {
+                    packet_detail_Window packet_detail = new packet_detail_Window(dD.packet.Data);
+                    packet_detail.Show();
+                }
             }
-            
+            catch
+            {
+
+            }
+
         }
     }
 }
