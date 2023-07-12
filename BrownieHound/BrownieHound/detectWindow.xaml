@@ -8,7 +8,7 @@
         Title="detectWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
         <Label x:Name="title" Content="検知画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-        <TreeView  ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5">
+        <TreeView x:Name="detection_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding children}">
                     <TextBlock Text="{Binding data}" Foreground="{Binding color}" />

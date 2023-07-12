@@ -48,6 +48,7 @@ namespace BrownieHound
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             setSendData();
+            MessageBox.Show(sendData.source);
             this.DialogResult = true;
         }
 
@@ -97,6 +98,19 @@ namespace BrownieHound
                 }
             }
 
+            string setPort;
+
+            if (String.IsNullOrEmpty(ruleItem.sourcePort))
+            {
+                destinationRadioButton.IsChecked = true;
+                setPort = ruleItem.destinationPort;
+            }
+            else
+            {
+                sourceRadioButton.IsChecked = true;
+                setPort = ruleItem.sourcePort;
+            }
+
             //プロトコルに値を代入
             switch (ruleItem.protocol)
             {
@@ -120,7 +134,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 5;
-                            protocolTextBox.Text = ruleItem.sourcePort;
+                            portnumberTextBox.Text = setPort;
                             break;
                     }
                     break;
@@ -139,13 +153,12 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            protocolTextBox.Text = ruleItem.sourcePort;
+                            portnumberTextBox.Text = setPort;
                             break;
                     }
                     break;
                 case "UDP":
                     protocolComboBox.SelectedIndex = 2;
-                    MessageBox.Show(ruleItem.sourcePort);
                     switch (ruleItem.sourcePort)
                     {
                         case "allPort":
@@ -158,7 +171,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            protocolTextBox.Text = ruleItem.sourcePort;
+                            portnumberTextBox.Text = setPort;
                             break;
                     }
                     break;
@@ -194,56 +207,23 @@ namespace BrownieHound
             string sourceIP;
             string destinationIP;
             string protocolName;
-            string portNum;
+            string sourcePortNum;
+            string destinationPortNum;
 
-            if (sourceComboBox.SelectedIndex.ToString() == "2")
+            sourceIP = sourceTextBox.Text;
+            destinationIP = destinationTextBox.Text;
+            protocolName = protocolTextBox.Text;
+            
+            //送信元ポートにチェックがされている場合
+            if ((bool)sourceRadioButton.IsChecked)
             {
-                sourceIP=sourceTextBox.Text;
+                sourcePortNum = portnumberTextBox.Text;
+                destinationPortNum = null;
             }
             else
             {
-                if(sourceComboBox.SelectedIndex.ToString() == "1")
-                {
-                    sourceIP = "myAddress";
-                }
-                else
-                {
-                    sourceIP = "allIP";
-                }
-            }
-
-            if(destinationComboBox.SelectedIndex.ToString() == "2") 
-            {
-                destinationIP = destinationTextBox.Text;
-            }
-            else
-            {
-                if(destinationComboBox.SelectedIndex.ToString() == "1")
-                {
-                    destinationIP = "myAddress";
-                }
-                else
-                {
-                    destinationIP = "allIP";
-                }
-            }
-
-            if(protocolComboBox.SelectedIndex.ToString() == "0") 
-            {
-                protocolName = "allProtocol";
-            }
-            else
-            {
-                protocolName = protocolTextBox.Text;
-            }
-
-            if(portnumberComboBox.SelectedIndex.ToString() == "0") 
-            {
-                portNum = "allPortnumber";
-            }
-            else
-            {
-                portNum = portnumberTextBox.Text;
+                sourcePortNum = null;
+                destinationPortNum = portnumberTextBox.Text;
             }
 
             //sendDataに格納
@@ -252,7 +232,8 @@ namespace BrownieHound
                 source = sourceIP,
                 destination = destinationIP,
                 protocol = protocolName,
-                sourcePort = portNum,
+                sourcePort = sourcePortNum,
+                destinationPort = destinationPortNum,
                 frameLength =int.Parse(sizeTextBox.Text),
                 detectionInterval = int.Parse(secondsTextBox.Text),
                 detectionCount = int.Parse(timesTextBox.Text)
@@ -262,26 +243,54 @@ namespace BrownieHound
         private void sourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (sourceComboBox.SelectedIndex == 2)
+            var selectedIdx = sourceComboBox.SelectedIndex;
+            switch (selectedIdx)
             {
-                sourceTextBox.IsEnabled = true;
-            }
-            else
-            {
-                sourceTextBox.IsEnabled = false;
+                //「すべて」
+                case 0:
+                    sourceTextBox.IsEnabled = false;
+                    sourceTextBox.Text = "allIP";
+                    break;
+                //「このPCのアドレス」
+                case 1:
+                    sourceTextBox.IsEnabled = false;
+                    sourceTextBox.Text = "myAddress";
+                    break;
+                //「手動で設定」
+                case 2:
+                    sourceTextBox.IsEnabled = true;
+                    sourceTextBox.Focus();
+                    sourceTextBox.SelectAll();
+                    break;
+                default:
+                    break;
             }
         }
 
         private void destinationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (destinationComboBox.SelectedIndex == 2)
+            var selectedIdx = destinationComboBox.SelectedIndex;
+            switch (selectedIdx)
             {
-                destinationTextBox.IsEnabled = true;
-            }
-            else
-            {
-                destinationTextBox.IsEnabled = false;
+                //「すべて」
+                case 0:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "allIP";
+                    break;
+                //「このPCのアドレス」
+                case 1:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "myAddress";
+                    break;
+                //「手動で設定」
+                case 2:
+                    destinationTextBox.IsEnabled = true;
+                    destinationTextBox.Focus();
+                    destinationTextBox.SelectAll();
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -295,7 +304,6 @@ namespace BrownieHound
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
             if (protocolComboBox.SelectedIndex.ToString() == "1")
             {
-                MessageBox.Show("a");
                 protocolTextBox.Text = "TCP";
 
                 portnumberComboBox.Items.Clear();
@@ -326,9 +334,13 @@ namespace BrownieHound
                 if (protocolComboBox.SelectedIndex.ToString().Equals("3"))
                 {
                     protocolTextBox.IsEnabled = true;
+                    protocolTextBox.Focus();
+                    protocolTextBox.SelectAll();
                 }
                 else
                 {
+                    //「すべてのプロトコル」のとき
+                    protocolTextBox.Text = "allProtocol";
                     protocolTextBox.IsEnabled = false;
                 }
 
@@ -362,11 +374,12 @@ namespace BrownieHound
                         portnumberTextBox.Text = "162";
                         break;
                     case "手動で設定":
-                        portnumberTextBox.Text = "";
                         portnumberTextBox.IsEnabled = true;
+                        portnumberTextBox.Focus();
+                        portnumberTextBox.SelectAll();
                         break;
                     default:
-                        portnumberTextBox.Text = "";
+                        portnumberTextBox.Text = "allPortnumber";
                         portnumberTextBox.IsEnabled = false;
                         break;
                 }

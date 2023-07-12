@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static BrownieHound.ruleg_detail;
 
 namespace BrownieHound
 {
@@ -21,44 +22,26 @@ namespace BrownieHound
     /// </summary>
     /// 
 
-
-    //数値判定用のクラス(未完成)
-    //public class NumericValidationRule : ValidationRule
-    //{
-    //    public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-    //    {
-    //        if (value == null || string.IsNullOrEmpty(value.ToString()))
-    //        {
-    //            return new ValidationResult(false, "数値を入力してください。");
-    //        }
-
-    //        if (!double.TryParse(value.ToString(), out _))
-    //        {
-    //            return new ValidationResult(false, "数値を入力してください。");
-    //        }
-
-    //        return ValidationResult.ValidResult;
-    //    }
-    //}
-
     public partial class rule_add_Window : Window 
     {
         private string[] tcpChoiced = { "すべて", "HTTP(80)", "HTTPS(443)","手動で設定" };
         private string[] udpChoiced = { "すべて", "SNMP(162)", "DNS(53)", "手動で設定" };
         private string[] otherChoiced = { "すべて", "HTTP(80)", "HTTPS(443)", "SNMP(162)", "DNS(53)", "手動で設定" };
 
-        private int _number;
-        //public string FormattedNumber => Number.ToString("N0");
+        public DataGridItem sendData;
+        private int newRuleNo;
 
-        public rule_add_Window()
+        public rule_add_Window(int ruleNo)
         {
             InitializeComponent();
-
+            newRuleNo = ruleNo;
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+            setSendData();
+            MessageBox.Show(sendData.destination);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -66,34 +49,96 @@ namespace BrownieHound
 
         }
 
+        private void setSendData()
+        {
+            string sourceIP;
+            string destinationIP;
+            string protocolName;
+            string sourcePortNum;
+            string destinationPortNum;
+
+            sourceIP = sourceTextBox.Text;
+            destinationIP = destinationTextBox.Text;
+            protocolName = protocolTextBox.Text;
+
+            //送信元ポートにチェックがされている場合
+            if ((bool)sourceRadioButton.IsChecked)
+            {
+                sourcePortNum = portnumberTextBox.Text;
+                destinationPortNum = null;
+            }
+            else
+            {
+                sourcePortNum = null;
+                destinationPortNum = portnumberTextBox.Text;
+            }
+
+            //sendDataに格納
+            sendData = new DataGridItem
+            {
+                ruleNo = newRuleNo,
+                source = sourceIP,
+                destination = destinationIP,
+                protocol = protocolName,
+                sourcePort = sourcePortNum,
+                destinationPort = destinationPortNum,
+                frameLength = int.Parse(sizeTextBox.Text),
+                detectionInterval = int.Parse(secondsTextBox.Text),
+                detectionCount = int.Parse(timesTextBox.Text)
+            };
+        }
+
         private void sourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (sourceComboBox.Text == "手動で設定")
+            var selectedIdx = sourceComboBox.SelectedIndex;
+            switch (selectedIdx)
             {
-                sourceTextBox.IsEnabled = false;
-            }
-
-            //「手動で設定」を選択したときにIPアドレスを入力できるようにする。
-            if (sourceComboBox.SelectedIndex.ToString()=="2")
-            {
-                MessageBox.Show(sourceComboBox.Text);
-                sourceTextBox.IsEnabled = true;
+                //「すべて」
+                case 0:
+                    sourceTextBox.IsEnabled = false;
+                    sourceTextBox.Text = "allIP";
+                    break;
+                //「このPCのアドレス」
+                case 1:
+                    sourceTextBox.IsEnabled = false;
+                    sourceTextBox.Text = "myAddress";
+                    break;
+                //「手動で設定」
+                case 2:
+                    sourceTextBox.IsEnabled = true;
+                    sourceTextBox.Focus();
+                    sourceTextBox.SelectAll();
+                    break;
+                default:
+                    break;
             }
         }
 
-        private void distinationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void destinationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //「手動で設定」からそれ以外の選択肢に変えたとき、IPアドレスを入力できないようにする。
-            if (distinationComboBox.Text == "手動で設定")
+            var selectedIdx = destinationComboBox.SelectedIndex;
+            switch (selectedIdx)
             {
-                distinationTextBox.IsEnabled = true;
-            }
-
-            //「手動で設定」を選択したときにIPアドレスを入力できるようにする。
-            if (distinationComboBox.SelectedIndex.ToString() == "2")
-            {
-                distinationTextBox.IsEnabled = false;
+                //「すべて」
+                case 0:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "allIP";
+                    break;
+                //「このPCのアドレス」
+                case 1:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "myAddress";
+                    break;
+                //「手動で設定」
+                case 2:
+                    destinationTextBox.IsEnabled = true;
+                    destinationTextBox.Focus();
+                    destinationTextBox.SelectAll();
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -101,10 +146,11 @@ namespace BrownieHound
         {
             portnumberComboBox.IsEnabled = true;
 
+
             portnumberComboBox.SelectedIndex = -1;
 
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
-            if(protocolComboBox.SelectedIndex.ToString() == "1")
+            if (protocolComboBox.SelectedIndex.ToString() == "1")
             {
                 protocolTextBox.Text = "TCP";
 
@@ -133,18 +179,22 @@ namespace BrownieHound
                 //他の選択肢を選択したときに、ポート番号の選択肢を変更する
 
                 //手動で設定を選択したときは、テキストボックスに書き込めるようにする
-                if(protocolComboBox.SelectedIndex.ToString().Equals("3")) 
+                if (protocolComboBox.SelectedIndex.ToString().Equals("3"))
                 {
                     protocolTextBox.IsEnabled = true;
+                    protocolTextBox.Focus();
+                    protocolTextBox.SelectAll();
                 }
                 else
                 {
+                    //「すべてのプロトコル」のとき
+                    protocolTextBox.Text = "allProtocol";
                     protocolTextBox.IsEnabled = false;
                 }
 
                 portnumberComboBox.Items.Clear();
 
-                for( int i = 0 ; i<otherChoiced.Length ; i++)
+                for (int i = 0; i < otherChoiced.Length; i++)
                 {
                     portnumberComboBox.Items.Add(otherChoiced[i]);
                 }
@@ -154,11 +204,9 @@ namespace BrownieHound
         private void portnumberComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selectedValue = portnumberComboBox.SelectedItem as string;
-
-            MessageBox.Show(selectedValue);
-
             if (selectedValue != null)
             {
+                portnumberTextBox.IsEnabled = false;
                 switch (selectedValue)
                 {
                     case "HTTP(80)":
@@ -171,60 +219,19 @@ namespace BrownieHound
                         portnumberTextBox.Text = "53";
                         break;
                     case "SNMP(162)":
-                        portnumberTextBox.Text = "162"; 
+                        portnumberTextBox.Text = "162";
                         break;
                     case "手動で設定":
-                        portnumberTextBox.Text = "";
                         portnumberTextBox.IsEnabled = true;
+                        portnumberTextBox.Focus();
+                        portnumberTextBox.SelectAll();
                         break;
                     default:
-                        portnumberTextBox.Text = "";
+                        portnumberTextBox.Text = "allPortnumber";
                         portnumberTextBox.IsEnabled = false;
                         break;
                 }
             }
         }
-
-
-
-        //数値以外が入力された場合にエラーを出す(未完成)
-
-        //public int Number
-        //{
-        //    get { return _number; }
-        //    set
-        //    {
-        //        _number = value;
-        //        OnPropertyChanged(nameof(Number));
-        //    }
-
-        // }
-
-        //public string this[string columnName]
-        //{ 
-        //    get
-        //    {
-        //        string error = null;
-
-        //        switch(columnName)
-        //        {
-        //            case nameof(Number):
-        //                if (Number <= 0)
-        //                    error = "数値を入力してください";
-        //                break;
-        //        }
-
-        //        return error;
-        //    }
-        //}
-
-        //public string Error => null;
-
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //protected virtual void OnPropertyChanged(string propertyName)
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
     }
 }

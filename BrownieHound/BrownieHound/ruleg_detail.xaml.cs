@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -24,8 +25,6 @@ namespace BrownieHound
     /// </summary>
     public partial class ruleg_detail : Page
     {
-        private string ruleSheet = "1,5,209.152.76.123,172.0.0.1,TCP,80,8080,300000";
-
         public struct DataGridItem
         {
             public bool isCheck { get; set; }
@@ -42,38 +41,17 @@ namespace BrownieHound
 
         ObservableCollection<DataGridItem> gridItem;
 
-        public ruleg_detail()
-        {
-            InitializeComponent();
-        }
+        private string fileName;
+        private List<ruleData> ruledata;
 
-        private void AddToDatagrid()
-        {
-            var data = new ruleData(ruleSheet,1,1);
-
-            gridItem = new ObservableCollection<DataGridItem>();
-            var gridData = new DataGridItem
-            { 
-                isCheck = false,
-                ruleNo=data.ruleNo,
-                detectionInterval=data.detectionInterval,
-                detectionCount=data.detectionCount,
-                source=data.Source,
-                protocol=data.Protocol,
-                sourcePort=data.sourcePort,
-                destination=data.Destination,
-                frameLength=data.frameLength
-
-            };
-            gridItem.Add(gridData);
-            rule_DataGrid.ItemsSource = gridItem;
-        }
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
+
             InitializeComponent();
-            //AddToDatagrid();
             title.Content = $"{title.Content} - {name}";
+            fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
+            
             foreach (ruleData rd in ruledata)
             {
                 var gridData = new DataGridItem
@@ -85,17 +63,17 @@ namespace BrownieHound
                     source = rd.Source,
                     protocol = rd.Protocol,
                     sourcePort = rd.sourcePort,
+                    destinationPort = rd.destinationPort,
                     destination = rd.Destination,
                     frameLength = rd.frameLength
                 };
                 gridItem.Add(gridData);
+                
             }
 
             rule_DataGrid.ItemsSource = gridItem;
-
+            
         }
-
-
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
@@ -116,18 +94,6 @@ namespace BrownieHound
                     detectionInterval=selectedGridItem.detectionInterval,
                     detectionCount = selectedGridItem.detectionCount
                 };
-
-                //{
-                //    ruleNo = 1,
-                //    source = "209.152.76.123",
-                //    destination = "172.0.0.1",
-                //    protocol = "TCP",
-                //    sourcePort = "80",
-                //    port = "8080",
-                //    frameLength = 300000,
-                //    detectionInterval = 1,
-                //    detectionCount = 5
-                //};
                 showPopup(data);
             }
 
@@ -143,9 +109,25 @@ namespace BrownieHound
             NavigationService.GoBack();
         }
 
+        //「削除」ボタンを押したとき
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
+            var selectedItems = rule_DataGrid.SelectedItems;
+            if (selectedItems.Count == 1)
+            {
+                var selectedGridItem = (DataGridItem)rule_DataGrid.SelectedItem;
 
+                int selectedRuleNo= selectedGridItem.ruleNo;
+                string filePath = "./ruleGroup/" + fileName + ".txt";
+                string[] lines = File.ReadAllLines(filePath);
+                string[] result=RemoveLine(lines,selectedRuleNo);
+                foreach (string line in result)
+                {
+                    Debug.WriteLine(line);
+                }
+                File.WriteAllLines(filePath, result);
+                reDraw();
+            }
         }
 
         //「編集」ボタンを押したとき
@@ -157,7 +139,14 @@ namespace BrownieHound
             {
                 // OKボタンがクリックされた場合の処理
                 DataGridItem receivedData = rule_Edit_Window.sendData;
-                MessageBox.Show(receivedData.destination);
+                string filePath = "./ruleGroup/"+fileName+".txt";
+                int editLineNumber = receivedData.ruleNo;
+                string insertText = exchangeText(receivedData);
+
+                //RemoveAndInsertLine(filePath,editLineNumber,insertText);
+                replaceLine(filePath,editLineNumber,insertText);
+                ReadFileByLine(filePath);
+                reDraw();
             }
             else
             {
@@ -168,15 +157,135 @@ namespace BrownieHound
         //「追加」ボタンを押したとき
         private void showPopup()
         {
-            rule_add_Window ruleAddWin= new rule_add_Window();
+            int newRuleNo = rule_DataGrid.Items.Count;
+            rule_add_Window ruleAddWin= new rule_add_Window(newRuleNo);
             if(ruleAddWin.ShowDialog() == true)
             {
                 // OKボタンがクリックされた場合の処理
+                DataGridItem addData = ruleAddWin.sendData;
+                string filePath = "./ruleGroup/" + fileName + ".txt";
+                string addText = exchangeText(addData);
+                string[] lines = File.ReadAllLines(filePath);
+                string[] result = addLine(lines,addText);
+                File.WriteAllLines(filePath, result);
+                reDraw();
             }
             else
             {
                 // キャンセルされた場合の処理
             }
         }
+
+        private void ReadFileByLine(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        Debug.WriteLine(line);
+                        
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("ファイルが存在しません。");
+            }
+        }
+
+        private void reDraw()
+        {
+            string filePath = "./ruleGroup/" + fileName + ".txt";
+            string[] lines = File.ReadAllLines(filePath);
+            gridItem.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
+            for (int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
+            {
+                ruleData rd = new ruleData(lines[ruleNum]);
+                var gridData = new DataGridItem
+                {
+                    isCheck = false,
+                    ruleNo = ruleNum,
+                    detectionInterval = rd.detectionInterval,
+                    detectionCount = rd.detectionCount,
+                    source = rd.Source,
+                    protocol = rd.Protocol,
+                    sourcePort = rd.sourcePort,
+                    destinationPort = rd.destinationPort,
+                    destination = rd.Destination,
+                    frameLength = rd.frameLength
+                };
+                gridItem.Add(gridData);
+            }
+        }
+
+        private string exchangeText(DataGridItem originalData)
+        {
+            string exchangeText="";
+
+            exchangeText += originalData.detectionInterval + ",";
+            exchangeText += originalData.detectionCount + ",";
+            exchangeText += originalData.source + ",";
+            exchangeText += originalData.destination + ",";
+            exchangeText += originalData.protocol + ",";
+            exchangeText += originalData.sourcePort + ",";
+            exchangeText += originalData.destinationPort + ",";
+            exchangeText += originalData.frameLength;
+
+            return exchangeText;
+        }
+
+        static void replaceLine(string filePath,int lineNumber,string insertText)
+        {
+            string[] lines=File.ReadAllLines(filePath);
+            if (lineNumber >= 0 && lineNumber <= lines.Length)
+            {
+                MessageBox.Show(insertText+" を書き込みます");
+                lines[lineNumber] = insertText;
+                File.WriteAllLines(filePath, lines);
+            }
+            else
+            {
+
+            }
+        }
+
+        static string[] RemoveLine(string[] lines, int lineNumber)
+        {
+            // 指定された行を削除して新しい配列を作成
+            string[] newLines = new string[lines.Length - 1];
+
+            int currentIndex = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                // 削除する行以外を新しい配列に追加
+                if (i != lineNumber)  
+                {
+                    newLines[currentIndex] = lines[i];
+                    currentIndex++;
+                }
+            }
+
+            return newLines;
+        }
+
+        static string[] addLine(string[] lines, string insertText)
+        {
+            // 指定された行にテキストを挿入して新しい配列を作成
+            string[] newLines = new string[lines.Length + 1];
+            int lastIndex=lines.Length;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                newLines[i] = lines[i];
+            }
+            newLines[lastIndex]= insertText;
+
+            return newLines;
+        }
+
+
     }
 }

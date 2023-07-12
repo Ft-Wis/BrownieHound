@@ -6,31 +6,84 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "MaterialDesignColors/2.1.2": {},
+      "MaterialDesignColors/2.1.2": {
+        "runtime": {
+          "lib/netcoreapp3.1/MaterialDesignColors.dll": {
+            "assemblyVersion": "2.1.2.0",
+            "fileVersion": "2.1.2.0"
+          }
+        }
+      },
       "MaterialDesignThemes/4.8.0": {
         "dependencies": {
           "MaterialDesignColors": "2.1.2",
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/MaterialDesignThemes.Wpf.dll": {
+            "assemblyVersion": "4.8.0.0",
+            "fileVersion": "4.8.0.0"
+          }
         }
       },
-      "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {},
-      "Newtonsoft.Json/13.0.3": {},
+      "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.Xaml.Behaviors.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.39.4716"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.3.27908"
+          }
+        }
+      },
       "ReactiveProperty/8.1.2": {
         "dependencies": {
           "ReactiveProperty.Core": "8.1.2",
           "System.ComponentModel.Annotations": "5.0.0",
           "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
         }
       },
-      "ReactiveProperty.Core/8.1.2": {},
+      "ReactiveProperty.Core/8.1.2": {
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.Core.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
+        }
+      },
       "ReactiveProperty.WPF/8.1.2": {
         "dependencies": {
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39",
           "ReactiveProperty": "8.1.2",
           "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.WPF.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
         }
       },
-      "System.ComponentModel.Annotations/5.0.0": {},
+      "System.ComponentModel.Annotations/5.0.0": {
+        "runtime": {
+          "lib/netstandard2.1/System.ComponentModel.Annotations.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        }
+      },
       "System.Reactive/5.0.0": {}
     }
   },

@@ -29,6 +29,9 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using static BrownieHound.App;
 using System.IO;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit;
 
 namespace BrownieHound
 {
@@ -115,6 +118,7 @@ namespace BrownieHound
         string tsInterfaceNumber = "";
         List<DispatcherTimer> detectTimerList = new List<DispatcherTimer>();
         DispatcherTimer clockTimer;
+        DispatcherTimer mailTimer;
         int clock = 0;
         //１秒単位の経過時間
         List<int> countRows = new List<int>();
@@ -124,8 +128,9 @@ namespace BrownieHound
         //これを基に検知画面に表示したい
         detectWindow dWindow;
         string path = @"conf";
-        List<string> ruleGroupNames = new List<string>();
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
+        string mailAddress = null;
+        List<List<int>> streamStart = new List<List<int>>();
 
 
         public capture(string tsINumber)
@@ -156,6 +161,10 @@ namespace BrownieHound
             foreach (var detectTimer in detectTimerList)
             {
                 detectTimer.Stop();
+            }
+            if (mailTimer != null)
+            {
+                mailTimer.Stop();
             }
 
         }
@@ -197,6 +206,37 @@ namespace BrownieHound
                     sw.WriteLine(@"C:\Program Files\Wireshark");
                 }
             }
+            if (dWindow != null && File.Exists(@$"{path}\mail.conf"))
+            {
+                Mail_Validation mailValidation = new Mail_Validation();
+                using (StreamReader sr = new StreamReader(@$"{path}\mail.conf", Encoding.GetEncoding("UTF-8")))
+                {
+
+                    if (bool.TryParse(sr.ReadLine().Split(":")[1], out var isEnabled))
+                    {
+                        mailValidation.isEnabled.Value = isEnabled;
+                    }
+                    if (int.TryParse(sr.ReadLine().Split(":")[1], out var span))
+                    {
+                        mailValidation.span.Value = span.ToString();
+                    }
+                    mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
+                    string authorized = sr.ReadLine().Split(":")[1];
+                    if (mailValidation.isEnabled.Value && authorized.Equals("Authorized"))
+                    {
+                        if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
+                        {
+                            mailAddress = mailValidation.mailAddress.Value;
+                            mailTimer = new DispatcherTimer();
+                            mailTimer.Interval = new TimeSpan(0, int.Parse(mailValidation.span.Value), 0);
+                            mailTimer.Tick += new EventHandler(mailSend);
+                            mailTimer.Start();
+                            
+                        }
+
+                    }
+                }
+            }
             using (StreamReader sr = new StreamReader(@$"{path}\path.conf", Encoding.GetEncoding("UTF-8")))
             {
                 tsDirectory = sr.ReadLine();
@@ -207,7 +247,7 @@ namespace BrownieHound
             countRows.Add(0);
             foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new {Value,Index }))
             {
-                ruleGroupNames.Add(detectionRuleGroup.Value.Name);
+                streamStart.Add(new List<int>());
                 detectionNumbers.Add(new List<List<int>>());
                 //一番上位の要素を格納　ルールグループの数
                 ruleGroupDataSplit(detectionRuleGroup.Value, detectionRuleGroup.Index);
@@ -225,6 +265,59 @@ namespace BrownieHound
                 detectTimerList[i].Start();
             }
 
+        }
+
+        private void mailSend(object sender, EventArgs e)
+        {
+            _ = SendEmailNew();
+        }
+        private async Task SendEmailNew()
+        {
+            var email = new MimeMessage();
+            int addCount;
+            email.From.Add(new MailboxAddress("browniehound", "browniehound2024@gmail.com"));
+            email.To.Add(new MailboxAddress("", mailAddress));
+            packetData pd = (packetData)CaptureData.Items[CaptureData.Items.Count - 1];
+            email.Subject = "userの定期検知メール";
+            var body = new BodyBuilder();
+            body.HtmlBody = $"<html><body><h1>userの定期検知メール</h1><br>";
+            body.HtmlBody += $"<p><b>総キャプチャ数：{pd.Number}</b></p>";
+            
+
+            for(int i = 0;i < detectionRuleGroups.Count;i++)
+            {
+                
+                body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
+                for(int j = 0; j < detectionRuleGroups[i].ruleDatas.Count;j++)
+                {
+                    addCount = 0;
+                    body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
+                    body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
+                    while(streamStart[i][j] < dWindow.detectionDatas[i].children[j].children.Count)
+                    {
+                        addCount++;
+                        int k = streamStart[i][j];
+                        packetData detectionPacketData = dWindow.detectionDatas[i].children[j].children[k].packet;
+                        body.HtmlBody += $"<tbody style='background-color: blanchedalmond;'><tr><td>{detectionPacketData.Number}</td><td>{detectionPacketData.Time.TimeOfDay}</td><td></td><td></td><td>{detectionPacketData.Source}</td><td>{detectionPacketData.Destination}</td><td>{detectionPacketData.Protocol}</td><td>{detectionPacketData.sourcePort}</td><td>{detectionPacketData.destinationPort}</td><td>{detectionPacketData.frameLength}</td></tr></tbody>";
+                        streamStart[i][j]++;
+                    }
+                    body.HtmlBody += "</table><br>";
+                    body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
+                }
+                
+
+            }
+            body.HtmlBody += "</body></html>";
+
+            email.Body = body.ToMessageBody();
+
+            using (var smtp = new SmtpClient())
+            {
+                await smtp.ConnectAsync("smtp.gmail.com", 587, false);
+                await smtp.AuthenticateAsync("browniehound2024", "eszyyyyhrwarlsns");
+                await smtp.SendAsync(email);
+                await smtp.DisconnectAsync(true);
+            }
         }
 
         private void recordTime(object sender,EventArgs e)
@@ -290,6 +383,7 @@ namespace BrownieHound
         {
             foreach(ruleData rule in ruleGroup.ruleDatas)
             {
+                streamStart[detectionNumber].Add(0);
                 detectionNumbers[detectionNumber].Add(new List<int>());
                 //2次要素を格納　ルールグループの中のルールの数
                 detectionSet(rule,detectionNumber);
@@ -418,6 +512,10 @@ namespace BrownieHound
             {
                 detectTimer.Stop();
             }
+            if(mailTimer != null)
+            {
+                mailTimer.Stop();
+            }
             Application.Current.Shutdown();
 
         }
@@ -434,6 +532,16 @@ namespace BrownieHound
         private void doun_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            packetData packet = (packetData)CaptureData.SelectedItem;
+            if (packet != null)
+            {
+                packet_detail_Window packet_detail = new packet_detail_Window(packet.Data);
+                packet_detail.Show();
+            }
         }
     }
 }
