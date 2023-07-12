@@ -428,8 +428,7 @@ namespace BrownieHound
 
         private void up_Click(object sender, RoutedEventArgs e)
         {
-            int currentValue = scrollBar.value();
-            scrollBar.setValue(currentValue + 10);
+
         }
 
         private void doun_Click(object sender, RoutedEventArgs e)
