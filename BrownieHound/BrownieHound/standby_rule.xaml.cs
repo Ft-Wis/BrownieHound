@@ -59,6 +59,13 @@ namespace BrownieHound
                 MessageBoxResult result = MessageBox.Show(message, "起動確認", MessageBoxButton.OKCancel, MessageBoxImage.Information);
                 if (result == MessageBoxResult.OK)
                 {
+                    for(int i = 0;i < detectionRuleGroups.Count; i++)
+                    {
+                        for(int j = 0;j < detectionRuleGroups[i].ruleDatas.Count;j++)
+                        {
+                            //detectionRuleGroups[i].ruleDatas[j].Source.Replace("MyAddress",)
+                        }
+                    }
                     var nextPage = new capture(interfaceNumber,detectionRuleGroups);
                     NavigationService.Navigate(nextPage);
                 }
