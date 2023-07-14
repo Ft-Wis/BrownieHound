@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -54,7 +55,7 @@ namespace BrownieHound
             
             foreach (ruleData rd in ruledata)
             {
-                var gridData = new DataGridItem
+                DataGridItem gridData = new DataGridItem
                 {
                     isCheck = false,
                     ruleNo = rd.ruleNo,
@@ -67,11 +68,10 @@ namespace BrownieHound
                     destination = rd.Destination,
                     frameLength = rd.frameLength
                 };
-                gridItem.Add(gridData);
-                
+                rule_DataGrid.Items.Add(gridData);
             }
 
-            rule_DataGrid.ItemsSource = gridItem;
+            //rule_DataGrid.ItemsSource= gridItem;
             
         }
 
@@ -113,21 +113,21 @@ namespace BrownieHound
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
             var selectedItems = rule_DataGrid.SelectedItems;
-            if (selectedItems.Count == 1)
+            int[] selectedRules = GetSelectedRuleNumbers();
+            string filePath = "./ruleGroup/" + fileName + ".txt";
+            //チェックボックスで選んだ時
+            if (selectedRules.Length > 0)
             {
-                var selectedGridItem = (DataGridItem)rule_DataGrid.SelectedItem;
-
-                int selectedRuleNo= selectedGridItem.ruleNo;
-                string filePath = "./ruleGroup/" + fileName + ".txt";
-                string[] lines = File.ReadAllLines(filePath);
-                string[] result=RemoveLine(lines,selectedRuleNo);
-                foreach (string line in result)
+                string[] targetFile = File.ReadAllLines(filePath);
+                for (int i = selectedRules.Length - 1; i >= 0; i--)
                 {
-                    Debug.WriteLine(line);
+                    targetFile = RemoveLine(targetFile, selectedRules[i]);
                 }
-                File.WriteAllLines(filePath, result);
+
+                File.WriteAllLines(filePath, targetFile);
                 reDraw();
             }
+            reDraw();
         }
 
         //「編集」ボタンを押したとき
@@ -200,7 +200,7 @@ namespace BrownieHound
         {
             string filePath = "./ruleGroup/" + fileName + ".txt";
             string[] lines = File.ReadAllLines(filePath);
-            gridItem.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
+            rule_DataGrid.Items.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
             for (int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
             {
                 ruleData rd = new ruleData(lines[ruleNum]);
@@ -217,7 +217,7 @@ namespace BrownieHound
                     destination = rd.Destination,
                     frameLength = rd.frameLength
                 };
-                gridItem.Add(gridData);
+                rule_DataGrid.Items.Add(gridData);
             }
         }
 
@@ -242,7 +242,6 @@ namespace BrownieHound
             string[] lines=File.ReadAllLines(filePath);
             if (lineNumber >= 0 && lineNumber <= lines.Length)
             {
-                MessageBox.Show(insertText+" を書き込みます");
                 lines[lineNumber] = insertText;
                 File.WriteAllLines(filePath, lines);
             }
@@ -286,6 +285,63 @@ namespace BrownieHound
             return newLines;
         }
 
+        private int[] GetSelectedRuleNumbers()
+        {
+            List<int> selectedRuleNumbers = new List<int>();
 
+            foreach (DataGridItem item in rule_DataGrid.Items)
+            {
+                DataGridItem result=(DataGridItem)rule_DataGrid.Items[0];
+                if (item.isCheck)
+                {
+                    selectedRuleNumbers.Add(item.ruleNo);
+                }
+            }
+
+            int[] selectedRuleNoArray = selectedRuleNumbers.ToArray();
+
+            return selectedRuleNoArray;
+            // selectedRuleNoArrayを適切に使用する処理を記述してください
+        }
+
+        private DataGridCell GetCell(DataGridRow row, int columnIndex)
+        {
+            if (row != null)
+            {
+                DataGridCellsPresenter cellsPresenter = FindVisualChild<DataGridCellsPresenter>(row);
+                if (cellsPresenter != null)
+                {
+                    DataGridCell cell = cellsPresenter.ItemContainerGenerator.ContainerFromIndex(columnIndex) as DataGridCell;
+                    return cell;
+                }
+            }
+
+            return null;
+        }
+
+        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T result)
+                {
+                    return result;
+                }
+
+                var descendant = FindVisualChild<T>(child);
+                if (descendant != null)
+                {
+                    return descendant;
+                }
+            }
+
+            return null;
+        }
     }
 }
