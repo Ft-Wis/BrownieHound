@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,9 +57,26 @@ namespace BrownieHound
             }
             if (detectionRuleGroups.Count > 0)
             {
+                IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
+                IPAddress myAddress = addresses[0];
+                foreach(IPAddress address in addresses)
+                {
+                    if(address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    {
+                        myAddress = address;
+                    }
+                }
                 MessageBoxResult result = MessageBox.Show(message, "起動確認", MessageBoxButton.OKCancel, MessageBoxImage.Information);
                 if (result == MessageBoxResult.OK)
                 {
+                    for(int i = 0;i < detectionRuleGroups.Count; i++)
+                    {
+                        for(int j = 0;j < detectionRuleGroups[i].ruleDatas.Count;j++)
+                        {
+                            detectionRuleGroups[i].ruleDatas[j].Source = detectionRuleGroups[i].ruleDatas[j].Source.Replace("myAddress",myAddress.ToString());
+                            detectionRuleGroups[i].ruleDatas[j].Destination = detectionRuleGroups[i].ruleDatas[j].Destination.Replace("myAddress", myAddress.ToString());
+                        }
+                    }
                     var nextPage = new capture(interfaceNumber,detectionRuleGroups);
                     NavigationService.Navigate(nextPage);
                 }

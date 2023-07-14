@@ -18,13 +18,13 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="No" Binding="{Binding Number}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="time" Binding="{Binding Time.TimeOfDay}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Length" Binding="{Binding frameLength}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="No" Binding="{Binding Number}" IsReadOnly="True" MinWidth="60"/>
+                <DataGridTextColumn Header="time" Binding="{Binding Time.TimeOfDay}" IsReadOnly="True" MinWidth="80"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True" MinWidth="100"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True" MinWidth="100"/>
+                <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True" MinWidth="50"/>
+                <DataGridTextColumn Header="Length" Binding="{Binding frameLength}" IsReadOnly="True" MinWidth="60"/>
+                <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True" MinWidth="100"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="stop" Content="中断" Height="43" Margin="201,0,0,22" VerticalAlignment="Bottom" Click="stop_Click"  FontFamily="Yu Gothic" Background="Gray" FontSize="25" Foreground="White" FontWeight="Medium" BorderBrush="Gray" Width="146" HorizontalAlignment="Left" Grid.Column="1" />

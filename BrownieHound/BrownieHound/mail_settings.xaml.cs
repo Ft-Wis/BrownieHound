@@ -129,10 +129,10 @@ namespace BrownieHound
     public class Mail_Validation:INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        [RegularExpression("[1-9][0-9]{0,4}")]
+        [RegularExpression("[1-9][0-9]{0,4}",ErrorMessage ="送信スパンは1～99999の間で設定してください。")]
         public ReactiveProperty<string> span { get; }
 
-        [RegularExpression(@"[\w\-\._]+@[\w\-\._]+\.[A-Za-z]+")]
+        [RegularExpression(@"[\w\-\._]+@[\w\-\._]+\.[A-Za-z]+",ErrorMessage ="メールアドレスを正しく入力してください。")]
         public ReactiveProperty<string> mailAddress { get; }
         
         public ReactiveProperty<bool> isEnabled { get; }

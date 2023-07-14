@@ -38,7 +38,7 @@ namespace BrownieHound
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
-                    string message = $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
+                    string message = $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
                     detectionDatas[i].children.Add(new detectionData() { data = message,color= "IndianRed"});
                 }
             }
@@ -52,7 +52,7 @@ namespace BrownieHound
         }
         public void show_detection(packetData pd,int detectionNumber,int ruleNo)
         {
-            string message = $"[No:{pd.Number}]::[source:{pd.Source}][destination{pd.Destination}][protocol:{pd.Protocol}][sourceport:{pd.sourcePort}][destport:{pd.destinationPort}][length:{pd.frameLength}]";
+            string message = $"[No:{pd.Number}]::[source:{pd.Source}][destination:{pd.Destination}][protocol:{pd.Protocol}][sourceport:{pd.sourcePort}][destport:{pd.destinationPort}][length:{pd.frameLength}]";
             detectionDatas[detectionNumber].children[ruleNo].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
             detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
 
