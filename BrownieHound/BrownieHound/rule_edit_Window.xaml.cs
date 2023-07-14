@@ -48,7 +48,6 @@ namespace BrownieHound
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             setSendData();
-            MessageBox.Show(sendData.source);
             this.DialogResult = true;
         }
 
@@ -64,7 +63,7 @@ namespace BrownieHound
             }
             else
             { 
-                if(ruleItem.source == "allIP")
+                if(ruleItem.source == "all")
                 {
                     //選択肢を「すべてのIP」にする
                     sourceComboBox.SelectedIndex = 0;
@@ -86,7 +85,7 @@ namespace BrownieHound
             }
             else
             {
-                if (ruleItem.source == "allIP")
+                if (ruleItem.source == "all")
                 {
                     //選択肢を「すべてのIP」にする
                     destinationComboBox.SelectedIndex = 0;
@@ -114,11 +113,11 @@ namespace BrownieHound
             //プロトコルに値を代入
             switch (ruleItem.protocol)
             {
-                case "allProtocol":
+                case "all":
                     protocolComboBox.SelectedIndex = 0;
                     switch (ruleItem.sourcePort)
                     {
-                        case "allPort":
+                        case "all":
                             break;
                         case "80":
                             portnumberComboBox.SelectedIndex = 1;
@@ -142,7 +141,7 @@ namespace BrownieHound
                     protocolComboBox.SelectedIndex = 1;
                     switch (ruleItem.sourcePort)
                     {
-                        case "allPort":
+                        case "all":
                             portnumberComboBox.SelectedIndex = 0;
                             break;
                         case "80":
@@ -161,7 +160,7 @@ namespace BrownieHound
                     protocolComboBox.SelectedIndex = 2;
                     switch (ruleItem.sourcePort)
                     {
-                        case "allPort":
+                        case "all":
                             break;
                         case "162":
                             portnumberComboBox.SelectedIndex = 1;
@@ -249,7 +248,7 @@ namespace BrownieHound
                 //「すべて」
                 case 0:
                     sourceTextBox.IsEnabled = false;
-                    sourceTextBox.Text = "allIP";
+                    sourceTextBox.Text = "all";
                     break;
                 //「このPCのアドレス」
                 case 1:
@@ -276,7 +275,7 @@ namespace BrownieHound
                 //「すべて」
                 case 0:
                     destinationTextBox.IsEnabled = false;
-                    destinationTextBox.Text = "allIP";
+                    destinationTextBox.Text = "all";
                     break;
                 //「このPCのアドレス」
                 case 1:
