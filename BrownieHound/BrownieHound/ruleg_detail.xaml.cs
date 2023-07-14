@@ -47,7 +47,7 @@ namespace BrownieHound
 
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
-
+            Application.Current.MainWindow.Width = 1020;
             InitializeComponent();
             title.Content = $"{title.Content} - {name}";
             fileName = name;
