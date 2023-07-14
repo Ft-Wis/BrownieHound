@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 
 using BrownieHound;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Diagnostics;
 using System.Windows;
