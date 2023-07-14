@@ -3,13 +3,83 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
         Title="rule_add_Window" Height="450" Width="409">
-    <Grid>
-        <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Left" Height="44" Margin="19,10,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="221,0,0,29" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" IsDefault="True"/>
-        <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,29" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
+    <Grid Margin="0,0,0,-36">
+        <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Center" Height="44" VerticalAlignment="Top" Width="159" FontSize="24" Margin="0,-3,0,0"/>
+        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="221,0,0,52" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" IsDefault="True"/>
+        <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,52" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
+
+        <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Center" Height="312" CornerRadius="10"   Margin="0,38,0,0" VerticalAlignment="Top" Width="379">
+
+        </Border>
+        <TextBox x:Name="protocolTextBox" HorizontalAlignment="Left" Height="24" Margin="287,146,0,0" TextWrapping="Wrap" controls:HintAssist.Hint="プロトコル名" IsEnabled="False" VerticalAlignment="Top"  Width="88"/>
+        <TextBlock HorizontalAlignment="Left" Margin="26,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信元IPアドレス"/></TextBlock>
+        <ComboBox x:Name="sourceComboBox"  HorizontalAlignment="Left" Margin="143,66,0,0" controls:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="sourceComboBox_SelectionChanged">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type controls:SmartHint}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBoxItem Content="すべて" />
+            <ComboBoxItem Content="このPCのアドレス" />
+            <ComboBoxItem Content="手動で設定" />
+        </ComboBox>
+        <TextBox x:Name="sourceTextBox"  HorizontalAlignment="Left" Margin="261,64,0,0" TextWrapping="Wrap" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
+        <TextBlock x:Name="destinationTextBlock" HorizontalAlignment="Left" Margin="26,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信先IPアドレス"/></TextBlock>
+        <ComboBox x:Name="destinationComboBox"  HorizontalAlignment="Left" Margin="143,98,0,0" controls:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="destinationComboBox_SelectionChanged">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type controls:SmartHint}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBoxItem Content="すべて" />
+            <ComboBoxItem Content="このPCのアドレス" />
+            <ComboBoxItem Content="手動で設定" />
+        </ComboBox>
+        <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="261,96,0,0" TextWrapping="Wrap" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="31,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"><Run Language="ja-jp" Text="プロトコル"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="31,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"><Run Language="ja-jp" Text="ポート番号"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="31,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="サイズ"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="31,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="間隔"/></TextBlock>
+        <ComboBox x:Name="protocolComboBox"  HorizontalAlignment="Left" Margin="166,145,0,0" controls:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="protocolComboBox_SelectionChanged">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type controls:SmartHint}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBoxItem Content="すべてのプロトコル" />
+            <ComboBoxItem Content="TCP" />
+            <ComboBoxItem Content="UDP" />
+            <ComboBoxItem Content="手動で設定" />
+        </ComboBox>
+        <ComboBox x:Name="portnumberComboBox"  HorizontalAlignment="Left" Margin="166,195,0,0" controls:HintAssist.Hint="" VerticalAlignment="Top" Width="106" SelectionChanged="portnumberComboBox_SelectionChanged">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type controls:SmartHint}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </ComboBox.Resources>
+            <ComboBoxItem Content="すべて" />
+            <ComboBoxItem Content="HTTP(80)" />
+            <ComboBoxItem Content="HTTPS(443)" />
+            <ComboBoxItem Content="SNMP(162)" />
+            <ComboBoxItem Content="DNS(53)" />
+            <ComboBoxItem Content="手動で設定" />
+        </ComboBox>
+        <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="289,195,0,0" TextWrapping="Wrap" controls:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False"/>
+        <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="98,242,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="223,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+        <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="98,285,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="176,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
+        <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="229,285,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="50"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="284,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43"><Run Language="ja-jp" Text="回以上"/></TextBlock>
+        <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="91,213,0,0" IsChecked="True"/>
+        <RadioButton x:Name="sourceRadioButton" Content="送信元" HorizontalAlignment="Left" Margin="91,194,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
+
+
 
     </Grid>
 

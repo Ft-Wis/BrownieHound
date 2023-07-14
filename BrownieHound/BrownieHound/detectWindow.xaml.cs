@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static BrownieHound.App;
+using static BrownieHound.capture;
 
 namespace BrownieHound
 {
@@ -17,12 +22,59 @@ namespace BrownieHound
     /// </summary>
     public partial class detectWindow : Window
     {
-        public detectWindow()
+         public List<detectionData> detectionDatas = new List<detectionData>();
+        public class detectionData
+        {
+            public string data { get; set; }
+            public string color { get; set; }
+            public packetData packet { get; set; }
+            public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();  
+        }
+        public detectWindow(List<ruleGroupData> ruleGroupDatas)
         {
             InitializeComponent();
+            for(int i = 0; i < ruleGroupDatas.Count; i++)
+            {
+                detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
+                foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
+                {
+                    string message = $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
+                    detectionDatas[i].children.Add(new detectionData() { data = message,color= "IndianRed"});
+                }
+            }
+            DataContext = detectionDatas;
+        }
 
-            Uri uri = new Uri("/detect.xaml", UriKind.Relative);
-            frame.Source = uri;
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.WindowState = WindowState.Minimized;
+        }
+        public void show_detection(packetData pd,int detectionNumber,int ruleNo)
+        {
+            string message = $"[No:{pd.Number}]::[source:{pd.Source}][destination{pd.Destination}][protocol:{pd.Protocol}][sourceport:{pd.sourcePort}][destport:{pd.destinationPort}][length:{pd.frameLength}]";
+            detectionDatas[detectionNumber].children[ruleNo].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
+            detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
+
+        }
+
+        private void TreeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            detectionData dD = (detectionData)detection_tree.SelectedValue as detectionData;
+            try
+            {
+                if (dD.packet != null)
+                {
+                    packet_detail_Window packet_detail = new packet_detail_Window(dD.packet.Data);
+                    packet_detail.Show();
+                }
+            }
+            catch
+            {
+
+            }
+
         }
     }
 }
