@@ -23,7 +23,7 @@
                 <GridView>
                     <GridView.ColumnHeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" MinWidth="80" TextAlignment="Left"  Background="#FFF40000" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding}" MinWidth="80" TextAlignment="Left"  HorizontalAlignment="Left"/>
                         </DataTemplate>
                     </GridView.ColumnHeaderTemplate>
                     <GridViewColumn>

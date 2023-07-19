@@ -337,23 +337,23 @@ namespace BrownieHound
             {
                 packetData packet = (packetData)CaptureData.Items[i];
                 int flg = 0;
-                if (rule.Source == "" || rule.Source.Equals(packet.Source))
+                if (rule.Source.Equals("all") || rule.Source.Equals(packet.Source))
                 {
                     flg++;
                 }
-                if (rule.Destination == "" || rule.Destination.Equals(packet.Destination))
+                if (rule.Destination.Equals("all") || rule.Destination.Equals(packet.Destination))
                 {
                     flg++;
                 }
-                if (rule.Protocol == "" || rule.Protocol.Equals(packet.Protocol))
+                if (rule.Protocol.Equals("all") || rule.Protocol.Equals(packet.Protocol))
                 {
                     flg++;
                 }
-                if(rule.sourcePort == "" || rule.sourcePort.Equals(packet.sourcePort))
+                if(rule.sourcePort.Equals("all") || rule.sourcePort.Equals(packet.sourcePort))
                 {
                     flg++;
                 }
-                if(rule.destinationPort == "" || rule.destinationPort.Equals(packet.destinationPort))
+                if(rule.destinationPort.Equals("all") || rule.destinationPort.Equals(packet.destinationPort))
                 {
                     flg++;
                 }

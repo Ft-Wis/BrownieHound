@@ -41,7 +41,6 @@ namespace BrownieHound
         {
             DialogResult = true;
             setSendData();
-            MessageBox.Show(sendData.destination);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -97,7 +96,7 @@ namespace BrownieHound
                 //「すべて」
                 case 0:
                     sourceTextBox.IsEnabled = false;
-                    sourceTextBox.Text = "allIP";
+                    sourceTextBox.Text = "all";
                     break;
                 //「このPCのアドレス」
                 case 1:
@@ -124,7 +123,7 @@ namespace BrownieHound
                 //「すべて」
                 case 0:
                     destinationTextBox.IsEnabled = false;
-                    destinationTextBox.Text = "allIP";
+                    destinationTextBox.Text = "all";
                     break;
                 //「このPCのアドレス」
                 case 1:
@@ -188,7 +187,7 @@ namespace BrownieHound
                 else
                 {
                     //「すべてのプロトコル」のとき
-                    protocolTextBox.Text = "allProtocol";
+                    protocolTextBox.Text = "all";
                     protocolTextBox.IsEnabled = false;
                 }
 
@@ -227,7 +226,7 @@ namespace BrownieHound
                         portnumberTextBox.SelectAll();
                         break;
                     default:
-                        portnumberTextBox.Text = "allPortnumber";
+                        portnumberTextBox.Text = "all";
                         portnumberTextBox.IsEnabled = false;
                         break;
                 }
