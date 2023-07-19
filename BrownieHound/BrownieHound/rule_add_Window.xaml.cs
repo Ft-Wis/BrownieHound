@@ -64,11 +64,11 @@ namespace BrownieHound
             if ((bool)sourceRadioButton.IsChecked)
             {
                 sourcePortNum = portnumberTextBox.Text;
-                destinationPortNum = null;
+                destinationPortNum ="all";
             }
             else
             {
-                sourcePortNum = null;
+                sourcePortNum = "all";
                 destinationPortNum = portnumberTextBox.Text;
             }
 
