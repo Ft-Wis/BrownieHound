@@ -29,8 +29,8 @@
         </DataGrid>
         <Button x:Name="stop" Content="中断" Height="43" Margin="201,0,0,22" VerticalAlignment="Bottom" Click="stop_Click"  FontFamily="Yu Gothic" Background="Gray" FontSize="25" Foreground="White" FontWeight="Medium" BorderBrush="Gray" Width="146" HorizontalAlignment="Left" Grid.Column="1" />
         <Label x:Name="stopstatus" Content="検知中" Height="44" Margin="0,0,67,22"  Width="82" FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"/>
-        <Button x:Name="up" Content="↑" Height="50" Margin="0,25,10,0" VerticalAlignment="Top" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="White" Width="42" HorizontalAlignment="Right" Click="up_Click" />
-        <Button x:Name="doun" Content="↓" Margin="0,0,10,28" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="Black" Width="42" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Click="doun_Click" />
+        <Button x:Name="up" Content="↑" Height="50" Margin="0,20,20,0" VerticalAlignment="Top" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="Black" Width="42" HorizontalAlignment="Right" Click="up_Click" />
+        <Button x:Name="doun" Content="↓" Margin="0,0,20,20" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="Black" Width="42" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Click="doun_Click" />
 
     </Grid>
 </Page>
