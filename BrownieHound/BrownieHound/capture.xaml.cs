@@ -533,7 +533,6 @@ namespace BrownieHound
         private void doun_Click(object sender, RoutedEventArgs e)
         {
             CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
-            CaptureData.SelectedIndex = (CaptureData.Items.Count - 1);
         }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
