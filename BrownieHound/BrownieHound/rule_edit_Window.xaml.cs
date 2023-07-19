@@ -63,7 +63,7 @@ namespace BrownieHound
             }
             else
             { 
-                if(ruleItem.source == "all")
+                if(ruleItem.source.Equals("all"))
                 {
                     //選択肢を「すべてのIP」にする
                     sourceComboBox.SelectedIndex = 0;
@@ -85,7 +85,7 @@ namespace BrownieHound
             }
             else
             {
-                if (ruleItem.source == "all")
+                if (ruleItem.Equals("all"))
                 {
                     //選択肢を「すべてのIP」にする
                     destinationComboBox.SelectedIndex = 0;
@@ -99,7 +99,7 @@ namespace BrownieHound
 
             string setPort;
 
-            if (String.IsNullOrEmpty(ruleItem.sourcePort))
+            if (ruleItem.sourcePort.Equals("all"))
             {
                 destinationRadioButton.IsChecked = true;
                 setPort = ruleItem.destinationPort;
@@ -110,12 +110,13 @@ namespace BrownieHound
                 setPort = ruleItem.sourcePort;
             }
 
+            MessageBox.Show(setPort+" : "+ruleItem.protocol+"   "+ruleItem.sourcePort);
             //プロトコルに値を代入
             switch (ruleItem.protocol)
             {
                 case "all":
                     protocolComboBox.SelectedIndex = 0;
-                    switch (ruleItem.sourcePort)
+                    switch (setPort)
                     {
                         case "all":
                             break;
@@ -139,7 +140,7 @@ namespace BrownieHound
                     break;
                 case "TCP":
                     protocolComboBox.SelectedIndex = 1;
-                    switch (ruleItem.sourcePort)
+                    switch (setPort)
                     {
                         case "all":
                             portnumberComboBox.SelectedIndex = 0;
@@ -158,7 +159,7 @@ namespace BrownieHound
                     break;
                 case "UDP":
                     protocolComboBox.SelectedIndex = 2;
-                    switch (ruleItem.sourcePort)
+                    switch (setPort)
                     {
                         case "all":
                             break;
@@ -217,11 +218,11 @@ namespace BrownieHound
             if ((bool)sourceRadioButton.IsChecked)
             {
                 sourcePortNum = portnumberTextBox.Text;
-                destinationPortNum = null;
+                destinationPortNum = "all";
             }
             else
             {
-                sourcePortNum = null;
+                sourcePortNum = "all";
                 destinationPortNum = portnumberTextBox.Text;
             }
 
@@ -301,7 +302,7 @@ namespace BrownieHound
             portnumberComboBox.SelectedIndex = -1;
 
             //「プロトコル」で「TCP」を選択したときに、ポート番号の選択肢を変更する
-            if (protocolComboBox.SelectedIndex.ToString() == "1")
+            if (protocolComboBox.SelectedIndex.ToString().Equals("1"))
             {
                 protocolTextBox.Text = "TCP";
 
@@ -313,7 +314,7 @@ namespace BrownieHound
                 }
 
             }
-            else if (protocolComboBox.SelectedIndex.ToString() == "2")
+            else if (protocolComboBox.SelectedIndex.ToString().Equals("2"))
             {
                 //「プロトコル」で「UDP」を選択したときに、ポート番号の選択肢を変更する
                 protocolTextBox.Text = "UDP";
@@ -339,7 +340,7 @@ namespace BrownieHound
                 else
                 {
                     //「すべてのプロトコル」のとき
-                    protocolTextBox.Text = "allProtocol";
+                    protocolTextBox.Text = "all";
                     protocolTextBox.IsEnabled = false;
                 }
 
@@ -378,7 +379,7 @@ namespace BrownieHound
                         portnumberTextBox.SelectAll();
                         break;
                     default:
-                        portnumberTextBox.Text = "allPortnumber";
+                        portnumberTextBox.Text = "all";
                         portnumberTextBox.IsEnabled = false;
                         break;
                 }

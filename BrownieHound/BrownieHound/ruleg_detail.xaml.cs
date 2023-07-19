@@ -107,6 +107,7 @@ namespace BrownieHound
         private void redoButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+            Application.Current.MainWindow.Width = 800;
         }
 
         //「削除」ボタンを押したとき
