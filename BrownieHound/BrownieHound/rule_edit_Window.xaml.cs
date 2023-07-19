@@ -109,8 +109,6 @@ namespace BrownieHound
                 sourceRadioButton.IsChecked = true;
                 setPort = ruleItem.sourcePort;
             }
-
-            MessageBox.Show(setPort+" : "+ruleItem.protocol+"   "+ruleItem.sourcePort);
             //プロトコルに値を代入
             switch (ruleItem.protocol)
             {
@@ -384,16 +382,6 @@ namespace BrownieHound
                         break;
                 }
             }
-        }
-
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-           
         }
     }
 }

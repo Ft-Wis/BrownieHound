@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:BrownieHound"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="rule_edit_Window" Height="460" Width="405"  Loaded="Window_Loaded">
+        Title="rule_edit_Window" Height="460" Width="405">
     <DockPanel Margin="1,1,1,20">
         <StackPanel DockPanel.Dock="Bottom" 
                     Orientation="Horizontal" HorizontalAlignment="Right">
         </StackPanel>
 
-        <Grid Background="White" RenderTransformOrigin="0.485,0.542" HorizontalAlignment="Center" Width="400" Margin="0,0,0,-32" Loaded="Grid_Loaded" Cursor="">
+        <Grid Background="White" RenderTransformOrigin="0.485,0.542" HorizontalAlignment="Center" Width="400" Margin="0,0,0,-32" Cursor="">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="188*"/>
