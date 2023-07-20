@@ -105,6 +105,7 @@ namespace BrownieHound
                 {
                     Protocol = protocols.Last();
                 }
+                Protocol = Protocol.ToUpper();
 
                 frameLength = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
                 Info += $" {protocols.Last()}";
@@ -330,53 +331,77 @@ namespace BrownieHound
             clock++;
             countRows.Add(countNumber);
         }
-        private void detectLogic(int start,int end,ruleData rule,int detectionNumber)
+        private void detectLogic(int detectionNumber)
         {
             List<int> targets = new List<int>();
-            for (int i = start; i <= end; i++)
+            foreach (ruleData detectionRule in detectionRuleGroups[detectionNumber].ruleDatas)
             {
-                packetData packet = (packetData)CaptureData.Items[i];
-                int flg = 0;
-                if (rule.Source.Equals("all") || rule.Source.Equals(packet.Source))
+                List<int> temp = new List<int>();
+                if (detectionRule.detectionInterval <= clock)
                 {
-                    flg++;
-                }
-                if (rule.Destination.Equals("all") || rule.Destination.Equals(packet.Destination))
-                {
-                    flg++;
-                }
-                if (rule.Protocol.Equals("all") || rule.Protocol.Equals(packet.Protocol))
-                {
-                    flg++;
-                }
-                if(rule.sourcePort.Equals("all") || rule.sourcePort.Equals(packet.sourcePort))
-                {
-                    flg++;
-                }
-                if(rule.destinationPort.Equals("all") || rule.destinationPort.Equals(packet.destinationPort))
-                {
-                    flg++;
-                }
-                if (packet.frameLength > rule.frameLength)
-                {
-                    flg++;
-                }
-                if (flg == 6)
-                {
-                    targets.Add(i);
-                }
-            }
-            if (targets.Count >= rule.detectionCount)
-            {
-                for (int i = 0; i < targets.Count; i++)
-                {
-                    if (!detectionNumbers[detectionNumber][rule.ruleNo].Contains(targets[i]))
+                    int start = countRows[clock - detectionRule.detectionInterval];
+                    int end = countRows[clock] - 1;
+                    //if (countRows[clock] == countRows[clock - 1])
+                    //{
+                    //    end++;
+                    //}
+                    if (clock > detectionRule.detectionInterval && start == countRows[clock - detectionRule.detectionInterval - 1] && start < end)
                     {
-                        detectionNumbers[detectionNumber][rule.ruleNo].Add(targets[i]);
-                        dWindow.show_detection((packetData)CaptureData.Items[targets[i]],detectionNumber,rule.ruleNo);
-                        //以下テスト用
+                        //検知する範囲内で出現したパケットのみを対象とする処理
+                        //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
+                        start++;
+                    }
+                    for (int i = start; i <= end; i++)
+                    {
+                        packetData packet = (packetData)CaptureData.Items[i];
+                        int flg = 0;
+                        if (detectionRule.Source.Equals("all") || detectionRule.Source.Equals(packet.Source))
+                        {
+                            flg++;
+                        }
+                        if (detectionRule.Destination.Equals("all") || detectionRule.Destination.Equals(packet.Destination))
+                        {
+                            flg++;
+                        }
+                        if (detectionRule.Protocol.Equals("all") || detectionRule.Protocol.Equals(packet.Protocol))
+                        {
+                            flg++;
+                        }
+                        if (detectionRule.sourcePort.Equals("all") || detectionRule.sourcePort.Equals(packet.sourcePort))
+                        {
+                            flg++;
+                        }
+                        if (detectionRule.destinationPort.Equals("all") || detectionRule.destinationPort.Equals(packet.destinationPort))
+                        {
+                            flg++;
+                        }
+                        if (packet.frameLength > detectionRule.frameLength)
+                        {
+                            flg++;
+                        }
+                        if (flg == 6)
+                        {
+                            temp.Add(i);
+                        }
+                    }
+                    if(temp.Count >= detectionRule.detectionCount)
+                    {
+                        for (int i = 0; i < temp.Count; i++)
+                        {
+                            if (!detectionNumbers[detectionNumber][detectionRule.ruleNo].Contains(temp[i]))
+                            {
+                                detectionNumbers[detectionNumber][detectionRule.ruleNo].Add(temp[i]);
+                                //dWindow.show_detection((packetData)CaptureData.Items[temp[i]], detectionNumber, detectionRule.ruleNo);
+                                targets.Add(temp[i]);
+                            }
+                        }
                     }
                 }
+            }
+            targets.Sort();
+            foreach(int target  in targets)
+            {
+                dWindow.show_detection((packetData)CaptureData.Items[target], detectionNumber,0);
             }
         }
         private void ruleGroupDataSplit(ruleGroupData ruleGroup,int detectionNumber)
@@ -386,11 +411,12 @@ namespace BrownieHound
                 streamStart[detectionNumber].Add(0);
                 detectionNumbers[detectionNumber].Add(new List<int>());
                 //2次要素を格納　ルールグループの中のルールの数
-                detectionSet(rule,detectionNumber);
+                
             }
+            detectionSet(detectionNumber);
         }
 
-        private void detectionSet(ruleData rule,int detectionNumber)
+        private void detectionSet(int detectionNumber)
         {
             DispatcherTimer detectTimer = new DispatcherTimer();
             detectTimer.Interval = new TimeSpan(0, 0, 1);
@@ -398,24 +424,7 @@ namespace BrownieHound
             detectTimerList.Add(detectTimer);
             void detection(object sender, EventArgs e)
             {
-                if (clock >= rule.detectionInterval)
-                {
-                    int start = countRows[clock - rule.detectionInterval];
-                    int end = countRows[clock] - 1;
-                    //想定としてインターバルは秒指定
-                    if (countRows[clock] == countRows[clock - 1])
-                    {
-                        end++;
-                    }
-                    if (clock > rule.detectionInterval && start == countRows[clock - rule.detectionInterval - 1] && start < end)
-                    {
-                        //検知する範囲内で出現したパケットのみを対象とする処理
-                        //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
-                        start++;
-                    }
-                    detectLogic(start, end, rule,detectionNumber);
-
-                }
+                    detectLogic(detectionNumber);
             }
         }
 
