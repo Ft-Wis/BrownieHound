@@ -304,45 +304,5 @@ namespace BrownieHound
             return selectedRuleNoArray;
             // selectedRuleNoArrayを適切に使用する処理を記述してください
         }
-
-        private DataGridCell GetCell(DataGridRow row, int columnIndex)
-        {
-            if (row != null)
-            {
-                DataGridCellsPresenter cellsPresenter = FindVisualChild<DataGridCellsPresenter>(row);
-                if (cellsPresenter != null)
-                {
-                    DataGridCell cell = cellsPresenter.ItemContainerGenerator.ContainerFromIndex(columnIndex) as DataGridCell;
-                    return cell;
-                }
-            }
-
-            return null;
-        }
-
-        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
-        {
-            if (parent == null)
-            {
-                return null;
-            }
-
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is T result)
-                {
-                    return result;
-                }
-
-                var descendant = FindVisualChild<T>(child);
-                if (descendant != null)
-                {
-                    return descendant;
-                }
-            }
-
-            return null;
-        }
     }
 }
