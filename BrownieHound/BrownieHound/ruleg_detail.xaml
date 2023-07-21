@@ -31,7 +31,7 @@
                 </DataGridTemplateColumn>
                 <!--<DataGridCheckBoxColumn x:Name="ableToDelete"  Binding="{Binding isCheck}" Header="" IsReadOnly="False" MinWidth="20"/>-->
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
-                <DataGridTemplateColumn Header="Column2">
+                <DataGridTemplateColumn Header="検知方式">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Column2, Converter={StaticResource yourConverter}}" />

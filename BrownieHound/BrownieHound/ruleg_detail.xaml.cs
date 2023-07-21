@@ -180,7 +180,6 @@ namespace BrownieHound
 
         public class YourData
         {
-            public int Column1 { get; set; }
             public int Column2 { get; set; }
         }
 
