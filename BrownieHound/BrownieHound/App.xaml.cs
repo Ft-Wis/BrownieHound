@@ -23,9 +23,9 @@ namespace BrownieHound
             public bool enabled { get; set; }
             public int sendSpan { get; set; }
             public string mailAddress { get; set; }
-            public bool authorized{get;set;} = false;
-            public mailData(bool enabled,int sendSpan,string mailAddress,bool authorized)
-            { 
+            public bool authorized { get; set; } = false;
+            public mailData(bool enabled, int sendSpan, string mailAddress, bool authorized)
+            {
                 this.enabled = enabled;
                 this.sendSpan = sendSpan;
                 this.mailAddress = mailAddress;
@@ -45,6 +45,7 @@ namespace BrownieHound
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
             public int frameLength { get; set; }
+            public int ruleCategory { get; set; } = 1;
 
             private void ruleSplit(string ruleSeet)
             {
@@ -59,7 +60,7 @@ namespace BrownieHound
                 destinationPort = data[i++];
                 frameLength = Int32.Parse(data[i]);
             }
-            public ruleData(string ruleSeet,int ruleGroupNo,int ruleNo)
+            public ruleData(string ruleSeet, int ruleGroupNo, int ruleNo)
             {
                 this.ruleGroupNo = ruleGroupNo;
                 this.ruleNo = ruleNo;
@@ -79,6 +80,8 @@ namespace BrownieHound
             public String Name { get; set; }
             public int ruleItems { get; set; } = 0;
             public List<ruleData> ruleDatas { get; set; } = new List<ruleData>();
+            public List<ruleData> blackListRules { get; set; } = new List<ruleData>();
+            public List<ruleData> whiteListRules { get; set; } = new List<ruleData>();
 
             public ruleGroupData(int no, String name)
             {
@@ -88,7 +91,17 @@ namespace BrownieHound
 
             public void ruleSet(string ruleLine)
             {
+                ruleData rule = new ruleData(ruleLine, this.No, this.ruleItems++);
                 ruleDatas.Add(new ruleData(ruleLine, this.No, this.ruleItems++));
+                if (rule.ruleCategory == 0)
+                {
+                    blackListRules.Add(rule);
+                }
+                else if (rule.ruleCategory == 1)
+                {
+                    whiteListRules.Add(rule);
+                }
+
 
             }
         }
@@ -125,6 +138,6 @@ namespace BrownieHound
             }
             return data;
         }
-        
+
     }
 }
