@@ -39,6 +39,7 @@ namespace BrownieHound
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
             public int frameLength { get; set; }
+            public int ruleCategory { get; set; } 
         }
 
         ObservableCollection<DataGridItem> gridItem;
@@ -67,7 +68,8 @@ namespace BrownieHound
                     sourcePort = rd.sourcePort,
                     destinationPort = rd.destinationPort,
                     destination = rd.Destination,
-                    frameLength = rd.frameLength
+                    frameLength = rd.frameLength,
+                    ruleCategory = rd.ruleCategory
                 };
                 rule_DataGrid.Items.Add(gridData);
             }
@@ -94,6 +96,7 @@ namespace BrownieHound
                     frameLength=selectedGridItem.frameLength,
                     detectionInterval=selectedGridItem.detectionInterval,
                     detectionCount = selectedGridItem.detectionCount
+                    
                 };
                 showPopup(data);
             }
@@ -178,12 +181,6 @@ namespace BrownieHound
             }
         }
 
-        public class YourData
-        {
-            public int Column2 { get; set; }
-        }
-
-        // 列のデータ変換を行うためのコンバータークラス
         public class YourConverter : IValueConverter
         {
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -198,11 +195,6 @@ namespace BrownieHound
                 throw new NotImplementedException();
             }
         }
-
-
-
-
-
 
 
         private void ReadFileByLine(string filePath)

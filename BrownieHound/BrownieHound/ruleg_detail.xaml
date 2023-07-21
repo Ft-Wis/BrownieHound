@@ -9,7 +9,10 @@
       
       Title="ruleg_detail" Cursor="">
 
-    
+    <Page.Resources>
+        <!-- データ変換を行うコンバーター -->
+        <local:YourConverter x:Key="YourConverter"/>
+    </Page.Resources>
     
     <Grid Background="White">
         <Label x:Name="title" Content="ルール詳細" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="729" FontSize="24"/>
@@ -34,7 +37,7 @@
                 <DataGridTemplateColumn Header="検知方式">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Column2, Converter={StaticResource yourConverter}}" />
+                            <TextBlock Text="{Binding ruleCategory, Converter={StaticResource YourConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
