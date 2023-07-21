@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -176,6 +177,34 @@ namespace BrownieHound
                 // キャンセルされた場合の処理
             }
         }
+
+        public class YourData
+        {
+            public int Column1 { get; set; }
+            public int Column2 { get; set; }
+        }
+
+        // 列のデータ変換を行うためのコンバータークラス
+        public class YourConverter : IValueConverter
+        {
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                // データが0なら「ブラックリスト」、1なら「ホワイトリスト」に変換して返す
+                int data = (int)value;
+                return data == 0 ? "ブラックリスト" : "ホワイトリスト";
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+
+
+
+
+
 
         private void ReadFileByLine(string filePath)
         {

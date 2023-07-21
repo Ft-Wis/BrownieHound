@@ -31,6 +31,13 @@
                 </DataGridTemplateColumn>
                 <!--<DataGridCheckBoxColumn x:Name="ableToDelete"  Binding="{Binding isCheck}" Header="" IsReadOnly="False" MinWidth="20"/>-->
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
+                <DataGridTemplateColumn Header="Column2">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Column2, Converter={StaticResource yourConverter}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="送信先IP" Binding="{Binding destination}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="プロトコル" Binding="{Binding protocol}" IsReadOnly="True" MinWidth="20"/>
