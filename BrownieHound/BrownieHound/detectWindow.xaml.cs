@@ -57,7 +57,7 @@ namespace BrownieHound
             e.Cancel = true;
             this.WindowState = WindowState.Minimized;
         }
-        public void show_detection(packetData pd,int detectionNumber,int ruleNo)
+        public void show_detection(packetData pd,int detectionNumber)
         {
             string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
             detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
