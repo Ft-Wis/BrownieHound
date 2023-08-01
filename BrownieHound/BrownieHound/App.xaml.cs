@@ -91,18 +91,7 @@ namespace BrownieHound
 
             public void ruleSet(string ruleLine)
             {
-                ruleData rule = new ruleData(ruleLine, this.No, this.ruleItems++);
                 ruleDatas.Add(new ruleData(ruleLine, this.No, this.ruleItems++));
-                if (rule.ruleCategory == 0)
-                {
-                    blackListRules.Add(rule);
-                }
-                else if (rule.ruleCategory == 1)
-                {
-                    whiteListRules.Add(rule);
-                }
-
-
             }
         }
 
