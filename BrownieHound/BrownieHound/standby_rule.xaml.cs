@@ -75,7 +75,11 @@ namespace BrownieHound
                         {
                             if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
                             {
-
+                                detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                            }
+                            else if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 1)
+                            {
+                                detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
                             }
                             detectionRuleGroups[i].ruleDatas[j].Source = detectionRuleGroups[i].ruleDatas[j].Source.Replace("myAddress",myAddress.ToString());
                             detectionRuleGroups[i].ruleDatas[j].Destination = detectionRuleGroups[i].ruleDatas[j].Destination.Replace("myAddress", myAddress.ToString());
