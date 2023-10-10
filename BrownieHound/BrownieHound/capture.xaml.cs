@@ -105,6 +105,7 @@ namespace BrownieHound
                 {
                     Protocol = protocols.Last();
                 }
+                Protocol = Protocol.ToUpper();
 
                 frameLength = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
                 Info += $" {protocols.Last()}";
@@ -130,7 +131,7 @@ namespace BrownieHound
         string path = @"conf";
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
         string mailAddress = null;
-        List<List<int>> streamStart = new List<List<int>>();
+        List<int> streamStart = new List<int>();
 
 
         public capture(string tsINumber)
@@ -247,7 +248,7 @@ namespace BrownieHound
             countRows.Add(0);
             foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new {Value,Index }))
             {
-                streamStart.Add(new List<int>());
+                streamStart.Add(0);
                 detectionNumbers.Add(new List<List<int>>());
                 //一番上位の要素を格納　ルールグループの数
                 ruleGroupDataSplit(detectionRuleGroup.Value, detectionRuleGroup.Index);
@@ -286,25 +287,24 @@ namespace BrownieHound
 
             for(int i = 0;i < detectionRuleGroups.Count;i++)
             {
-                
+                addCount = 0;
                 body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
                 for(int j = 0; j < detectionRuleGroups[i].ruleDatas.Count;j++)
                 {
-                    addCount = 0;
+                    
                     body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
                     body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
-                    while(streamStart[i][j] < dWindow.detectionDatas[i].children[j].children.Count)
-                    {
-                        addCount++;
-                        int k = streamStart[i][j];
-                        packetData detectionPacketData = dWindow.detectionDatas[i].children[j].children[k].packet;
-                        body.HtmlBody += $"<tbody style='background-color: blanchedalmond;'><tr><td>{detectionPacketData.Number}</td><td>{detectionPacketData.Time.TimeOfDay}</td><td></td><td></td><td>{detectionPacketData.Source}</td><td>{detectionPacketData.Destination}</td><td>{detectionPacketData.Protocol}</td><td>{detectionPacketData.sourcePort}</td><td>{detectionPacketData.destinationPort}</td><td>{detectionPacketData.frameLength}</td></tr></tbody>";
-                        streamStart[i][j]++;
-                    }
-                    body.HtmlBody += "</table><br>";
-                    body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
                 }
-                
+                while (streamStart[i] < dWindow.detectionDatas[i].children[0].children.Count)
+                {
+                    addCount++;
+                    int k = streamStart[i];
+                    packetData detectionPacketData = dWindow.detectionDatas[i].children[0].children[k].packet;
+                    body.HtmlBody += $"<tbody style='background-color: blanchedalmond;'><tr><td>{detectionPacketData.Number}</td><td>{detectionPacketData.Time.TimeOfDay}</td><td></td><td></td><td>{detectionPacketData.Source}</td><td>{detectionPacketData.Destination}</td><td>{detectionPacketData.Protocol}</td><td>{detectionPacketData.sourcePort}</td><td>{detectionPacketData.destinationPort}</td><td>{detectionPacketData.frameLength}</td></tr></tbody>";
+                    streamStart[i]++;
+                }
+                body.HtmlBody += "</table><br>";
+                body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
 
             }
             body.HtmlBody += "</body></html>";
@@ -330,67 +330,184 @@ namespace BrownieHound
             clock++;
             countRows.Add(countNumber);
         }
-        private void detectLogic(int start,int end,ruleData rule,int detectionNumber)
+        private void detectLogic(int detectionNumber)
         {
             List<int> targets = new List<int>();
-            for (int i = start; i <= end; i++)
+            if (detectionRuleGroups[detectionNumber].blackListRules.Count > 0)
             {
-                packetData packet = (packetData)CaptureData.Items[i];
-                int flg = 0;
-                if (rule.Source.Equals("all") || rule.Source.Equals(packet.Source))
+
+                foreach (ruleData detectionRule in detectionRuleGroups[detectionNumber].blackListRules)
                 {
-                    flg++;
+                    List<int> temp = new List<int>();
+                    if (detectionRule.detectionInterval <= clock)
+                    {
+                        int start = countRows[clock - detectionRule.detectionInterval];
+                        int end = countRows[clock] - 1;
+                        //if (countRows[clock] == countRows[clock - 1])
+                        //{
+                        //    end++;
+                        //}
+                        if (clock > detectionRule.detectionInterval && start == countRows[clock - detectionRule.detectionInterval - 1] && start < end)
+                        {
+                            //検知する範囲内で出現したパケットのみを対象とする処理
+                            //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
+                            start++;
+                        }
+                        for (int i = start; i <= end; i++)
+                        {
+                            packetData packet = (packetData)CaptureData.Items[i];
+                            int flg = 0;
+                            if (detectionRule.Source.Equals("all") || detectionRule.Source.Equals(packet.Source))
+                            {
+                                flg++;
+                            }
+                            if (detectionRule.Destination.Equals("all") || detectionRule.Destination.Equals(packet.Destination))
+                            {
+                                flg++;
+                            }
+                            if (detectionRule.Protocol.Equals("all") || detectionRule.Protocol.Equals(packet.Protocol))
+                            {
+                                flg++;
+                            }
+                            if (detectionRule.sourcePort.Equals("all") || detectionRule.sourcePort.Equals(packet.sourcePort))
+                            {
+                                flg++;
+                            }
+                            if (detectionRule.destinationPort.Equals("all") || detectionRule.destinationPort.Equals(packet.destinationPort))
+                            {
+                                flg++;
+                            }
+                            if (packet.frameLength > detectionRule.frameLength)
+                            {
+                                flg++;
+                            }
+                            if (flg == 6)
+                            {
+                                foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                                {
+                                    int wflg = 0;
+                                    if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(packet.Source))
+                                    {
+                                        wflg++;
+                                    }
+                                    if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(packet.Destination))
+                                    {
+                                        wflg++;
+                                    }
+                                    if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(packet.Protocol))
+                                    {
+                                        wflg++;
+                                    }
+                                    if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(packet.sourcePort))
+                                    {
+                                        wflg++;
+                                    }
+                                    if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(packet.destinationPort))
+                                    {
+                                        wflg++;
+                                    }
+                                    if (packet.frameLength > whiteListRule.frameLength)
+                                    {
+                                        wflg++;
+                                    }
+                                    if (wflg == 6)
+                                    {
+                                        flg--;
+                                    }
+                                }
+                                if (flg == 6)
+                                {
+                                    temp.Add(i);
+                                }
+                            }
+                        }
+                        if (temp.Count >= detectionRule.detectionCount)
+                        {
+                            for (int i = 0; i < temp.Count; i++)
+                            {
+                                if (!detectionNumbers[detectionNumber][detectionRule.ruleNo].Contains(temp[i]))
+                                {
+                                    detectionNumbers[detectionNumber][detectionRule.ruleNo].Add(temp[i]);
+                                    //dWindow.show_detection((packetData)CaptureData.Items[temp[i]], detectionNumber, detectionRule.ruleNo);
+                                    targets.Add(temp[i]);
+                                }
+                            }
+                        }
+                    }
                 }
-                if (rule.Destination.Equals("all") || rule.Destination.Equals(packet.Destination))
+            }
+            else
+            {
+                int start = countRows[clock - 1];
+                int end = countRows[clock] - 1;
+                //if (countRows[clock] == countRows[clock - 1])
+                //{
+                //    end++;
+                //}
+                if (clock > 1 && start == countRows[clock - 1 - 1] && start < end)
                 {
-                    flg++;
+                    start++;
                 }
-                if (rule.Protocol.Equals("all") || rule.Protocol.Equals(packet.Protocol))
-                {
-                    flg++;
-                }
-                if(rule.sourcePort.Equals("all") || rule.sourcePort.Equals(packet.sourcePort))
-                {
-                    flg++;
-                }
-                if(rule.destinationPort.Equals("all") || rule.destinationPort.Equals(packet.destinationPort))
-                {
-                    flg++;
-                }
-                if (packet.frameLength > rule.frameLength)
-                {
-                    flg++;
-                }
-                if (flg == 6)
+                for(int i = start;i < end; i++)
                 {
                     targets.Add(i);
                 }
-            }
-            if (targets.Count >= rule.detectionCount)
-            {
-                for (int i = 0; i < targets.Count; i++)
+                foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
                 {
-                    if (!detectionNumbers[detectionNumber][rule.ruleNo].Contains(targets[i]))
+
+                    for (int i = start; i <= end; i++)
                     {
-                        detectionNumbers[detectionNumber][rule.ruleNo].Add(targets[i]);
-                        dWindow.show_detection((packetData)CaptureData.Items[targets[i]],detectionNumber,rule.ruleNo);
-                        //以下テスト用
+                        packetData packet = (packetData)CaptureData.Items[i];
+                        int wflg = 0;
+                        if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(packet.Source))
+                        {
+                            wflg++;
+                        }
+                        if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(packet.Destination))
+                        {
+                            wflg++;
+                        }
+                        if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(packet.Protocol))
+                        {
+                            wflg++;
+                        }
+                        if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(packet.sourcePort))
+                        {
+                            wflg++;
+                        }
+                        if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(packet.destinationPort))
+                        {
+                            wflg++;
+                        }
+                        if (packet.frameLength > whiteListRule.frameLength)
+                        {
+                            wflg++;
+                        }
+                        if (wflg == 6)
+                        {
+                            targets.Remove(i);
+                        }
                     }
                 }
+            }
+            targets.Sort();
+            foreach(int target  in targets)
+            {
+                dWindow.show_detection((packetData)CaptureData.Items[target], detectionNumber);
             }
         }
         private void ruleGroupDataSplit(ruleGroupData ruleGroup,int detectionNumber)
         {
             foreach(ruleData rule in ruleGroup.ruleDatas)
             {
-                streamStart[detectionNumber].Add(0);
                 detectionNumbers[detectionNumber].Add(new List<int>());
                 //2次要素を格納　ルールグループの中のルールの数
-                detectionSet(rule,detectionNumber);
+                
             }
+            detectionSet(detectionNumber);
         }
 
-        private void detectionSet(ruleData rule,int detectionNumber)
+        private void detectionSet(int detectionNumber)
         {
             DispatcherTimer detectTimer = new DispatcherTimer();
             detectTimer.Interval = new TimeSpan(0, 0, 1);
@@ -398,24 +515,7 @@ namespace BrownieHound
             detectTimerList.Add(detectTimer);
             void detection(object sender, EventArgs e)
             {
-                if (clock >= rule.detectionInterval)
-                {
-                    int start = countRows[clock - rule.detectionInterval];
-                    int end = countRows[clock] - 1;
-                    //想定としてインターバルは秒指定
-                    if (countRows[clock] == countRows[clock - 1])
-                    {
-                        end++;
-                    }
-                    if (clock > rule.detectionInterval && start == countRows[clock - rule.detectionInterval - 1] && start < end)
-                    {
-                        //検知する範囲内で出現したパケットのみを対象とする処理
-                        //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
-                        start++;
-                    }
-                    detectLogic(start, end, rule,detectionNumber);
-
-                }
+                    detectLogic(detectionNumber);
             }
         }
 

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -36,11 +37,17 @@ namespace BrownieHound
             for(int i = 0; i < ruleGroupDatas.Count; i++)
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
+                string message = "";
                 foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
-                    string message = $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
-                    detectionDatas[i].children.Add(new detectionData() { data = message,color= "IndianRed"});
+                    if(detectionRuleData.ruleNo != 0)
+                    {
+                        message += "\n";
+                    }
+                    message += $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
+                    
                 }
+                detectionDatas[i].children.Add(new detectionData() { data = message, color = "IndianRed" });
             }
             DataContext = detectionDatas;
         }
@@ -50,10 +57,10 @@ namespace BrownieHound
             e.Cancel = true;
             this.WindowState = WindowState.Minimized;
         }
-        public void show_detection(packetData pd,int detectionNumber,int ruleNo)
+        public void show_detection(packetData pd,int detectionNumber)
         {
-            string message = $"[No:{pd.Number}]::[source:{pd.Source}][destination:{pd.Destination}][protocol:{pd.Protocol}][sourceport:{pd.sourcePort}][destport:{pd.destinationPort}][length:{pd.frameLength}]";
-            detectionDatas[detectionNumber].children[ruleNo].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
+            string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
+            detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
             detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
 
         }

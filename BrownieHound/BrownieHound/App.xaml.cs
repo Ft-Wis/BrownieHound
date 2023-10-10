@@ -45,7 +45,7 @@ namespace BrownieHound
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
             public int frameLength { get; set; }
-            public int ruleCategory { get; set; } = 1;
+            public int ruleCategory { get; set; } = 0;
 
             private void ruleSplit(string ruleSeet)
             {
