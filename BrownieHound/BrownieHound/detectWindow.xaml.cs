@@ -71,7 +71,7 @@ namespace BrownieHound
             detectionData dD = (detectionData)detection_tree.SelectedValue as detectionData;
             try
             {
-                if (dD.packet != null)
+                if (dD != null && dD.packet != null)
                 {
                     packet_detail_Window packet_detail = new packet_detail_Window(dD.packet.Data);
                     packet_detail.Show();
