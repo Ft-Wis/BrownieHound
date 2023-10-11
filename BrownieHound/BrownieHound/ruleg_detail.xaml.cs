@@ -48,7 +48,7 @@ namespace BrownieHound
 
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
-            Application.Current.MainWindow.Width = 1020;
+            Application.Current.MainWindow.Width = 1200;
             InitializeComponent();
             title.Content = $"{title.Content} - {name}";
             fileName = name;
@@ -73,11 +73,11 @@ namespace BrownieHound
 
                 if (gridData.ruleCategory=="0")
                 {
-                    gridData.ruleCategory = "拒否";
+                    gridData.ruleCategory = "否検出";
                 }
                 else
                 {
-                    gridData.ruleCategory = "許可";
+                    gridData.ruleCategory = "検出";
                 }
                 rule_DataGrid.Items.Add(gridData);
             }
@@ -95,6 +95,7 @@ namespace BrownieHound
 
                 DataGridItem data = new DataGridItem 
                 {
+                    ruleCategory = selectedGridItem.ruleCategory,
                     ruleNo = selectedGridItem.ruleNo,
                     source = selectedGridItem.source,
                     destination = selectedGridItem.destination,
@@ -154,6 +155,7 @@ namespace BrownieHound
                 string filePath = "./ruleGroup/"+fileName+".txt";
                 int editLineNumber = receivedData.ruleNo;
                 string insertText = exchangeText(receivedData);
+                Debug.WriteLine(insertText);
 
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 replaceLine(filePath,editLineNumber,insertText);
@@ -227,8 +229,17 @@ namespace BrownieHound
                     sourcePort = rd.sourcePort,
                     destinationPort = rd.destinationPort,
                     destination = rd.Destination,
-                    frameLength = rd.frameLength
+                    frameLength = rd.frameLength,
+                    ruleCategory = rd.ruleCategory.ToString()
                 };
+                if(gridData.ruleCategory == "0")
+                {
+                    gridData.ruleCategory = "否検出";
+                }
+                else
+                {
+                    gridData.ruleCategory = "検出";
+                }
                 rule_DataGrid.Items.Add(gridData);
             }
         }
@@ -237,6 +248,7 @@ namespace BrownieHound
         {
             string exchangeText="";
 
+            exchangeText += originalData.ruleCategory + ",";
             exchangeText += originalData.detectionInterval + ",";
             exchangeText += originalData.detectionCount + ",";
             exchangeText += originalData.source + ",";

@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using static BrownieHound.ruleg_detail;
 using System.Text.RegularExpressions;
 using System.Drawing.Imaging;
+using System.Diagnostics;
 
 namespace BrownieHound
 {
@@ -53,6 +54,16 @@ namespace BrownieHound
 
         private void setItem()
         {
+            //ブラックリスト・ホワイトリストに値を代入
+            if (ruleItem.ruleCategory == "否検出")
+            {
+                blackListRadioButton.IsChecked = true;
+            }
+            else
+            {
+                whiteListRadioButton.IsChecked = true;
+            }
+
             //送信元IPアドレスに値を代入
             if(judgeIPAdress(ruleItem.source))
             {
@@ -207,11 +218,22 @@ namespace BrownieHound
             string protocolName;
             string sourcePortNum;
             string destinationPortNum;
+            string category;
 
             sourceIP = sourceTextBox.Text;
             destinationIP = destinationTextBox.Text;
             protocolName = protocolTextBox.Text;
-            
+
+            //ホワイトリストにチェックがされている場合
+            if ((bool)whiteListRadioButton.IsChecked)
+            {
+                category = "1";
+            }
+            else
+            {
+                category = "0";
+            }
+
             //送信元ポートにチェックがされている場合
             if ((bool)sourceRadioButton.IsChecked)
             {
@@ -226,6 +248,7 @@ namespace BrownieHound
 
             //sendDataに格納
             sendData = new DataGridItem {
+                ruleCategory = category,
                 ruleNo = ruleItem.ruleNo,
                 source = sourceIP,
                 destination = destinationIP,
@@ -236,6 +259,7 @@ namespace BrownieHound
                 detectionInterval = int.Parse(secondsTextBox.Text),
                 detectionCount = int.Parse(timesTextBox.Text)
             };
+            Debug.WriteLine(sendData.ruleCategory);
         }
 
         private void sourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
