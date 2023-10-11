@@ -9,8 +9,6 @@
       
       Title="ruleg_detail" Cursor="">
 
-    
-    
     <Grid Background="White">
         <Label x:Name="title" Content="ルール詳細" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="729" FontSize="24"/>
         <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="837,0,0,22" VerticalAlignment="Bottom" Width="153" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
@@ -31,6 +29,7 @@
                 </DataGridTemplateColumn>
                 <!--<DataGridCheckBoxColumn x:Name="ableToDelete"  Binding="{Binding isCheck}" Header="" IsReadOnly="False" MinWidth="20"/>-->
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
+                <DataGridTextColumn Header="検出可否" Binding="{Binding ruleCategory}" IsReadOnly="True" MinWidth="30"/>
                 <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="送信先IP" Binding="{Binding destination}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="プロトコル" Binding="{Binding protocol}" IsReadOnly="True" MinWidth="20"/>

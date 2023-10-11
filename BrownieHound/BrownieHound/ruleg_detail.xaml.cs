@@ -38,6 +38,7 @@ namespace BrownieHound
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
             public int frameLength { get; set; }
+            public string ruleCategory { get; set; }
         }
 
         ObservableCollection<DataGridItem> gridItem;
@@ -66,8 +67,18 @@ namespace BrownieHound
                     sourcePort = rd.sourcePort,
                     destinationPort = rd.destinationPort,
                     destination = rd.Destination,
-                    frameLength = rd.frameLength
+                    frameLength = rd.frameLength,
+                    ruleCategory = rd.ruleCategory.ToString()
                 };
+
+                if (gridData.ruleCategory=="0")
+                {
+                    gridData.ruleCategory = "拒否";
+                }
+                else
+                {
+                    gridData.ruleCategory = "許可";
+                }
                 rule_DataGrid.Items.Add(gridData);
             }
 
