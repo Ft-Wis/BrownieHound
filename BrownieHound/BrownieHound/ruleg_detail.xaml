@@ -11,7 +11,7 @@
 
     <Page.Resources>
         <!-- データ変換を行うコンバーター -->
-        <local:YourConverter x:Key="YourConverter"/>
+        <!--<local:YourConverter x:Key="YourConverter"/>-->
     </Page.Resources>
     
     <Grid Background="White">
@@ -34,13 +34,13 @@
                 </DataGridTemplateColumn>
                 <!--<DataGridCheckBoxColumn x:Name="ableToDelete"  Binding="{Binding isCheck}" Header="" IsReadOnly="False" MinWidth="20"/>-->
                 <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
-                <DataGridTemplateColumn Header="検知方式">
+                <!--<DataGridTemplateColumn Header="検知方式">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding ruleCategory, Converter={StaticResource YourConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
                 <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="送信先IP" Binding="{Binding destination}" IsReadOnly="True" MinWidth="50"/>
                 <DataGridTextColumn Header="プロトコル" Binding="{Binding protocol}" IsReadOnly="True" MinWidth="20"/>

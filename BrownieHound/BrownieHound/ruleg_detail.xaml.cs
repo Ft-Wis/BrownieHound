@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -39,7 +38,7 @@ namespace BrownieHound
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
             public int frameLength { get; set; }
-            public int ruleCategory { get; set; } 
+            public int ruleCategory { get; set; }
         }
 
         ObservableCollection<DataGridItem> gridItem;
@@ -47,14 +46,14 @@ namespace BrownieHound
         private string fileName;
         private List<ruleData> ruledata;
 
-        public ruleg_detail(int no ,String name, List<ruleData> ruledata)
+        public ruleg_detail(int no, String name, List<ruleData> ruledata)
         {
             Application.Current.MainWindow.Width = 1020;
             InitializeComponent();
             title.Content = $"{title.Content} - {name}";
             fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
-            
+
             foreach (ruleData rd in ruledata)
             {
                 DataGridItem gridData = new DataGridItem
@@ -75,28 +74,27 @@ namespace BrownieHound
             }
 
             //rule_DataGrid.ItemsSource= gridItem;
-            
+
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedItems = rule_DataGrid.SelectedItems;
-            if (selectedItems.Count==1)
+            if (selectedItems.Count == 1)
             {
                 var selectedGridItem = (DataGridItem)rule_DataGrid.SelectedItem;
 
-                DataGridItem data = new DataGridItem 
+                DataGridItem data = new DataGridItem
                 {
                     ruleNo = selectedGridItem.ruleNo,
                     source = selectedGridItem.source,
                     destination = selectedGridItem.destination,
                     protocol = selectedGridItem.protocol,
                     sourcePort = selectedGridItem.sourcePort,
-                    destinationPort=selectedGridItem.destinationPort,
-                    frameLength=selectedGridItem.frameLength,
-                    detectionInterval=selectedGridItem.detectionInterval,
+                    destinationPort = selectedGridItem.destinationPort,
+                    frameLength = selectedGridItem.frameLength,
+                    detectionInterval = selectedGridItem.detectionInterval,
                     detectionCount = selectedGridItem.detectionCount
-                    
                 };
                 showPopup(data);
             }
@@ -139,17 +137,17 @@ namespace BrownieHound
         private void showPopup(DataGridItem sendData)
         {
             rule_edit_Window rule_Edit_Window = new rule_edit_Window(sendData);
-            
+
             if (rule_Edit_Window.ShowDialog() == true)
             {
                 // OKボタンがクリックされた場合の処理
                 DataGridItem receivedData = rule_Edit_Window.sendData;
-                string filePath = "./ruleGroup/"+fileName+".txt";
+                string filePath = "./ruleGroup/" + fileName + ".txt";
                 int editLineNumber = receivedData.ruleNo;
                 string insertText = exchangeText(receivedData);
 
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
-                replaceLine(filePath,editLineNumber,insertText);
+                replaceLine(filePath, editLineNumber, insertText);
                 ReadFileByLine(filePath);
                 reDraw();
             }
@@ -163,15 +161,15 @@ namespace BrownieHound
         private void showPopup()
         {
             int newRuleNo = rule_DataGrid.Items.Count;
-            rule_add_Window ruleAddWin= new rule_add_Window(newRuleNo);
-            if(ruleAddWin.ShowDialog() == true)
+            rule_add_Window ruleAddWin = new rule_add_Window(newRuleNo);
+            if (ruleAddWin.ShowDialog() == true)
             {
                 // OKボタンがクリックされた場合の処理
                 DataGridItem addData = ruleAddWin.sendData;
                 string filePath = "./ruleGroup/" + fileName + ".txt";
                 string addText = exchangeText(addData);
                 string[] lines = File.ReadAllLines(filePath);
-                string[] result = addLine(lines,addText);
+                string[] result = addLine(lines, addText);
                 File.WriteAllLines(filePath, result);
                 reDraw();
             }
@@ -180,22 +178,6 @@ namespace BrownieHound
                 // キャンセルされた場合の処理
             }
         }
-
-        public class YourConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                // データが0なら「ブラックリスト」、1なら「ホワイトリスト」に変換して返す
-                int data = (int)value;
-                return data == 0 ? "ブラックリスト" : "ホワイトリスト";
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
 
         private void ReadFileByLine(string filePath)
         {
@@ -207,7 +189,7 @@ namespace BrownieHound
                     while ((line = sr.ReadLine()) != null)
                     {
                         Debug.WriteLine(line);
-                        
+
                     }
                 }
             }
@@ -244,7 +226,7 @@ namespace BrownieHound
 
         private string exchangeText(DataGridItem originalData)
         {
-            string exchangeText="";
+            string exchangeText = "";
 
             exchangeText += originalData.detectionInterval + ",";
             exchangeText += originalData.detectionCount + ",";
@@ -258,9 +240,9 @@ namespace BrownieHound
             return exchangeText;
         }
 
-        static void replaceLine(string filePath,int lineNumber,string insertText)
+        static void replaceLine(string filePath, int lineNumber, string insertText)
         {
-            string[] lines=File.ReadAllLines(filePath);
+            string[] lines = File.ReadAllLines(filePath);
             if (lineNumber >= 0 && lineNumber <= lines.Length)
             {
                 lines[lineNumber] = insertText;
@@ -281,7 +263,7 @@ namespace BrownieHound
             for (int i = 0; i < lines.Length; i++)
             {
                 // 削除する行以外を新しい配列に追加
-                if (i != lineNumber)  
+                if (i != lineNumber)
                 {
                     newLines[currentIndex] = lines[i];
                     currentIndex++;
@@ -295,13 +277,13 @@ namespace BrownieHound
         {
             // 指定された行にテキストを挿入して新しい配列を作成
             string[] newLines = new string[lines.Length + 1];
-            int lastIndex=lines.Length;
+            int lastIndex = lines.Length;
 
             for (int i = 0; i < lines.Length; i++)
             {
                 newLines[i] = lines[i];
             }
-            newLines[lastIndex]= insertText;
+            newLines[lastIndex] = insertText;
 
             return newLines;
         }
@@ -312,7 +294,7 @@ namespace BrownieHound
 
             foreach (DataGridItem item in rule_DataGrid.Items)
             {
-                DataGridItem result=(DataGridItem)rule_DataGrid.Items[0];
+                DataGridItem result = (DataGridItem)rule_DataGrid.Items[0];
                 if (item.isCheck)
                 {
                     selectedRuleNumbers.Add(item.ruleNo);
