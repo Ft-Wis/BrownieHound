@@ -155,7 +155,6 @@ namespace BrownieHound
                 string filePath = "./ruleGroup/"+fileName+".txt";
                 int editLineNumber = receivedData.ruleNo;
                 string insertText = exchangeText(receivedData);
-                Debug.WriteLine(insertText);
 
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 replaceLine(filePath,editLineNumber,insertText);
@@ -199,7 +198,6 @@ namespace BrownieHound
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        Debug.WriteLine(line);
                         
                     }
                 }

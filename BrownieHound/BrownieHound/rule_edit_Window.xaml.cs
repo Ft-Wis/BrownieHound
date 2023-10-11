@@ -259,7 +259,6 @@ namespace BrownieHound
                 detectionInterval = int.Parse(secondsTextBox.Text),
                 detectionCount = int.Parse(timesTextBox.Text)
             };
-            Debug.WriteLine(sendData.ruleCategory);
         }
 
         private void sourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
