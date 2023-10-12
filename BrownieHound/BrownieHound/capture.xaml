@@ -8,14 +8,29 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="capture">
 
-    <Grid Loaded="Page_loaded">
+    <Grid Loaded="Page_loaded" Unloaded="Grid_Unloaded">
         <Label x:Name="title" Content="キャプチャ画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
-        <Button x:Name="inactivate" Content="停止" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" Click="inactivate_Click"/>
-        <DataGrid x:Name="CaputureData" Margin="0,85,50,104" HorizontalAlignment="Right" Width="701" AutoGenerateColumns="False">
+        <Button x:Name="inactivate" Content="停止" Margin="28,0,0,22" Click="inactivate_Click"  FontFamily="Yu Gothic" Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="43" Width="146"/>
+        <DataGrid x:Name="CaptureData" Margin="49,85,50,104" AutoGenerateColumns="False" ForceCursor="True"  ScrollViewer.ScrollChanged="chaptureDataGrid_ScrollChanged" EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="パケット内容" Binding="{Binding Data}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="No" Binding="{Binding Number}" IsReadOnly="True" MinWidth="60"/>
+                <DataGridTextColumn Header="time" Binding="{Binding Time.TimeOfDay}" IsReadOnly="True" MinWidth="80"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True" MinWidth="100"/>
+                <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True" MinWidth="100"/>
+                <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True" MinWidth="50"/>
+                <DataGridTextColumn Header="Length" Binding="{Binding frameLength}" IsReadOnly="True" MinWidth="60"/>
+                <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True" MinWidth="100"/>
             </DataGrid.Columns>
         </DataGrid>
+        <Button x:Name="stop" Content="中断" Height="43" Margin="201,0,0,22" VerticalAlignment="Bottom" Click="stop_Click"  FontFamily="Yu Gothic" Background="Gray" FontSize="25" Foreground="White" FontWeight="Medium" BorderBrush="Gray" Width="146" HorizontalAlignment="Left" Grid.Column="1" />
+        <Label x:Name="stopstatus" Content="検知中" Height="44" Margin="0,0,67,22"  Width="82" FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"/>
+        <Button x:Name="up" Content="↑" Height="50" Margin="0,20,20,0" VerticalAlignment="Top" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="Black" Width="42" HorizontalAlignment="Right" Click="up_Click" />
+        <Button x:Name="doun" Content="↓" Margin="0,0,20,20" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="Black" Width="42" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Click="doun_Click" />
 
     </Grid>
 </Page>

@@ -3,15 +3,50 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:BrownieHound"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="mail_settings">
+      mc:Ignorable="d" d:DesignWidth="800"
+      Title="mail_settings" d:DesignHeight="450">
 
-    <Grid>
-        <Button x:Name="m_sTotop_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" Click="s_rTotop_redo_Click"/>
-        <Button x:Name="m_sTotop_submit" Content="確定" HorizontalAlignment="Left" Height="43" Margin="617,0,0,22" VerticalAlignment="Bottom" Width="146" Click="s_rTotop_submit_Click"/>
-        <Label x:Name="title" Content="メール設定画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+    <Grid Background="White" Margin="0,0,0,-14" Loaded="Page_Loaded">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.8*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.9*"/>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="m_sTotop_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="45,0,0,28" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="s_rTotop_redo_Click" Grid.Column="0" Grid.Row="5"/>
+        <Label x:Name="title" Content="メール設定画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24" Grid.ColumnSpan="3"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="70,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Yu Gothic" FontWeight="Bold" FontSize="23" Height="36" Width="177"><Run Text="メール送信"/><Run Language="ja-jp" Text="設定"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
+        <ToggleButton x:Name="enabledButton" Height="50" Width="50" HorizontalAlignment="Left" Margin="10,0,0,10" 
+          Style="{StaticResource MaterialDesignSwitchToggleButton}"
+          Grid.Column="1" Grid.Row="1" IsChecked="{Binding isEnabled.Value}">
+            <materialDesign:ToggleButtonAssist.SwitchTrackOnBackground>
+                <SolidColorBrush
+              Color="Green" />
+            </materialDesign:ToggleButtonAssist.SwitchTrackOnBackground>
+            <materialDesign:ToggleButtonAssist.SwitchTrackOffBackground>
+                <SolidColorBrush
+              Color="Red" />
+            </materialDesign:ToggleButtonAssist.SwitchTrackOffBackground>
+        </ToggleButton>
+        <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="70,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Yu Gothic" FontWeight="Bold" FontSize="23" Height="36" Width="177"><Run Language="ja-jp" Text="送信スパン"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="70,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Yu Gothic" FontWeight="Bold" FontSize="23" Height="36" Width="238"><Run Language="ja-jp" Text="送信先メールアドレス"/><LineBreak/><Run/></TextBlock>
+
+        <TextBlock Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Center" Margin="0,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Yu Gothic" FontSize="15" Height="70" Width="700"><Run Text="※「"/><Run Language="ja-jp" Text="B"/><Run Text="rown"/><Run Language="ja-jp" Text="ie"/><Run Text="hound@gmail.com」からの送信になります。メールが届かないときは、迷惑メールとして
+　　認識されている場合や正しい送信先メールアドレスが設定されていない場合がありますので、お手数ですがご確認いただきますようよろしくお願い申し上げます。"/><LineBreak/><Run/>
+        </TextBlock>
+        <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" x:Name="SendSpan" materialDesign:HintAssist.Hint="XX" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="66"  FontSize="20" Text="{Binding span.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxLines="1"/>
+        <TextBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" x:Name="MailaddressTextBox" materialDesign:HintAssist.Hint="メールアドレス" Text="{Binding mailAddress.Value,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" FontSize="15" Width="375"/>
+        <TextBlock Grid.Column="1" Grid.Row="2"  HorizontalAlignment="Left" Height="22" Margin="85,23,0,0" Padding="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" FontSize="15" FontFamily="Yu Gothic"><Run Language="ja-jp" Text="分毎"/></TextBlock>
+        <Button x:Name="m_sTotop_submit" Content="確定" HorizontalAlignment="Right" Height="43" Margin="0,0,45,28" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White"   Click="s_rTotop_submit_Click" Grid.Column="1" Grid.Row="5"/>
+
 
     </Grid>
 </Page>
