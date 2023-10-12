@@ -396,3 +396,15 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/BrownieHound/BrownieHound/obj/BrownieHound.csproj.nuget.dgspec.json
+/BrownieHound/BrownieHound/obj/Debug/netcoreapp3.1/App.g.i.cs
+/BrownieHound/BrownieHound/obj/Debug/netcoreapp3.1/BrownieHound.assets.cache
+/BrownieHound/BrownieHound/obj/Debug/netcoreapp3.1/BrownieHound.designer.deps.json
+/BrownieHound/BrownieHound/obj/Debug/netcoreapp3.1/BrownieHound.designer.runtimeconfig.json
+/BrownieHound/BrownieHound/obj/Debug/netcoreapp3.1/mail_settings.g.i.cs
+/BrownieHound/BrownieHound/obj/Debug/netcoreapp3.1/ruleg_detail.g.i.cs
+/BrownieHound/BrownieHound/obj/Debug/netcoreapp3.1/standby_rule.g.i.cs
+/BrownieHound/BrownieHound/obj/BrownieHound.csproj.nuget.dgspec.json
+/BrownieHound/BrownieHound/obj/BrownieHound.csproj.nuget.g.props
+/BrownieHound/BrownieHound/obj/project.assets.json
+/BrownieHound/BrownieHound/obj/project.nuget.cache
