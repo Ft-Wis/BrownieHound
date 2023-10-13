@@ -38,16 +38,16 @@ namespace BrownieHound
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
             public int frameLength { get; set; }
+            public string ruleCategory { get; set; }
         }
 
         ObservableCollection<DataGridItem> gridItem;
 
         private string fileName;
-        private List<ruleData> ruledata;
 
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
-            Application.Current.MainWindow.Width = 1020;
+            Application.Current.MainWindow.Width = 1200;
             InitializeComponent();
             title.Content = $"{title.Content} - {name}";
             fileName = name;
@@ -66,8 +66,18 @@ namespace BrownieHound
                     sourcePort = rd.sourcePort,
                     destinationPort = rd.destinationPort,
                     destination = rd.Destination,
-                    frameLength = rd.frameLength
+                    frameLength = rd.frameLength,
+                    ruleCategory = rd.ruleCategory.ToString()
                 };
+
+                if (gridData.ruleCategory=="0")
+                {
+                    gridData.ruleCategory = "検出";
+                }
+                else
+                {
+                    gridData.ruleCategory = "否検出";
+                }
                 rule_DataGrid.Items.Add(gridData);
             }
 
@@ -84,6 +94,7 @@ namespace BrownieHound
 
                 DataGridItem data = new DataGridItem 
                 {
+                    ruleCategory = selectedGridItem.ruleCategory,
                     ruleNo = selectedGridItem.ruleNo,
                     source = selectedGridItem.source,
                     destination = selectedGridItem.destination,
@@ -186,7 +197,6 @@ namespace BrownieHound
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        Debug.WriteLine(line);
                         
                     }
                 }
@@ -216,8 +226,17 @@ namespace BrownieHound
                     sourcePort = rd.sourcePort,
                     destinationPort = rd.destinationPort,
                     destination = rd.Destination,
-                    frameLength = rd.frameLength
+                    frameLength = rd.frameLength,
+                    ruleCategory = rd.ruleCategory.ToString()
                 };
+                if(gridData.ruleCategory == "0")
+                {
+                    gridData.ruleCategory = "検出";
+                }
+                else
+                {
+                    gridData.ruleCategory = "否検出";
+                }
                 rule_DataGrid.Items.Add(gridData);
             }
         }
@@ -226,6 +245,7 @@ namespace BrownieHound
         {
             string exchangeText="";
 
+            exchangeText += originalData.ruleCategory + ",";
             exchangeText += originalData.detectionInterval + ",";
             exchangeText += originalData.detectionCount + ",";
             exchangeText += originalData.source + ",";
