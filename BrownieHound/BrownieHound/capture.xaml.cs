@@ -429,7 +429,10 @@ namespace BrownieHound
                                 {
                                     detectionNumbers[detectionNumber][detectionRule.ruleNo].Add(temp[i]);
                                     //dWindow.show_detection((packetData)CaptureData.Items[temp[i]], detectionNumber, detectionRule.ruleNo);
-                                    targets.Add(temp[i]);
+                                    if (!targets.Contains(temp[i]))
+                                    {
+                                        targets.Add(temp[i]);
+                                    }
                                 }
                             }
                         }
@@ -490,7 +493,6 @@ namespace BrownieHound
                     }
                 }
             }
-            targets.Sort();
             foreach(int target  in targets)
             {
                 dWindow.show_detection((packetData)CaptureData.Items[target], detectionNumber);
