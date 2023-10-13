@@ -429,7 +429,10 @@ namespace BrownieHound
                                 {
                                     detectionNumbers[detectionNumber][detectionRule.ruleNo].Add(temp[i]);
                                     //dWindow.show_detection((packetData)CaptureData.Items[temp[i]], detectionNumber, detectionRule.ruleNo);
-                                    targets.Add(temp[i]);
+                                    if (!targets.Contains(temp[i]))
+                                    {
+                                        targets.Add(temp[i]);
+                                    }
                                 }
                             }
                         }
@@ -490,7 +493,6 @@ namespace BrownieHound
                     }
                 }
             }
-            targets.Sort();
             foreach(int target  in targets)
             {
                 dWindow.show_detection((packetData)CaptureData.Items[target], detectionNumber);
@@ -622,6 +624,17 @@ namespace BrownieHound
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
         {
             closing();
+        }
+
+        private void up_Click(object sender, RoutedEventArgs e)
+        {
+            CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(0));
+            CaptureData.SelectedIndex = 0;
+        }
+
+        private void doun_Click(object sender, RoutedEventArgs e)
+        {
+            CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
         }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
