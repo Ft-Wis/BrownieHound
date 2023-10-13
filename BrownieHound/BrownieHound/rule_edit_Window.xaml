@@ -98,8 +98,8 @@
 
             <RadioButton x:Name="sourceRadioButton" Grid.Column="1" Content="送信元" HorizontalAlignment="Left" Margin="84,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Margin="22,82,0,0" Grid.Column="1"><Run Language="ja-jp" Text="検知方式"/></TextBlock>
-            <RadioButton x:Name="blackListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="133,102,0,0" IsChecked="True" Grid.Column="1" Grid.ColumnSpan="2"/>
-            <RadioButton x:Name="whiteListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="133,81,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="133,102,0,0" IsChecked="True" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="133,81,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False" Grid.Column="1" Grid.ColumnSpan="2"/>
 
 
         </Grid>

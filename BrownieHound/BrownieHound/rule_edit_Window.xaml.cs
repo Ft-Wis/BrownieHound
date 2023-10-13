@@ -54,8 +54,8 @@ namespace BrownieHound
 
         private void setItem()
         {
-            //ブラックリスト・ホワイトリストに値を代入
-            if (ruleItem.ruleCategory == "否検出")
+            //検出・否検出に値を代入
+            if (ruleItem.ruleCategory == "検出")
             {
                 blackListRadioButton.IsChecked = true;
             }
@@ -224,14 +224,14 @@ namespace BrownieHound
             destinationIP = destinationTextBox.Text;
             protocolName = protocolTextBox.Text;
 
-            //ホワイトリストにチェックがされている場合
-            if ((bool)whiteListRadioButton.IsChecked)
+            //検出にチェックがされている場合
+            if ((bool)blackListRadioButton.IsChecked)
             {
-                category = "1";
+                category = "0";
             }
             else
             {
-                category = "0";
+                category = "1";
             }
 
             //送信元ポートにチェックがされている場合

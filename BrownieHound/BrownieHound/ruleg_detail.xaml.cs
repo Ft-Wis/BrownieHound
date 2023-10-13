@@ -44,7 +44,6 @@ namespace BrownieHound
         ObservableCollection<DataGridItem> gridItem;
 
         private string fileName;
-        private List<ruleData> ruledata;
 
         public ruleg_detail(int no ,String name, List<ruleData> ruledata)
         {
@@ -73,11 +72,11 @@ namespace BrownieHound
 
                 if (gridData.ruleCategory=="0")
                 {
-                    gridData.ruleCategory = "否検出";
+                    gridData.ruleCategory = "検出";
                 }
                 else
                 {
-                    gridData.ruleCategory = "検出";
+                    gridData.ruleCategory = "否検出";
                 }
                 rule_DataGrid.Items.Add(gridData);
             }
@@ -232,11 +231,11 @@ namespace BrownieHound
                 };
                 if(gridData.ruleCategory == "0")
                 {
-                    gridData.ruleCategory = "否検出";
+                    gridData.ruleCategory = "検出";
                 }
                 else
                 {
-                    gridData.ruleCategory = "検出";
+                    gridData.ruleCategory = "否検出";
                 }
                 rule_DataGrid.Items.Add(gridData);
             }

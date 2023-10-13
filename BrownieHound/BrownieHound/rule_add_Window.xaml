@@ -79,8 +79,8 @@
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="285,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43"><Run Language="ja-jp" Text="回以上"/></TextBlock>
         <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="92,212,0,0" IsChecked="True"/>
         <RadioButton x:Name="sourceRadioButton" Content="送信元" HorizontalAlignment="Left" Margin="92,194,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
-        <RadioButton x:Name="blackListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="138,83,0,0" IsChecked="True"/>
-        <RadioButton x:Name="whiteListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="138,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
+        <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="138,83,0,0" IsChecked="True"/>
+        <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="138,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
 
 
 
