@@ -32,6 +32,7 @@ using System.IO;
 using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit;
+using Reactive.Bindings.Extensions;
 
 namespace BrownieHound
 {
@@ -133,6 +134,10 @@ namespace BrownieHound
         string mailAddress = null;
         List<int> streamStart = new List<int>();
 
+        List<string> viewPacketString = new List<string>();
+        int viewDistrictCount = 100;
+        private ObservableCollection<packetData> viewPacketDatas = new ObservableCollection<packetData>();
+        int dataCount = 0;
 
         public capture(string tsINumber)
         {
@@ -322,13 +327,65 @@ namespace BrownieHound
 
         private void recordTime(object sender,EventArgs e)
         {
-            int countNumber = CaptureData.Items.Count;
-            if(countNumber > 0)
+            int countNumber = dataCount;
+            int endPoint = viewPacketString.Count;
+            for(int i = 0;i< endPoint; i++)
+            {
+                writeFile(viewPacketString[i]);
+            }
+            viewPacketString.RemoveRange(0, endPoint);
+            if (countNumber > 0)
             {
                 countNumber -= 1;
             }
+            viewPacketDatas.Clear();
+            for(int i = countNumber - viewDistrictCount;i >= 0 && i <= countNumber; i++)
+            {
+                readFile(i);
+            }
+            CaptureData.ItemsSource = viewPacketDatas;
             clock++;
             countRows.Add(countNumber);
+        }
+        private packetData transfar(string msg)
+        {
+            packetData pd = null;
+            try
+            {
+                JObject packetObject = JObject.Parse(msg);
+                if (packetObject["layers"] != null)
+                {
+                    pd = new packetData((JObject)packetObject["layers"]);
+                }
+                }
+            catch
+            {
+
+                //errなどはそのまま出力する
+                if (stopflag == true)
+                {
+                    stopstatus.Content = "中断中";
+                }
+                else
+                {
+                    pd = (new packetData(msg));
+                }
+            }
+            return pd;
+        }
+        private void writeFile(string msg)
+        {
+            using (StreamWriter sw = new StreamWriter("temp.tmp", true, Encoding.GetEncoding("UTF-8")))
+            {
+                sw.WriteLine(msg);
+            }
+        }
+        private void readFile(int skipRow)
+        {
+            using(StreamReader sr = new StreamReader("temp.tmp"))
+            {
+                viewPacketDatas.Add(transfar((string)sr.ReadLine().Skip(skipRow)));
+            }
         }
         private void detectLogic(int detectionNumber)
         {
@@ -542,31 +599,11 @@ namespace BrownieHound
         }
         private void Printpacket(string msg)
         {
-            try
-            {
-                JObject packetObject = JObject.Parse(msg);
-                if (packetObject["layers"] != null)
-                {
-                    packetData pd = new packetData((JObject)packetObject["layers"]);
-                    CaptureData.Items.Add(pd);
-                }
-            }
-            catch
-            {
-                
-                //errなどはそのまま出力する
-                if (stopflag==true)
-                {
-                    stopstatus.Content = "中断中";
-                }
-                else
-                {
-                    CaptureData.Items.Add(new packetData(msg));
-                }
-            }
+            dataCount++;
+            viewPacketString.Add(msg);
             bool isRowSelected = CaptureData.SelectedItems.Count > 0;
 
-            if (!isRowSelected)
+            if (!isRowSelected && CaptureData.SelectedItems.Count > 0)
             {
                 CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
             }
