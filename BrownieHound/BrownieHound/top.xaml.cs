@@ -117,6 +117,7 @@ namespace BrownieHound
         private void topTos_r_Click(object sender, RoutedEventArgs e)
         {
             if (interfaceList.SelectedItems.Count > 0)
+
             {
                 sendTos_r(interfaceList.SelectedItems[0].ToString());
             }
@@ -154,6 +155,11 @@ namespace BrownieHound
             {
                 sendTos_r(listBoxItem.Content.ToString());
             }
+        }
+
+        private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+            topTos_r.IsEnabled = true;
         }
     }
 }
