@@ -136,7 +136,7 @@ namespace BrownieHound
 
         List<string> viewPacketString = new List<string>();
         int viewDistrictCount = 100;
-        private ObservableCollection<packetData> viewPacketDatas = new ObservableCollection<packetData>();
+        private ObservableCollection<packetData> viewPacketDatas;
         int dataCount = 0;
 
         public capture(string tsINumber)
@@ -164,6 +164,7 @@ namespace BrownieHound
         {
             processTscap.Kill();
             stopflag = true;
+            clockTimer.Stop();
             foreach (var detectTimer in detectTimerList)
             {
                 detectTimer.Stop();
@@ -329,17 +330,18 @@ namespace BrownieHound
         {
             int countNumber = dataCount;
             int endPoint = viewPacketString.Count;
-            for(int i = 0;i< endPoint; i++)
-            {
-                writeFile(viewPacketString[i]);
-            }
-            viewPacketString.RemoveRange(0, endPoint);
+            int readPoint = 0;
+            writeFile(endPoint);
             if (countNumber > 0)
             {
                 countNumber -= 1;
             }
-            viewPacketDatas.Clear();
-            for(int i = countNumber - viewDistrictCount;i >= 0 && i <= countNumber; i++)
+            viewPacketDatas = new ObservableCollection<packetData>();
+            if(countNumber >= viewDistrictCount)
+            {
+                readPoint = countNumber - viewDistrictCount;
+            }
+            for(int i = readPoint;i <= countNumber; i++)
             {
                 readFile(i);
             }
@@ -373,18 +375,25 @@ namespace BrownieHound
             }
             return pd;
         }
-        private void writeFile(string msg)
+        private void writeFile(int endPoint)
         {
             using (StreamWriter sw = new StreamWriter("temp.tmp", true, Encoding.GetEncoding("UTF-8")))
             {
-                sw.WriteLine(msg);
+                for(int i = 0;i < endPoint; i++)
+                {
+                    sw.WriteLine(viewPacketString[i]);
+                }
+
             }
+            viewPacketString.RemoveRange(0, endPoint);
         }
         private void readFile(int skipRow)
         {
             using(StreamReader sr = new StreamReader("temp.tmp"))
             {
-                viewPacketDatas.Add(transfar((string)sr.ReadLine().Skip(skipRow)));
+                List<string> temps = new List<string>();
+                Debug.WriteLine(sr.ReadToEnd());
+                //viewPacketDatas.Add(transfar((string)sr.ReadLine().Skip(skipRow)));
             }
         }
         private void detectLogic(int detectionNumber)
@@ -599,8 +608,30 @@ namespace BrownieHound
         }
         private void Printpacket(string msg)
         {
-            dataCount++;
-            viewPacketString.Add(msg);
+            try
+            {
+                JObject packetObject = JObject.Parse(msg);
+                if (packetObject["layers"] != null)
+                {
+                    dataCount++;
+                    viewPacketString.Add(msg);
+                }
+            }
+            catch
+            {
+
+                //errなどはそのまま出力する
+                if (stopflag == true)
+                {
+                    stopstatus.Content = "中断中";
+                }
+                else
+                {
+                    dataCount++;
+                    viewPacketString.Add(msg);
+                }
+            }
+
             bool isRowSelected = CaptureData.SelectedItems.Count > 0;
 
             if (!isRowSelected && CaptureData.SelectedItems.Count > 0)
@@ -642,6 +673,9 @@ namespace BrownieHound
         }
         private void closing()
         {
+            FileInfo file = new FileInfo($"temp.tmp");
+            file.Delete();
+
             if (processTscap != null && !processTscap.HasExited)
             {
                 processTscap.Kill();
