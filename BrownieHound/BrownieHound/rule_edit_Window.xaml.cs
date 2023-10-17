@@ -96,7 +96,7 @@ namespace BrownieHound
             }
             else
             {
-                if (ruleItem.Equals("all"))
+                if (ruleItem.destination.Equals("all"))
                 {
                     //選択肢を「すべてのIP」にする
                     destinationComboBox.SelectedIndex = 0;
