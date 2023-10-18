@@ -54,7 +54,7 @@ namespace BrownieHound
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 string message = "";
-                foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
+                foreach(RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
                     if(detectionRuleData.ruleNo != 0)
                     {

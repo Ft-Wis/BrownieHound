@@ -336,7 +336,7 @@ namespace BrownieHound
             if (detectionRuleGroups[detectionNumber].blackListRules.Count > 0)
             {
 
-                foreach (ruleData detectionRule in detectionRuleGroups[detectionNumber].blackListRules)
+                foreach (RuleData.ruleData detectionRule in detectionRuleGroups[detectionNumber].blackListRules)
                 {
                     List<int> temp = new List<int>();
                     if (detectionRule.detectionInterval <= clock)
@@ -383,7 +383,7 @@ namespace BrownieHound
                             }
                             if (flg == 6)
                             {
-                                foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                                foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
                                 {
                                     int wflg = 0;
                                     if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(packet.Source))
@@ -455,7 +455,7 @@ namespace BrownieHound
                 {
                     targets.Add(i);
                 }
-                foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
                 {
 
                     for (int i = start; i <= end; i++)
@@ -500,7 +500,7 @@ namespace BrownieHound
         }
         private void ruleGroupDataSplit(ruleGroupData ruleGroup,int detectionNumber)
         {
-            foreach(ruleData rule in ruleGroup.ruleDatas)
+            foreach(RuleData.ruleData rule in ruleGroup.ruleDatas)
             {
                 detectionNumbers[detectionNumber].Add(new List<int>());
                 //2次要素を格納　ルールグループの中のルールの数
