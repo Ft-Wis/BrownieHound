@@ -20,7 +20,9 @@ namespace BrownieHound
         public ruleg_add_Window()
         {
             InitializeComponent();
+
             this.Owner = App.Current.MainWindow;
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
         public string newGroupName { get; set; } = "";
         private void ruleg_add_submit_Click(object sender, RoutedEventArgs e)
