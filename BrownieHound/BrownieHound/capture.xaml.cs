@@ -681,6 +681,22 @@ namespace BrownieHound
                         }
                     }*/
                 }
+                foreach (int target in targets)
+                {
+                    using (StreamReader sr = new StreamReader("temp.tmp"))
+                    {
+                        for(int i = start; i < end; i++)
+                        {
+                            sr.ReadLine();
+                        }
+                        for(int i = start; i < end; ++i)
+                        {
+                            if(i == target)
+                                dWindow.show_detection(transfar(sr.ReadLine()), detectionNumber);
+                        }
+                    }
+
+                }
             }
             foreach(int target  in targets)
             {
