@@ -58,10 +58,21 @@ namespace BrownieHound
             string protocolName;
             string sourcePortNum;
             string destinationPortNum;
+            string category;
 
             sourceIP = sourceTextBox.Text;
             destinationIP = destinationTextBox.Text;
             protocolName = protocolTextBox.Text;
+
+            //ホワイトリストにチェックがされている場合
+            if ((bool)whiteListRadioButton.IsChecked)
+            {
+                category = "1";
+            }
+            else
+            {
+                category = "0";
+            }
 
             //送信元ポートにチェックがされている場合
             if ((bool)sourceRadioButton.IsChecked)
@@ -78,6 +89,7 @@ namespace BrownieHound
             //sendDataに格納
             sendData = new DataGridItem
             {
+                ruleCategory = category,
                 ruleNo = newRuleNo,
                 source = sourceIP,
                 destination = destinationIP,

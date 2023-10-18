@@ -51,6 +51,7 @@ namespace BrownieHound
             {
                 string[] data = ruleSeet.Split(',');
                 int i = 0;
+                ruleCategory = Int32.Parse(data[i++]);
                 detectionInterval = Int32.Parse(data[i++]);
                 detectionCount = Int32.Parse(data[i++]);
                 Source = data[i++];
