@@ -45,7 +45,7 @@ namespace BrownieHound
 
         private string fileName;
 
-        public ruleg_detail(int no ,String name, List<ruleData> ruledata)
+        public ruleg_detail(int no ,String name, List<RuleData.ruleData> ruledata)
         {
             Application.Current.MainWindow.Width = 1200;
             InitializeComponent();
@@ -53,7 +53,7 @@ namespace BrownieHound
             fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
             
-            foreach (ruleData rd in ruledata)
+            foreach (RuleData.ruleData rd in ruledata)
             {
                 DataGridItem gridData = new DataGridItem
                 {
@@ -214,7 +214,7 @@ namespace BrownieHound
             rule_DataGrid.Items.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
             for (int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
             {
-                ruleData rd = new ruleData(lines[ruleNum]);
+                RuleData.ruleData rd = new RuleData.ruleData(lines[ruleNum]);
                 var gridData = new DataGridItem
                 {
                     isCheck = false,
