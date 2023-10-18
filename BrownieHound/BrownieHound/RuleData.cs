@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BrownieHound
 {
@@ -8,6 +7,7 @@ namespace BrownieHound
     {
         public class ruleData
         {
+            // ruleData クラスの定義
             public int ruleGroupNo { get; set; }
             public int ruleNo { get; set; }
             public int detectionInterval { get; set; }
