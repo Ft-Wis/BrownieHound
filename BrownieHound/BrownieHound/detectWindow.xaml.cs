@@ -29,12 +29,28 @@ namespace BrownieHound
             public string data { get; set; }
             public string color { get; set; }
             public packetData packet { get; set; }
-            public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();  
+            public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();
         }
         public detectWindow(List<ruleGroupData> ruleGroupDatas)
         {
             InitializeComponent();
-            for(int i = 0; i < ruleGroupDatas.Count; i++)
+
+            this.Owner = App.Current.MainWindow;
+
+            double xOffset = -400;  // X軸方向のオフセット
+            double yOffset = 200;  // Y軸方向のオフセット
+
+            double newX = this.Owner.Left + this.Owner.Width / 2 + xOffset;
+            double newY = this.Owner.Top + this.Owner.Height / 2 + yOffset;
+
+            this.Left = newX;
+            this.Top = newY;
+
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Show();
+
+
+            for (int i = 0; i < ruleGroupDatas.Count; i++)
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 string message = "";

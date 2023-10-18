@@ -35,6 +35,9 @@ namespace BrownieHound
         {
             InitializeComponent();
             newRuleNo = ruleNo;
+
+            this.Owner = App.Current.MainWindow;
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)

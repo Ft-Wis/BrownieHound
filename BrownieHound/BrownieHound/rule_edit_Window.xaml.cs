@@ -38,6 +38,9 @@ namespace BrownieHound
             InitializeComponent();
             this.ruleItem = receivedData;
 
+            this.Owner = App.Current.MainWindow;
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
             setItem();
         }
 
