@@ -72,15 +72,15 @@
         </ComboBox>
         <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="290,242,0,0" TextWrapping="Wrap" controls:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False"/>
         <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="98,286,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116"/>
-        <TextBlock HorizontalAlignment="Left" Height="16" Margin="222,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+        <TextBlock x:Name="byteText" HorizontalAlignment="Left" Height="16" Margin="222,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
         <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,334,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75"/>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="177,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
         <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="230,334,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="50"/>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="285,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43"><Run Language="ja-jp" Text="回以上"/></TextBlock>
         <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="92,212,0,0" IsChecked="True"/>
         <RadioButton x:Name="sourceRadioButton" Content="送信元" HorizontalAlignment="Left" Margin="92,194,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
-        <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="138,83,0,0" IsChecked="True"/>
-        <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="138,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
+        <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="138,83,0,0" IsChecked="False" Checked="whiteListRadioButton_Checked"/>
+        <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="138,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True" Checked="blackListRadioButton_Checked"/>
 
 
 

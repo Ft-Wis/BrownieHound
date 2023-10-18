@@ -89,7 +89,7 @@
             </ComboBox>
             <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="1,259,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False" Grid.ColumnSpan="3" Grid.Column="4"/>
             <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="91,305,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116" Grid.ColumnSpan="2" Grid.Column="1"/>
-            <TextBlock HorizontalAlignment="Left" Height="16" Margin="28,313,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="2" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+            <TextBlock x:Name="byteText" HorizontalAlignment="Left" Height="16" Margin="28,313,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="2" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
             <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="91,348,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75" Grid.Column="1"/>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="169,358,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34" Grid.Column="1" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
             <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="34,348,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="50" Grid.Column="2" Grid.ColumnSpan="2"/>
@@ -98,8 +98,8 @@
 
             <RadioButton x:Name="sourceRadioButton" Grid.Column="1" Content="送信元" HorizontalAlignment="Left" Margin="84,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Margin="22,82,0,0" Grid.Column="1"><Run Language="ja-jp" Text="検知方式"/></TextBlock>
-            <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="133,102,0,0" IsChecked="True" Grid.Column="1" Grid.ColumnSpan="2"/>
-            <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="133,81,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="133,102,0,0" IsChecked="False" Grid.Column="1" Grid.ColumnSpan="2"  Checked="whiteListRadioButton_Checked"/>
+            <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="133,81,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True" Grid.Column="1" Grid.ColumnSpan="2" Checked="blackListRadioButton_Checked"/>
 
 
         </Grid>
