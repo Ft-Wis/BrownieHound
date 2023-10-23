@@ -137,8 +137,12 @@ namespace BrownieHound
         List<int> streamStart = new List<int>();
 
         List<string> viewPacketString = new List<string>();
+        List<int> recordPacketNo = new List<int>();
+        int mostDitectionCount = 1;
+        int packetCount = 0;
         int viewDistrictCount = 100;
         private ObservableCollection<packetData> viewPacketDatas;
+        private ObservableCollection<packetData> memoryPackets = new ObservableCollection<packetData> { };
         int dataCount = 0;
 
         public capture(string tsINumber)
@@ -258,6 +262,11 @@ namespace BrownieHound
             {
                 streamStart.Add(0);
                 detectionNumbers.Add(new List<List<int>>());
+                int detectionCount = detectionRuleGroup.Value.ruleDatas.Max(x => x.detectionInterval);
+                if(detectionCount > mostDitectionCount)
+                {
+                    mostDitectionCount = detectionCount;
+                }
                 //一番上位の要素を格納　ルールグループの数
                 ruleGroupDataSplit(detectionRuleGroup.Value, detectionRuleGroup.Index);
             }
@@ -330,6 +339,29 @@ namespace BrownieHound
 
         private void recordTime(object sender,EventArgs e)
         {
+            recordPacketNo.Add(packetCount);
+
+            if (detectionRuleGroups == null)
+            {
+                if (recordPacketNo.Count > mostDitectionCount + 10)
+                {
+                    if (memoryPackets.Count > 100)
+                    {
+                        for (int i = 0; i < memoryPackets.Count;)
+                        {
+                            if (memoryPackets[i].Number < recordPacketNo[1])
+                            {
+                                memoryPackets.RemoveAt(i);
+                                continue;
+                            }
+                            i++;
+                        }
+                        recordPacketNo.RemoveAt(0);
+                    }
+
+                }
+            }
+
             int countNumber = dataCount;
             int endPoint = viewPacketString.Count;
             int readPoint = 0;
@@ -338,15 +370,16 @@ namespace BrownieHound
             {
                 countNumber -= 1;
             }
-            viewPacketDatas = new ObservableCollection<packetData>();
-            if(countNumber >= viewDistrictCount)
-            {
-                readPoint = countNumber - viewDistrictCount;
-            }
-            readFile(readPoint, countNumber);
-            CaptureData.ItemsSource = viewPacketDatas;
+            //viewPacketDatas = new ObservableCollection<packetData>();
+            //if(countNumber >= viewDistrictCount)
+            //{
+            //    readPoint = countNumber - viewDistrictCount;
+            //}
+            //readFile(readPoint, countNumber);
+            CaptureData.ItemsSource = memoryPackets;
             clock++;
             countRows.Add(countNumber);
+
         }
         private packetData transfar(string msg)
         {
@@ -408,25 +441,109 @@ namespace BrownieHound
         private void detectLogic(int detectionNumber)
         {
             List<int> targets = new List<int>();
-            int end = countRows[clock] - 1;
+            int recordEnd = recordPacketNo.Count - 1;
+            int end = recordPacketNo[recordEnd] - 1;
             List<packetData> packetList = new List<packetData>();
             if (detectionRuleGroups[detectionNumber].blackListRules.Count > 0)
             {
                 List<int> temp = new List<int>();
                 foreach (var detectionRule in detectionRuleGroups[detectionNumber].blackListRules.Select((Value, Index) => new { Value, Index }))
                 {
-
                     temp.Add(0);
-                    if (detectionRule.Value.detectionInterval <= clock)
+
+                    if (detectionRule.Value.detectionInterval <= recordEnd)
                     {
-                        int start = countRows[clock - detectionRule.Value.detectionInterval];
-                        if (clock > detectionRule.Value.detectionInterval && start == countRows[clock - detectionRule.Value.detectionInterval - 1] && start < end)
+                        int start = recordPacketNo[recordEnd - detectionRule.Value.detectionInterval];
+                        //if (clock > detectionRule.Value.detectionInterval && start == recordPacketNo[recordEnd - detectionRule.Value.detectionInterval - 1] && start < end)
+                        //{
+                        //    //検知する範囲内で出現したパケットのみを対象とする処理
+                        //    //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
+                        //    start++;
+                        //}
+                        int detectIndex = 0;
+                        while(detectIndex < memoryPackets.Count)
                         {
-                            //検知する範囲内で出現したパケットのみを対象とする処理
-                            //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
-                            start++;
+                            if (memoryPackets[detectIndex].Number == start)
+                            {
+                                break;
+                            }
+                            detectIndex++;
                         }
-                        List<packetData> tempPackets = new List<packetData>();
+                        if (detectIndex < memoryPackets.Count)
+                        {
+                            for (int i = detectIndex; memoryPackets[i].Number <= end; i++)
+                            {
+                                int flg = 0;
+                                if (detectionRule.Value.Source.Equals("all") || detectionRule.Value.Source.Equals(memoryPackets[i].Source))
+                                {
+                                    flg++;
+                                }
+                                if (detectionRule.Value.Destination.Equals("all") || detectionRule.Value.Destination.Equals(memoryPackets[i].Destination))
+                                {
+                                    flg++;
+                                }
+                                if (detectionRule.Value.Protocol.Equals("all") || detectionRule.Value.Protocol.Equals(memoryPackets[i].Protocol))
+                                {
+                                    flg++;
+                                }
+                                if (detectionRule.Value.sourcePort.Equals("all") || detectionRule.Value.sourcePort.Equals(memoryPackets[i].sourcePort))
+                                {
+                                    flg++;
+                                }
+                                if (detectionRule.Value.destinationPort.Equals("all") || detectionRule.Value.destinationPort.Equals(memoryPackets[i].destinationPort))
+                                {
+                                    flg++;
+                                }
+                                if (memoryPackets[i].frameLength > detectionRule.Value.frameLength)
+                                {
+                                    flg++;
+                                }
+                                if (flg == 6)
+                                {
+                                    foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                                    {
+                                        int wflg = 0;
+                                        if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(memoryPackets[i].Source))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(memoryPackets[i].Destination))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(memoryPackets[i].Protocol))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(memoryPackets[i].sourcePort))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(memoryPackets[i].destinationPort))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (memoryPackets[i].frameLength > whiteListRule.frameLength)
+                                        {
+                                            wflg++;
+                                        }
+                                        if (wflg == 6)
+                                        {
+                                            flg--;
+                                        }
+                                    }
+                                    if (flg == 6)
+                                    {
+                                        if (!packetList.Contains(memoryPackets[i]))
+                                        {
+                                            packetList.Add(memoryPackets[i]);
+                                            temp[detectionRule.Index]++;
+                                        }
+                                    }
+
+                                }
+                            }
+/*                        List<packetData> tempPackets = new List<packetData>();
                         using (StreamReader sr = new StreamReader("temp.tmp"))
                         {
                             for(int i = 0; i < start; i++)
@@ -440,146 +557,79 @@ namespace BrownieHound
 
                             }
                         }
-                        for(int i = 0;i < end - start; i++)
-                        {
-                            int flg = 0;
-                            if (detectionRule.Value.Source.Equals("all") || detectionRule.Value.Source.Equals(tempPackets[i].Source))
+                            for (int i = 0; i < end - start; i++)
                             {
-                                flg++;
-                            }
-                            if (detectionRule.Value.Destination.Equals("all") || detectionRule.Value.Destination.Equals(tempPackets[i].Destination))
-                            {
-                                flg++;
-                            }
-                            if (detectionRule.Value.Protocol.Equals("all") || detectionRule.Value.Protocol.Equals(tempPackets[i].Protocol))
-                            {
-                                flg++;
-                            }
-                            if (detectionRule.Value.sourcePort.Equals("all") || detectionRule.Value.sourcePort.Equals(tempPackets[i].sourcePort))
-                            {
-                                flg++;
-                            }
-                            if (detectionRule.Value.destinationPort.Equals("all") || detectionRule.Value.destinationPort.Equals(tempPackets[i].destinationPort))
-                            {
-                                flg++;
-                            }
-                            if (tempPackets[i].frameLength > detectionRule.Value.frameLength)
-                            {
-                                flg++;
-                            }
-                            if (flg == 6)
-                            {
-                                foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                                int flg = 0;
+                                if (detectionRule.Value.Source.Equals("all") || detectionRule.Value.Source.Equals(tempPackets[i].Source))
                                 {
-                                    int wflg = 0;
-                                    if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(tempPackets[i].Source))
-                                    {
-                                        wflg++;
-                                    }
-                                    if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(tempPackets[i].Destination))
-                                    {
-                                        wflg++;
-                                    }
-                                    if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(tempPackets[i].Protocol))
-                                    {
-                                        wflg++;
-                                    }
-                                    if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(tempPackets[i].sourcePort))
-                                    {
-                                        wflg++;
-                                    }
-                                    if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(tempPackets[i].destinationPort))
-                                    {
-                                        wflg++;
-                                    }
-                                    if (tempPackets[i].frameLength > whiteListRule.frameLength)
-                                    {
-                                        wflg++;
-                                    }
-                                    if (wflg == 6)
-                                    {
-                                        flg--;
-                                    }
+                                    flg++;
+                                }
+                                if (detectionRule.Value.Destination.Equals("all") || detectionRule.Value.Destination.Equals(tempPackets[i].Destination))
+                                {
+                                    flg++;
+                                }
+                                if (detectionRule.Value.Protocol.Equals("all") || detectionRule.Value.Protocol.Equals(tempPackets[i].Protocol))
+                                {
+                                    flg++;
+                                }
+                                if (detectionRule.Value.sourcePort.Equals("all") || detectionRule.Value.sourcePort.Equals(tempPackets[i].sourcePort))
+                                {
+                                    flg++;
+                                }
+                                if (detectionRule.Value.destinationPort.Equals("all") || detectionRule.Value.destinationPort.Equals(tempPackets[i].destinationPort))
+                                {
+                                    flg++;
+                                }
+                                if (tempPackets[i].frameLength > detectionRule.Value.frameLength)
+                                {
+                                    flg++;
                                 }
                                 if (flg == 6)
                                 {
-                                    if (!packetList.Contains(tempPackets[i]))
+                                    foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
                                     {
-                                        packetList.Add(tempPackets[i]);
-                                        temp[detectionRule.Index]++;
+                                        int wflg = 0;
+                                        if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(tempPackets[i].Source))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(tempPackets[i].Destination))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(tempPackets[i].Protocol))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(tempPackets[i].sourcePort))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(tempPackets[i].destinationPort))
+                                        {
+                                            wflg++;
+                                        }
+                                        if (tempPackets[i].frameLength > whiteListRule.frameLength)
+                                        {
+                                            wflg++;
+                                        }
+                                        if (wflg == 6)
+                                        {
+                                            flg--;
+                                        }
+                                    }
+                                    if (flg == 6)
+                                    {
+                                        if (!packetList.Contains(tempPackets[i]))
+                                        {
+                                            packetList.Add(tempPackets[i]);
+                                            temp[detectionRule.Index]++;
+                                        }
                                     }
                                 }
-                            }
+                            }*/
 
                         }
-                        /*                        for (int i = start; i <= end; i++)
-                                                {
-                                                    packetData packet = (packetData)CaptureData.Items[i];
-                                                    int flg = 0;
-                                                    if (detectionRule.Source.Equals("all") || detectionRule.Source.Equals(packet.Source))
-                                                    {
-                                                        flg++;
-                                                    }
-                                                    if (detectionRule.Destination.Equals("all") || detectionRule.Destination.Equals(packet.Destination))
-                                                    {
-                                                        flg++;
-                                                    }
-                                                    if (detectionRule.Protocol.Equals("all") || detectionRule.Protocol.Equals(packet.Protocol))
-                                                    {
-                                                        flg++;
-                                                    }
-                                                    if (detectionRule.sourcePort.Equals("all") || detectionRule.sourcePort.Equals(packet.sourcePort))
-                                                    {
-                                                        flg++;
-                                                    }
-                                                    if (detectionRule.destinationPort.Equals("all") || detectionRule.destinationPort.Equals(packet.destinationPort))
-                                                    {
-                                                        flg++;
-                                                    }
-                                                    if (packet.frameLength > detectionRule.frameLength)
-                                                    {
-                                                        flg++;
-                                                    }
-                                                    if (flg == 6)
-                                                    {
-                                                        foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
-                                                        {
-                                                            int wflg = 0;
-                                                            if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(packet.Source))
-                                                            {
-                                                                wflg++;
-                                                            }
-                                                            if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(packet.Destination))
-                                                            {
-                                                                wflg++;
-                                                            }
-                                                            if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(packet.Protocol))
-                                                            {
-                                                                wflg++;
-                                                            }
-                                                            if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(packet.sourcePort))
-                                                            {
-                                                                wflg++;
-                                                            }
-                                                            if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(packet.destinationPort))
-                                                            {
-                                                                wflg++;
-                                                            }
-                                                            if (packet.frameLength > whiteListRule.frameLength)
-                                                            {
-                                                                wflg++;
-                                                            }
-                                                            if (wflg == 6)
-                                                            {
-                                                                flg--;
-                                                            }
-                                                        }
-                                                        if (flg == 6)
-                                                        {
-                                                            temp.Add(i);
-                                                        }
-                                                    }
-                                                }*/
                         if (temp[detectionRule.Index] >= detectionRule.Value.detectionCount)
                         {
                             //for (int i = 0; i < temp.Count; i++)
@@ -594,7 +644,7 @@ namespace BrownieHound
                         {
                             int startIndex = 0;
                             int i = 0;
-                            for(;i < temp.Count - 1; i++)
+                            for(;i < temp.Count - 1 - 1; i++)
                             {
                                 startIndex += temp[i];
                             }
@@ -605,6 +655,7 @@ namespace BrownieHound
             }
             else
             {
+                //ホワイトリストの適用とTreeviewの軽量化が次の課題
                 int start = countRows[clock - 1];
                 if (clock > 1 && start == countRows[clock - 1 - 1] && start < end)
                 {
@@ -658,45 +709,29 @@ namespace BrownieHound
                         }
 
                     }
-/*                    for (int i = start; i <= end; i++)
-                    {
-                        packetData packet = (packetData)CaptureData.Items[i];
-                        int wflg = 0;
-                        if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(packet.Source))
-                        {
-                            wflg++;
-                        }
-                        if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(packet.Destination))
-                        {
-                            wflg++;
-                        }
-                        if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(packet.Protocol))
-                        {
-                            wflg++;
-                        }
-                        if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(packet.sourcePort))
-                        {
-                            wflg++;
-                        }
-                        if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(packet.destinationPort))
-                        {
-                            wflg++;
-                        }
-                        if (packet.frameLength > whiteListRule.frameLength)
-                        {
-                            wflg++;
-                        }
-                        if (wflg == 6)
-                        {
-                            targets.Remove(i);
-                        }
-                    }*/
                 }
             }
             packetList.Sort((a,b)=>a.Number - b.Number);
             foreach(var packet in packetList)
             {
                 dWindow.show_detection(packet, detectionNumber);
+            }
+            if (recordPacketNo.Count > mostDitectionCount + 10)
+            {
+                if (memoryPackets.Count > 100)
+                {
+                    for (int i = 0; i < memoryPackets.Count;)
+                    {
+                        if (memoryPackets[i].Number < recordPacketNo[1])
+                        {
+                            memoryPackets.RemoveAt(i);
+                            continue;
+                        }
+                        i++;
+                    }
+                    recordPacketNo.RemoveAt(0);
+                }
+
             }
         }
         private void ruleGroupDataSplit(ruleGroupData ruleGroup,int detectionNumber)
@@ -749,7 +784,9 @@ namespace BrownieHound
                 if (packetObject["layers"] != null)
                 {
                     dataCount++;
+                    packetCount++;
                     viewPacketString.Add(msg);
+                    memoryPackets.Add(new packetData((JObject)packetObject["layers"]));
                 }
             }
             catch
@@ -764,6 +801,7 @@ namespace BrownieHound
                 {
                     dataCount++;
                     viewPacketString.Add(msg);
+                    memoryPackets.Add(new packetData(msg));
                 }
             }
 
