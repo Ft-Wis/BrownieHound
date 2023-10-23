@@ -341,12 +341,11 @@ namespace BrownieHound
         {
             recordPacketNo.Add(packetCount);
 
-            if (detectionRuleGroups == null)
+            if (detectionRuleGroups.Count == 0)
             {
-                if (recordPacketNo.Count > mostDitectionCount + 10)
+                while (recordPacketNo.Count > mostDitectionCount + 10 && memoryPackets.Count > 100)
                 {
-                    if (memoryPackets.Count > 100)
-                    {
+
                         for (int i = 0; i < memoryPackets.Count;)
                         {
                             if (memoryPackets[i].Number < recordPacketNo[1])
@@ -357,7 +356,6 @@ namespace BrownieHound
                             i++;
                         }
                         recordPacketNo.RemoveAt(0);
-                    }
 
                 }
             }
@@ -716,10 +714,8 @@ namespace BrownieHound
             {
                 dWindow.show_detection(packet, detectionNumber);
             }
-            if (recordPacketNo.Count > mostDitectionCount + 10)
+            while (recordPacketNo.Count > mostDitectionCount + 10 && memoryPackets.Count > 100)
             {
-                if (memoryPackets.Count > 100)
-                {
                     for (int i = 0; i < memoryPackets.Count;)
                     {
                         if (memoryPackets[i].Number < recordPacketNo[1])
@@ -730,7 +726,6 @@ namespace BrownieHound
                         i++;
                     }
                     recordPacketNo.RemoveAt(0);
-                }
 
             }
         }
