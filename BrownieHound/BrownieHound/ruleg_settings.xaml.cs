@@ -130,5 +130,22 @@ namespace BrownieHound
                 MessageBox.Show("ルールグループが選択されていません", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        int checkCount = 0;
+        private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+            detail.IsEnabled = true;
+        }
+        private void IsChecked_Checked(object sender, RoutedEventArgs e)
+        {
+            delete.IsEnabled = true;
+            checkCount++;
+        }
+        private void IsChecked_Unchecked(object sender, RoutedEventArgs e)
+        {
+            checkCount--;
+            if(checkCount == 0)
+                delete.IsEnabled = false;
+        }
+
     }
 }
