@@ -30,11 +30,29 @@ namespace BrownieHound
             public string data { get; set; }
             public string color { get; set; }
             public packetData packet { get; set; }
-            public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();  
+            public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();
         }
         public detectWindow(List<ruleGroupData> ruleGroupDatas)
         {
             InitializeComponent();
+
+            //this.Owner = App.Current.MainWindow;
+
+            double xOffset = -150;  // X軸方向のオフセット
+            double yOffset = -25;  // Y軸方向のオフセット
+
+            double newX = App.Current.MainWindow.Left + App.Current.MainWindow.Width / 2 + xOffset;
+            double newY = App.Current.MainWindow.Top + App.Current.MainWindow.Height / 2 + yOffset;
+
+            //double newX = this.Owner.Left + this.Owner.Width / 2 + xOffset;
+            //double newY = this.Owner.Top + this.Owner.Height / 2 + yOffset;
+
+            this.Left = newX;
+            this.Top = newY;
+
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Show();
+
             if (!Directory.Exists("detectionData"))
             {
                 Directory.CreateDirectory("detectionData");
@@ -43,7 +61,7 @@ namespace BrownieHound
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 string message = "";
-                foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
+                foreach(RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
                     if(detectionRuleData.ruleNo != 0)
                     {
