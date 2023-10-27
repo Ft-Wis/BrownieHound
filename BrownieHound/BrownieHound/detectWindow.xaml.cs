@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -34,6 +35,10 @@ namespace BrownieHound
         public detectWindow(List<ruleGroupData> ruleGroupDatas)
         {
             InitializeComponent();
+            if (!Directory.Exists("detectionData"))
+            {
+                Directory.CreateDirectory("detectionData");
+            }
             for(int i = 0; i < ruleGroupDatas.Count; i++)
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
@@ -63,6 +68,10 @@ namespace BrownieHound
             detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
             detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
 
+            if(detectionDatas[detectionNumber].children[0].children.Count > 1000)
+            {
+                detectionDatas[detectionNumber].children[0].children.RemoveAt(0);
+            }
         }
 
         private void TreeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
