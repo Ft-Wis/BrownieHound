@@ -24,7 +24,8 @@ namespace BrownieHound
     /// </summary>
     public partial class detectWindow : Window
     {
-         public List<detectionData> detectionDatas = new List<detectionData>();
+        public List<detectionData> detectionDatas = new List<detectionData>();
+        public List<string> detectionRuleNames = new List<string>();
         public class detectionData
         {
             public string data { get; set; }
@@ -53,22 +54,24 @@ namespace BrownieHound
             this.WindowStartupLocation = WindowStartupLocation.Manual;
             this.Show();
 
-            if (!Directory.Exists("detectionData"))
+            if (!Directory.Exists("tempdetectionData"))
             {
-                Directory.CreateDirectory("detectionData");
+                Directory.CreateDirectory("tempdetectionData");
             }
             for(int i = 0; i < ruleGroupDatas.Count; i++)
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 string message = "";
-                foreach(RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
+                using (File.Create($"tempdetectionData\\{ruleGroupDatas[i].Name}.txt")) { }
+                detectionRuleNames.Add(ruleGroupDatas[i].Name);
+                foreach (RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
-                    if(detectionRuleData.ruleNo != 0)
+                    if (detectionRuleData.ruleNo != 0)
                     {
                         message += "\n";
                     }
                     message += $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
-                    
+
                 }
                 detectionDatas[i].children.Add(new detectionData() { data = message, color = "IndianRed" });
             }
@@ -85,7 +88,10 @@ namespace BrownieHound
             string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
             detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
             detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
-
+            using (StreamWriter sw = new StreamWriter($"tempdetectionData\\{detectionRuleNames[detectionNumber]}.txt", true))
+            {
+                sw.WriteLine(pd.Data);
+            }
             if(detectionDatas[detectionNumber].children[0].children.Count > 1000)
             {
                 detectionDatas[detectionNumber].children[0].children.RemoveAt(0);
