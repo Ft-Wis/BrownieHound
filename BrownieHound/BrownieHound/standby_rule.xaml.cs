@@ -132,5 +132,9 @@ namespace BrownieHound
             var nextPage = new ruleg_detail(rgData.No, rgData.Name, rgData.ruleDatas);
             NavigationService.Navigate(nextPage);
         }
+        private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+            ruleGroupDetail.IsEnabled = true;
+        }
     }
 }
