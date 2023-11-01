@@ -324,5 +324,21 @@ namespace BrownieHound
             return selectedRuleNoArray;
             // selectedRuleNoArrayを適切に使用する処理を記述してください
         }
+        int checkCount = 0;
+        private void DataGrid_Selected(object sender, RoutedEventArgs e)
+        {
+            edit.IsEnabled = true;
+        }
+        private void IsChecked_Checked(object sender, RoutedEventArgs e)
+        {
+            inactivate.IsEnabled = true;
+            checkCount++;
+        }
+        private void IsChecked_Unchecked(object sender, RoutedEventArgs e)
+        {
+            checkCount--;
+            if (checkCount == 0)
+                inactivate.IsEnabled = false;
+        }
     }
 }
