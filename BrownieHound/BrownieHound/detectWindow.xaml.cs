@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.Pkcs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml;
 using static BrownieHound.App;
 using static BrownieHound.capture;
 
@@ -30,7 +32,7 @@ namespace BrownieHound
         {
             public string data { get; set; }
             public string color { get; set; }
-            public packetData packet { get; set; }
+            public string jpacketData { get; set; }
             public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();
         }
         public detectWindow(List<ruleGroupData> ruleGroupDatas)
@@ -66,11 +68,20 @@ namespace BrownieHound
                 detectionRuleNames.Add(ruleGroupDatas[i].Name);
                 foreach (RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
+                    string category;
+                    if(detectionRuleData.ruleCategory == 0)
+                    {
+                        category = "black";
+                    }
+                    else
+                    {
+                        category = "white";
+                    }
                     if (detectionRuleData.ruleNo != 0)
                     {
                         message += "\n";
                     }
-                    message += $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
+                    message += $"{detectionRuleData.ruleNo}::[category:{category}][interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
 
                 }
                 detectionDatas[i].children.Add(new detectionData() { data = message, color = "IndianRed" });
@@ -86,11 +97,18 @@ namespace BrownieHound
         public void show_detection(packetData pd,int detectionNumber)
         {
             string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
-            detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
+            detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,jpacketData = pd.Data});
             detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
             using (StreamWriter sw = new StreamWriter($"tempdetectionData\\{detectionRuleNames[detectionNumber]}.txt", true))
             {
                 sw.WriteLine(pd.Data);
+            }
+            if (File.Exists("temps\\maildata.tmp"))
+            {
+                using(StreamWriter sw = new StreamWriter("temps\\maildata.tmp", true))
+                {
+                    sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.Time.TimeOfDay}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.sourcePort}</td><td>{pd.destinationPort}</td><td>{pd.frameLength}</td></tr></tbody>");
+                }
             }
             if(detectionDatas[detectionNumber].children[0].children.Count > 1000)
             {
@@ -104,9 +122,9 @@ namespace BrownieHound
             detectionData dD = (detectionData)detection_tree.SelectedValue as detectionData;
             try
             {
-                if (dD != null && dD.packet != null)
+                if (dD != null && dD.jpacketData != null)
                 {
-                    packet_detail_Window packet_detail = new packet_detail_Window(dD.packet.Data);
+                    packet_detail_Window packet_detail = new packet_detail_Window(dD.jpacketData);
                     packet_detail.Show();
                 }
             }

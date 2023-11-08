@@ -122,8 +122,8 @@ namespace BrownieHound
         Process processTscap = null;
         string tsInterfaceNumber = "";
         List<DispatcherTimer> detectTimerList = new List<DispatcherTimer>();
-        DispatcherTimer clockTimer;
-        DispatcherTimer mailTimer;
+        DispatcherTimer clockTimer = null;
+        DispatcherTimer mailTimer = null;
         int clock = 0;
         //１秒単位の経過時間
         List<List<int>> detectionNumbers = new List<List<int>>();
@@ -133,7 +133,6 @@ namespace BrownieHound
         string path = @"conf";
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
         string mailAddress = null;
-        List<int> streamStart = new List<int>();
 
         List<string> viewPacketString = new List<string>();
         List<int> recordPacketNo = new List<int>();
@@ -243,7 +242,7 @@ namespace BrownieHound
                     {
                         if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
                         {
-                            using (File.Create("temps\\mailtemp.tmp")) { }
+                            using (File.Create("temps\\maildata.tmp")) { }
                             mailAddress = mailValidation.mailAddress.Value;
                             mailTimer = new DispatcherTimer();
                             mailTimer.Interval = new TimeSpan(0, int.Parse(mailValidation.span.Value), 0);
@@ -264,7 +263,6 @@ namespace BrownieHound
 
             foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new {Value,Index }))
             {
-                streamStart.Add(0);
                 detectionNumbers.Add(new List<int>());
                 int detectionCount = detectionRuleGroup.Value.ruleDatas.Max(x => x.detectionInterval);
                 if(detectionCount > mostDitectionCount)
@@ -303,25 +301,45 @@ namespace BrownieHound
             var body = new BodyBuilder();
             body.HtmlBody = $"<html><body><h1>userの定期検知メール</h1><br>";
             body.HtmlBody += $"<p><b>総キャプチャ数：{packetCount}</b></p>";
-            
+            string[] origindata;
+            List<List<string>> sendList = new List<List<string>>(detectionRuleGroups.Count);
 
-            for(int i = 0;i < detectionRuleGroups.Count;i++)
+            for(int i = 0;i < detectionRuleGroups.Count; i++)
+            {
+                sendList.Add(new List<string>());
+            }
+            using (StreamReader sr = new StreamReader("temps\\maildata.tmp"))
+            {
+                origindata = sr.ReadToEnd().Split('\n');
+            }
+            using (File.Create("temps\\maildata.tmp")) { }
+            for(int i = 0;i < origindata.Count() - 1; i++)
+            {
+                int number = Int32.Parse(origindata[i].Split("\\")[0]);
+                sendList[number].Add(origindata[i].Split("\\")[1]);
+            }
+            for (int i = 0;i < detectionRuleGroups.Count;i++)
             {
                 addCount = 0;
                 body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
                 for(int j = 0; j < detectionRuleGroups[i].ruleDatas.Count;j++)
                 {
-                    
-                    body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
-                    body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
+                    string category;
+                    if (detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
+                    {
+                        category = "black";
+                    }
+                    else
+                    {
+                        category = "white";
+                    }
+                    body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
+                    body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
                 }
-                while (streamStart[i] < dWindow.detectionDatas[i].children[0].children.Count)
+                for(int j = 0;j < sendList[i].Count;j++)
                 {
                     addCount++;
-                    int k = streamStart[i];
-                    packetData detectionPacketData = dWindow.detectionDatas[i].children[0].children[k].packet;
-                    body.HtmlBody += $"<tbody style='background-color: blanchedalmond;'><tr><td>{detectionPacketData.Number}</td><td>{detectionPacketData.Time.TimeOfDay}</td><td></td><td></td><td>{detectionPacketData.Source}</td><td>{detectionPacketData.Destination}</td><td>{detectionPacketData.Protocol}</td><td>{detectionPacketData.sourcePort}</td><td>{detectionPacketData.destinationPort}</td><td>{detectionPacketData.frameLength}</td></tr></tbody>";
-                    streamStart[i]++;
+                    body.HtmlBody += sendList[i][j];
                 }
                 body.HtmlBody += "</table><br>";
                 body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
@@ -330,7 +348,7 @@ namespace BrownieHound
             body.HtmlBody += "</body></html>";
 
             email.Body = body.ToMessageBody();
-
+            //どこかでformatExceptionが起きている
             using (var smtp = new SmtpClient())
             {
                 await smtp.ConnectAsync("smtp.gmail.com", 587, false);
@@ -614,7 +632,7 @@ namespace BrownieHound
                             }
                             if (wflg == 6)
                             {
-                                packetList.RemoveAt(i);
+                                packetList.RemoveAt(i--);
 
                             }
 
@@ -745,6 +763,10 @@ namespace BrownieHound
             if (File.Exists("temps\\temp.tmp"))
             {
                 File.Delete("temps\\temp.tmp");
+            }
+            if (File.Exists("temps\\maildata.tmp"))
+            {
+                File.Delete("temps\\maildata.tmp");
             }
             if (Directory.Exists("tempdetectionData"))
             {
