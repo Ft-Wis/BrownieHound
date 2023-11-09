@@ -72,7 +72,7 @@
         </ComboBox>
         <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="290,242,0,0" TextWrapping="Wrap" Text="{Binding portNum.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False"/>
         <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="98,286,0,0" TextWrapping="Wrap" Text="{Binding packetSize.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="116"/>
-        <TextBlock HorizontalAlignment="Left" Height="16" Margin="222,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+        <TextBlock x:Name="byteText" HorizontalAlignment="Left" Height="16" Margin="222,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
         <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,334,0,0" TextWrapping="Wrap" Text="{Binding detectionMins.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="75"/>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="177,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
         <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="230,334,0,0" TextWrapping="Wrap" Text="{Binding detectionCnt.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="50"/>
