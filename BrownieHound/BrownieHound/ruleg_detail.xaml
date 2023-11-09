@@ -21,7 +21,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding isCheck, UpdateSourceTrigger=PropertyChanged}" >
+                            <CheckBox IsChecked="{Binding isCheck , UpdateSourceTrigger=PropertyChanged}" >
 
                             </CheckBox>
                         </DataTemplate>
