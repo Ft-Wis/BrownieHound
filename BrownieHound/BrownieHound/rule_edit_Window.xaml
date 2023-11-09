@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BrownieHound"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="rule_edit_Window" Height="498" Width="405">
+        Title="rule_edit_Window" Height="510" Width="405">
     <DockPanel Margin="1,1,1,20">
         <StackPanel DockPanel.Dock="Bottom" 
                     Orientation="Horizontal" HorizontalAlignment="Right">
@@ -44,7 +44,9 @@
                 <ComboBoxItem Content="このPCのアドレス" />
                 <ComboBoxItem Content="手動で設定" />
             </ComboBox>
-            <TextBox x:Name="sourceTextBox"  HorizontalAlignment="Left" Margin="3,127,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="3"/>
+            <TextBox x:Name="sourceTextBox"  HorizontalAlignment="Left" Margin="3,127,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="XXX.XXX.AAA.BBB" Text="{Binding sourceIP.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="3">
+
+            </TextBox>
             <TextBlock x:Name="destinationTextBlock" HorizontalAlignment="Left" Margin="19,171,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Grid.Column="1"><Run Language="ja-jp" Text="送信先IPアドレス"/></TextBlock>
             <ComboBox x:Name="destinationComboBox"  HorizontalAlignment="Left" Margin="136,161,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.ColumnSpan="2" Grid.Column="1" SelectionChanged="destinationComboBox_SelectionChanged">
                 <ComboBox.Resources>
@@ -57,7 +59,7 @@
                 <ComboBoxItem Content="手動で設定" />
             </ComboBox>
 
-            <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="3,159,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="3"/>
+            <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="3,159,0,0" TextWrapping="Wrap" Text="{Binding destinationIP.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="XXX.AAA.BBB.CCC" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False" Grid.ColumnSpan="4" Grid.Column="3"/>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Grid.Column="1"><Run Language="ja-jp" Text="プロトコル"/></TextBlock>
 
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66" Grid.Column="1"><Run Language="ja-jp" Text="ポート番号"/></TextBlock>
@@ -87,13 +89,13 @@
                 <ComboBoxItem Content="DNS(53)" />
                 <ComboBoxItem Content="手動で設定" />
             </ComboBox>
-            <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="1,259,0,0" TextWrapping="Wrap" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False" Grid.ColumnSpan="3" Grid.Column="4"/>
-            <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="91,305,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="116" Grid.ColumnSpan="2" Grid.Column="1"/>
-            <TextBlock x:Name="byteText" HorizontalAlignment="Left" Height="16" Margin="28,313,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="2" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
-            <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="91,348,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="75" Grid.Column="1"/>
-            <TextBlock HorizontalAlignment="Left" Height="16" Margin="169,358,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34" Grid.Column="1" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
-            <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="34,348,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="50" Grid.Column="2" Grid.ColumnSpan="2"/>
-            <TextBlock HorizontalAlignment="Left" Height="16" Margin="26,358,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43" Grid.Column="3" Grid.ColumnSpan="3"><Run Language="ja-jp" Text="回以上"/></TextBlock>
+            <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="1,262,0,0" TextWrapping="Wrap" Text="{Binding portNum.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False" Grid.ColumnSpan="3" Grid.Column="4"/>
+            <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="91,305,0,0" TextWrapping="Wrap" Text="{Binding packetSize.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="75" Grid.Column="1"/>
+            <TextBlock x:Name="byteText" HorizontalAlignment="Left" Height="16" Margin="174,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="1" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+            <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="91,348,0,0" TextWrapping="Wrap" Text="{Binding detectionMins.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="75" Grid.Column="1"/>
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="171,360,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34" Grid.Column="1" Grid.ColumnSpan="2"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
+            <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="34,348,0,0" TextWrapping="Wrap" Text="{Binding detectionCnt.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" Grid.Column="2" Grid.ColumnSpan="2"/>
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="27,360,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43" Grid.Column="3" Grid.ColumnSpan="3"><Run Language="ja-jp" Text="回以上"/></TextBlock>
             <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="84,277,0,0" IsChecked="True" Grid.Column="1"/>
 
             <RadioButton x:Name="sourceRadioButton" Grid.Column="1" Content="送信元" HorizontalAlignment="Left" Margin="84,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
