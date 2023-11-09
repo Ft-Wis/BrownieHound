@@ -263,5 +263,27 @@ namespace BrownieHound
                 }
             }
         }
+
+        private void blackListRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            //文字列変更
+            byteText.Text = "Bytes以上";
+            //「１秒間に１回以上」の固定解除
+            secondsTextBox.IsEnabled = true;
+            secondsTextBox.Text = "";
+            timesTextBox.IsEnabled = true;
+            timesTextBox.Text = "";
+        }
+
+        private void whiteListRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            //文字列変更
+            byteText.Text = "Bytes以下";
+            //「１秒間に１回以上」に固定する
+            secondsTextBox.IsEnabled = false;
+            secondsTextBox.Text = "1";
+            timesTextBox.IsEnabled = false;
+            timesTextBox.Text = "1";
+        }
     }
 }
