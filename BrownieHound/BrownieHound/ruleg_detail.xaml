@@ -7,9 +7,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450"
       
-      Title="ruleg_detail" Cursor="" Width="1112">
+      Title="ruleg_detail" Cursor="" Width="1112" HorizontalAlignment="Center">
 
-    <Grid Background="White" HorizontalAlignment="Center" Width="1112">
+    <Grid Background="White" HorizontalAlignment="Center" Width="1120">
         <Label x:Name="title" Content="ルール詳細" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="729" FontSize="24"/>
         <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="837,0,0,22" VerticalAlignment="Bottom" Width="153" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
         <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="612,0,0,22" VerticalAlignment="Bottom" Width="156" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click" IsEnabled="False"/>
@@ -21,7 +21,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding isCheck, UpdateSourceTrigger=PropertyChanged}" Checked="IsChecked_Checked" Unchecked="IsChecked_Unchecked">
+                            <CheckBox IsChecked="{Binding isCheck, UpdateSourceTrigger=PropertyChanged}" Checked="IsChecked_Checked" Unchecked="IsChecked_Unchecked" Margin="0,0,55,0" >
 
                             </CheckBox>
                         </DataTemplate>
@@ -40,5 +40,6 @@
                 <DataGridTextColumn Header="サイズ" Binding="{Binding frameLength}" IsReadOnly="True" MinWidth="60"/>
             </DataGrid.Columns>
         </DataGrid>
+        <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="41,88,0,0" VerticalAlignment="Top" Checked="checkAll_Checked" Unchecked="checkAll_Unchecked" Width="{Binding ElementName=title, Mode=OneWay}"/>
     </Grid>
 </Page>

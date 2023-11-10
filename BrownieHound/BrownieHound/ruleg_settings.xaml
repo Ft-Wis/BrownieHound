@@ -42,6 +42,7 @@
             </ListView.View>
         </ListView>
         <Button x:Name="redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click"/>
+        <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="54,129,0,0" VerticalAlignment="Top" IsChecked="False" Unchecked="checkAll_Unchecked" Checked="checkAll_Checked"/>
 
     </Grid>
 </Page>

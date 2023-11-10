@@ -132,6 +132,34 @@ namespace BrownieHound
             var nextPage = new ruleg_detail(rgData.No, rgData.Name, rgData.ruleDatas);
             NavigationService.Navigate(nextPage);
         }
+
+        private void checkAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            foreach (ruleGroupData item in Data)
+            {
+                item.isCheck = allSelect;
+                checkAll.Content = "すべて選択";
+
+            }
+            ruleGroupList.ItemsSource = null;
+            ruleGroupList.ItemsSource = Data;
+        }
+
+        private void checkAll_Checked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            foreach (ruleGroupData item in Data)
+            {
+                item.isCheck = allSelect;
+                checkAll.Content = "すべて選択解除";
+
+            }
+            ruleGroupList.ItemsSource = null;
+            ruleGroupList.ItemsSource = Data;
+        }
         private void ListViewItem_Selected(object sender, RoutedEventArgs e)
         {
             ruleGroupDetail.IsEnabled = true;
