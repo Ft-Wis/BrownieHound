@@ -14,6 +14,17 @@ using static BrownieHound.ruleg_detail;
 using System.Text.RegularExpressions;
 using System.Drawing.Imaging;
 using System.Diagnostics;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.Windows.Themes;
+using System.Globalization;
+using Reactive.Bindings;
+using BrownieHound;
+using Org.BouncyCastle.Bcpg.OpenPgp;
+using System.Linq;
+using ValidationResult = System.Windows.Controls.ValidationResult;
+using Org.BouncyCastle.Tls.Crypto;
+using static BrownieHound.RuleDataValidation;
 
 namespace BrownieHound
 {
@@ -32,10 +43,14 @@ namespace BrownieHound
         private string[] udpChoiced = { "すべて", "SNMP(162)", "DNS(53)", "手動で設定" };
         private string[] otherChoiced = { "すべて", "HTTP(80)", "HTTPS(443)", "SNMP(162)", "DNS(53)", "手動で設定" };
 
+        Rule_Validation ruleValidation;
 
         public rule_edit_Window(DataGridItem receivedData)
         {
             InitializeComponent();
+            ruleValidation = new Rule_Validation();
+
+            DataContext = ruleValidation;
             this.ruleItem = receivedData;
 
             this.Owner = App.Current.MainWindow;
@@ -51,8 +66,20 @@ namespace BrownieHound
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            setSendData();
-            this.DialogResult = true;
+            if ((!ruleValidation.sourceIP.HasErrors && !String.IsNullOrEmpty(ruleValidation.sourceIP.Value))
+                && (!ruleValidation.destinationIP.HasErrors && !String.IsNullOrEmpty(ruleValidation.destinationIP.Value))
+                && (!ruleValidation.portNum.HasErrors && !String.IsNullOrEmpty(ruleValidation.portNum.Value))
+                && (!ruleValidation.packetSize.HasErrors && !String.IsNullOrEmpty(ruleValidation.packetSize.Value))
+                && (!ruleValidation.detectionMins.HasErrors && !String.IsNullOrEmpty(ruleValidation.detectionMins.Value))
+                && (!ruleValidation.detectionCnt.HasErrors && !String.IsNullOrEmpty(ruleValidation.detectionCnt.Value)))
+            {
+                setSendData();
+                this.DialogResult = true;
+            }
+            else
+            {
+                MessageBox.Show("正しい形式で入力されていない項目があります");
+            }
         }
 
         private void setItem()
@@ -68,12 +95,14 @@ namespace BrownieHound
             }
 
             //送信元IPアドレスに値を代入
-            if(judgeIPAdress(ruleItem.source))
+            ruleValidation.sourceIP.Value = ruleItem.source;
+            sourceTextBox.Text = ruleValidation.sourceIP.Value;
+            //コンボボックスの選択肢切り替え
+            if (judgeIPAdress(ruleItem.source))
             {
                 //選択肢を「手動で設定」にする
                 sourceComboBox.SelectedIndex = 2;
                 sourceTextBox.IsEnabled = true;
-                sourceTextBox.Text = ruleItem.source;
             }
             else
             { 
@@ -90,12 +119,14 @@ namespace BrownieHound
             }
 
             //送信先IPアドレスに値を代入
+            ruleValidation.destinationIP.Value = ruleItem.destination;
+            destinationTextBox.Text = ruleValidation.destinationIP.Value;
+            //コンボボックスの選択肢切り替え
             if (judgeIPAdress(ruleItem.destination))
             {
                 //選択肢を「手動で設定」にする
                 destinationComboBox.SelectedIndex = 2;
                 destinationTextBox.IsEnabled = true;
-                destinationTextBox.Text = ruleItem.destination;
             }
             else
             {
@@ -103,6 +134,7 @@ namespace BrownieHound
                 {
                     //選択肢を「すべてのIP」にする
                     destinationComboBox.SelectedIndex = 0;
+                    
                 }
                 else
                 {
@@ -123,6 +155,9 @@ namespace BrownieHound
                 sourceRadioButton.IsChecked = true;
                 setPort = ruleItem.sourcePort;
             }
+
+            ruleValidation.portNum.Value = setPort;
+            portnumberTextBox.Text = setPort;
             //プロトコルに値を代入
             switch (ruleItem.protocol)
             {
@@ -131,6 +166,7 @@ namespace BrownieHound
                     switch (setPort)
                     {
                         case "all":
+                            portnumberComboBox.SelectedIndex = 0;
                             break;
                         case "80":
                             portnumberComboBox.SelectedIndex = 1;
@@ -146,7 +182,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 5;
-                            portnumberTextBox.Text = setPort;
+                            //portnumberTextBox.Text = ruleValidation.portNum.Value;
                             break;
                     }
                     break;
@@ -165,7 +201,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            portnumberTextBox.Text = setPort;
+                            //portnumberTextBox.Text = ruleValidation.portNum.Value;
                             break;
                     }
                     break;
@@ -183,7 +219,7 @@ namespace BrownieHound
                             break;
                         default:
                             portnumberComboBox.SelectedIndex = 3;
-                            portnumberTextBox.Text = setPort;
+                            //portnumberTextBox.Text = ruleValidation.portNum.Value;
                             break;
                     }
                     break;
@@ -192,6 +228,17 @@ namespace BrownieHound
                     protocolComboBox.SelectedIndex = 3;
                     protocolTextBox.IsEnabled = true;
                     protocolTextBox.Text = ruleItem.protocol;
+                    if(setPort == "all")
+                    {
+                        portnumberComboBox.SelectedIndex=0;
+
+                    }
+                    else
+                    {
+                        portnumberComboBox.SelectedIndex = 5;
+                        //portnumberTextBox.Text = ruleValidation.portNum.Value;
+                    }
+                    
                     break;
             }
 
@@ -200,11 +247,14 @@ namespace BrownieHound
 
 
             //サイズに値を代入
-            sizeTextBox.Text = ruleItem.frameLength.ToString();
+            ruleValidation.packetSize.Value = ruleItem.frameLength.ToString();
+            sizeTextBox.Text = ruleValidation.packetSize.Value;
 
             //間隔に値を代入
-            secondsTextBox.Text = ruleItem.detectionInterval.ToString();
-            timesTextBox.Text = ruleItem.detectionCount.ToString();
+            ruleValidation.detectionMins.Value = ruleItem.detectionInterval.ToString();
+            secondsTextBox.Text = ruleValidation.detectionMins.Value;
+            ruleValidation.detectionCnt.Value = ruleItem.detectionCount.ToString();
+            timesTextBox.Text = ruleValidation.detectionCnt.Value;
 
         }
         
@@ -408,6 +458,30 @@ namespace BrownieHound
                         break;
                 }
             }
+        }
+
+        //「検知」がチェックされたとき
+        private void blackListRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            //文字列変更
+            byteText.Text = "Bytes以上";
+            //「１秒間に１回以上」の固定解除
+            secondsTextBox.IsEnabled = true;
+            secondsTextBox.Text = "";
+            timesTextBox.IsEnabled = true;
+            timesTextBox.Text = "";
+        }
+
+        //「否検知」がチェックされたとき
+        private void whiteListRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            //文字列変更
+            byteText.Text = "Bytes以下";
+            //「１秒間に１回以上」に固定する
+            secondsTextBox.IsEnabled= false;
+            secondsTextBox.Text= "1";
+            timesTextBox.IsEnabled = false;
+            timesTextBox.Text = "1";
         }
     }
 }

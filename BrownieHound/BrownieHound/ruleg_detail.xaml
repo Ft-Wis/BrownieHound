@@ -12,16 +12,16 @@
     <Grid Background="White" HorizontalAlignment="Center" Width="1120">
         <Label x:Name="title" Content="ルール詳細" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="729" FontSize="24"/>
         <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="837,0,0,22" VerticalAlignment="Bottom" Width="153" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
-        <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="612,0,0,22" VerticalAlignment="Bottom" Width="156" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click"/>
+        <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="612,0,0,22" VerticalAlignment="Bottom" Width="156" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click" IsEnabled="False"/>
         <Button x:Name="redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="58,0,0,22" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click"/>
-        <Button x:Name="inactivate" Content="削除" HorizontalAlignment="Left" Height="43" Margin="331,0,0,22" VerticalAlignment="Bottom" Width="124" Click="inactivate_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" />
+        <Button x:Name="inactivate" Content="削除" HorizontalAlignment="Left" Height="43" Margin="331,0,0,22" VerticalAlignment="Bottom" Width="124" Click="inactivate_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" IsEnabled="False" />
 
-        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="254" Width="1037"  AutoGenerateColumns="False" Margin="25,80,0,0" VerticalAlignment="Top">
+        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="254" VerticalAlignment="Center" Width="1037"  AutoGenerateColumns="False" Margin="25,0,0,0" SelectionChanged="DataGrid_Selected">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding isCheck, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,55,0" >
+                            <CheckBox IsChecked="{Binding isCheck, UpdateSourceTrigger=PropertyChanged}" Checked="IsChecked_Checked" Unchecked="IsChecked_Unchecked" Margin="0,0,55,0" >
 
                             </CheckBox>
                         </DataTemplate>

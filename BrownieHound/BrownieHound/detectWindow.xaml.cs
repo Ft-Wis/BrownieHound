@@ -35,13 +35,16 @@ namespace BrownieHound
         {
             InitializeComponent();
 
-            this.Owner = App.Current.MainWindow;
+            //this.Owner = App.Current.MainWindow;
 
-            double xOffset = -400;  // X軸方向のオフセット
-            double yOffset = 200;  // Y軸方向のオフセット
+            double xOffset = -150;  // X軸方向のオフセット
+            double yOffset = -25;  // Y軸方向のオフセット
 
-            double newX = this.Owner.Left + this.Owner.Width / 2 + xOffset;
-            double newY = this.Owner.Top + this.Owner.Height / 2 + yOffset;
+            double newX = App.Current.MainWindow.Left + App.Current.MainWindow.Width / 2 + xOffset;
+            double newY = App.Current.MainWindow.Top + App.Current.MainWindow.Height / 2 + yOffset;
+
+            //double newX = this.Owner.Left + this.Owner.Width / 2 + xOffset;
+            //double newY = this.Owner.Top + this.Owner.Height / 2 + yOffset;
 
             this.Left = newX;
             this.Top = newY;
@@ -54,7 +57,7 @@ namespace BrownieHound
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 string message = "";
-                foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
+                foreach(RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
                     if(detectionRuleData.ruleNo != 0)
                     {

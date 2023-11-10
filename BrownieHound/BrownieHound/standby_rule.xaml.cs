@@ -111,7 +111,7 @@ namespace BrownieHound
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Data = new ObservableCollection<ruleGroupData>();
-            Show_Group(Read(path));
+            Show_Group(RuleGroupDataReader.Read(path));
         }
 
         private void ruleGroupDetail_Click(object sender, RoutedEventArgs e)
@@ -159,6 +159,10 @@ namespace BrownieHound
             }
             ruleGroupList.ItemsSource = null;
             ruleGroupList.ItemsSource = Data;
+        }
+        private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+            ruleGroupDetail.IsEnabled = true;
         }
     }
 }

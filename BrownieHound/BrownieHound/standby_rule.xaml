@@ -16,6 +16,7 @@
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="{x:Type ListViewItem}">
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_DoubleClikck"/>
+                    <EventSetter Event="Selected" Handler="ListViewItem_Selected"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
@@ -40,7 +41,7 @@
             </ListView.View>
         </ListView>
         <Button x:Name="activate" Content="実行" HorizontalAlignment="Right" Height="43" Margin="0,0,28,22" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="activate_Click"/>
-        <Button x:Name="ruleGroupDetail" Content="ルール詳細" HorizontalAlignment="Right" Height="43" Margin="0,0,210,22" VerticalAlignment="Bottom" Width="190" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="ruleGroupDetail_Click"/>
+        <Button x:Name="ruleGroupDetail" Content="ルール詳細" HorizontalAlignment="Right" Height="43" Margin="0,0,210,22" VerticalAlignment="Bottom" Width="190" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="ruleGroupDetail_Click" IsEnabled="False"/>
         <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="55,149,0,0" VerticalAlignment="Top" Unchecked="checkAll_Unchecked" Checked="checkAll_Checked" Background="#FFFF9800"/>
 
     </Grid>
