@@ -142,6 +142,10 @@ namespace BrownieHound
         private ObservableCollection<packetData> viewPacketDatas;
         private ObservableCollection<packetData> memoryPackets = new ObservableCollection<packetData> { };
         int dataCount = 0;
+        string tempfileName = "temp0.tmp";
+        int writePlace = 0;
+        int viewPlace = 0;
+        bool viewUpdateflg = true;
 
         public capture(string tsINumber)
         {
@@ -209,7 +213,7 @@ namespace BrownieHound
             {
                 Directory.CreateDirectory("temps");
             }
-            using (File.Create("temps\\temp.tmp")) { }
+            using (File.Create("temps\\temp0.tmp")) { }
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -302,7 +306,7 @@ namespace BrownieHound
             body.HtmlBody = $"<html><body><h1>userの定期検知メール</h1><br>";
             body.HtmlBody += $"<p><b>総キャプチャ数：{packetCount}</b></p>";
             string[] origindata;
-            List<List<string>> sendList = new List<List<string>>(detectionRuleGroups.Count);
+            List<List<string>> sendList = new List<List<string>>();
 
             for(int i = 0;i < detectionRuleGroups.Count; i++)
             {
@@ -322,7 +326,8 @@ namespace BrownieHound
             {
                 addCount = 0;
                 body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
-                for(int j = 0; j < detectionRuleGroups[i].ruleDatas.Count;j++)
+                body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
+                for (int j = 0; j < detectionRuleGroups[i].ruleDatas.Count;j++)
                 {
                     string category;
                     if (detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
@@ -333,7 +338,6 @@ namespace BrownieHound
                     {
                         category = "white";
                     }
-                    body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
                     body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
                 }
                 for(int j = 0;j < sendList[i].Count;j++)
@@ -378,7 +382,7 @@ namespace BrownieHound
             int countNumber = dataCount;
             int endPoint = viewPacketString.Count;
             int readPoint = 0;
-            writeFile(endPoint);
+            //writeFile(endPoint);
             if (countNumber > 0)
             {
                 countNumber -= 1;
@@ -389,13 +393,19 @@ namespace BrownieHound
             //    readPoint = countNumber - viewDistrictCount;
             //}
             //readFile(readPoint, countNumber);
-            CaptureData.ItemsSource = memoryPackets;
-            bool isRowSelected = CaptureData.SelectedItems.Count > 0;
-
-            if (!isRowSelected && CaptureData.Items.Count > 0)
+            if (viewUpdateflg)
             {
-                CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
+                CaptureData.ItemsSource = null;
+                CaptureData.Items.Clear();
+                CaptureData.ItemsSource = memoryPackets;
+                bool isRowSelected = CaptureData.SelectedItems.Count > 0;
+
+                if (!isRowSelected && CaptureData.Items.Count > 0)
+                {
+                    CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
+                }
             }
+
             clock++;
 
         }
@@ -427,7 +437,7 @@ namespace BrownieHound
         }
         private void writeFile(int endPoint)
         {
-            using (StreamWriter sw = new StreamWriter("temps\\temp.tmp", true, Encoding.GetEncoding("UTF-8")))
+            using (StreamWriter sw = new StreamWriter($"temps\\{tempfileName}", true, Encoding.GetEncoding("UTF-8")))
             {
                 for(int i = 0;i < endPoint; i++)
                 {
@@ -708,6 +718,14 @@ namespace BrownieHound
                     dataCount++;
                     packetCount++;
                     viewPacketString.Add(msg);
+                    using (StreamWriter sw = new StreamWriter($"temps\\temp{writePlace}.tmp",true))
+                    {
+                        sw.WriteLine(msg);
+                    }
+                    if (dataCount % 5000 == 0)
+                    {
+                        writePlace++;
+                    }
                     memoryPackets.Add(new packetData((JObject)packetObject["layers"]));
                 }
             }
@@ -722,6 +740,18 @@ namespace BrownieHound
                 else
                 {
                     dataCount++;
+                    using (StreamWriter sw = new StreamWriter($"temps\\temp{writePlace}.tmp", true))
+                    {
+                        sw.WriteLine(msg);
+                    }
+                    if (viewUpdateflg && dataCount % 1000 == 0)
+                    {
+                        viewPlace++;
+                    }
+                    if (dataCount % 5000 == 0)
+                    {
+                        writePlace++;
+                    }
                     viewPacketString.Add(msg);
                     memoryPackets.Add(new packetData(msg));
                 }
@@ -736,6 +766,36 @@ namespace BrownieHound
             if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight)
             {
                 dataGrid.UnselectAll(); // DataGrid自体から選択を解除する場合
+            }
+            if (!viewUpdateflg)
+            {
+                if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.75)
+                {
+                    if(viewPlace < writePlace * 5)
+                    {
+                        viewPlace++;
+                        string[] viewPacketStrings;
+                        using (StreamReader sr = new StreamReader($"temps\\temp{viewPlace / 5}.tmp"))
+                        {
+                            sr.ReadLine().Skip((viewPlace % 5) * 1000);
+                            //どうやって範囲の物を読み込むか
+                            viewPacketStrings = sr.ReadToEnd().Split('\n');
+                        }
+                        for (int i = 0; i < viewPacketStrings.Length - 1; i++)
+                        {
+                            CaptureData.Items.Add(transfar(viewPacketStrings[i]));
+                        }
+                        if(1 < viewPlace)
+                        {
+                            for (int i = 0; i < 1000; i++)
+                            {
+                                CaptureData.Items.RemoveAt(0);
+                            }
+                        }
+                        viewPacketStrings = null;
+                        GC.Collect();
+                    }
+                }
             }
         }
 
@@ -760,13 +820,9 @@ namespace BrownieHound
         }
         private void closing()
         {
-            if (File.Exists("temps\\temp.tmp"))
+            if (Directory.Exists("temps"))
             {
-                File.Delete("temps\\temp.tmp");
-            }
-            if (File.Exists("temps\\maildata.tmp"))
-            {
-                File.Delete("temps\\maildata.tmp");
+                Directory.Delete("temps",true);
             }
             if (Directory.Exists("tempdetectionData"))
             {
@@ -796,13 +852,36 @@ namespace BrownieHound
 
         private void up_Click(object sender, RoutedEventArgs e)
         {
+            CaptureData.ItemsSource = null;
+            CaptureData.Items.Clear();
+            viewUpdateflg = false;
+            string[] viewPacketStrings;
+            viewPlace = 0;
+            using(StreamReader sr = new StreamReader("temps\\temp0.tmp"))
+            {
+                viewPacketStrings = sr.ReadToEnd().Split('\n');
+            }
+            Debug.WriteLine(viewPacketStrings[0]);
+            Debug.WriteLine(viewPacketStrings[1]);
+
+            Debug.WriteLine(viewPacketStrings[2]);
+
+            for (int i = 0;i < viewPacketStrings.Length - 1;i++)
+            {
+                CaptureData.Items.Add(transfar(viewPacketStrings[i]));
+            }
+            viewPacketStrings = null;
+            GC.Collect();
             CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(0));
             CaptureData.SelectedIndex = 0;
         }
 
         private void doun_Click(object sender, RoutedEventArgs e)
         {
+            viewUpdateflg = true;
             CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
+            viewPlace = dataCount / 1000;
+            GC.Collect();
         }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
