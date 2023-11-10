@@ -31,19 +31,35 @@ namespace BrownieHound
         public DataGridItem sendData;
         private int newRuleNo;
 
+        RuleDataValidation.Rule_Validation ruleValidation;
+
         public rule_add_Window(int ruleNo)
         {
             InitializeComponent();
             newRuleNo = ruleNo;
+            ruleValidation = new RuleDataValidation.Rule_Validation();
 
+            DataContext = ruleValidation;
             this.Owner = App.Current.MainWindow;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            setSendData();
+            if ((!ruleValidation.sourceIP.HasErrors && !String.IsNullOrEmpty(ruleValidation.sourceIP.Value))
+                && (!ruleValidation.destinationIP.HasErrors && !String.IsNullOrEmpty(ruleValidation.destinationIP.Value))
+                && (!ruleValidation.portNum.HasErrors && !String.IsNullOrEmpty(ruleValidation.portNum.Value))
+                && (!ruleValidation.packetSize.HasErrors && !String.IsNullOrEmpty(ruleValidation.packetSize.Value))
+                && (!ruleValidation.detectionMins.HasErrors && !String.IsNullOrEmpty(ruleValidation.detectionMins.Value))
+                && (!ruleValidation.detectionCnt.HasErrors && !String.IsNullOrEmpty(ruleValidation.detectionCnt.Value)))
+            {
+                setSendData();
+                this.DialogResult = true;
+            }
+            else
+            {
+                MessageBox.Show("正しい形式で入力されていない項目があります");
+            }
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

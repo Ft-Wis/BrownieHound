@@ -88,7 +88,7 @@ namespace BrownieHound
             {
                 Data.Add(data); 
             }
-            ruleGroupList.DataContext = Data;
+            ruleGroupList.ItemsSource = Data;
         }
 
         private void ListViewItem_DoubleClikck(object sender, MouseButtonEventArgs e)
@@ -129,6 +129,38 @@ namespace BrownieHound
             {
                 MessageBox.Show("ルールグループが選択されていません", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+
+
+        private void checkAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            foreach (ruleGroupData item in Data)
+            {
+                item.isCheck = allSelect;
+                checkAll.Content = "すべて選択";
+                
+            }
+            ruleGroupList.ItemsSource = null;
+            ruleGroupList.ItemsSource = Data;
+        }
+
+        
+
+        private void checkAll_Checked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            foreach (ruleGroupData item in Data)
+            {
+                item.isCheck = allSelect;
+                checkAll.Content = "すべて選択解除";
+
+            }
+            ruleGroupList.ItemsSource = null;
+            ruleGroupList.ItemsSource = Data;
         }
         int checkCount = 0;
         private void ListViewItem_Selected(object sender, RoutedEventArgs e)
