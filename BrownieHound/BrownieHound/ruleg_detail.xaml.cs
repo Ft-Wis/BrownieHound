@@ -48,7 +48,7 @@ namespace BrownieHound
         {
 
             InitializeComponent();
-            title.Content = $"{title.Content} - {name}";
+            //title.Content = $"{title.Content} - {name}";
             fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
             

@@ -10,7 +10,7 @@
 
     <Grid Loaded="Page_Loaded">
         <Button x:Name="s_rTotop" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="s_rTotop_Click"/>
-        <Label x:Name="title" Content="ルールグループ選択画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+        <Image Source="logoimage/standby_rule.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-95,0,0"/>
         <Label x:Name="interfaceLabel" Content="None" HorizontalAlignment="Left" Height="35" Margin="61,85,0,0" VerticalAlignment="Top" Width="702" FontSize="16"/>
         <ListView x:Name="ruleGroupList" Margin="40,130,40,100" ItemsSource="{Binding}">
             <ListView.ItemContainerStyle>

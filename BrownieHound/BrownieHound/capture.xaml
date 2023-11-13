@@ -9,7 +9,7 @@
       Title="capture">
 
     <Grid Loaded="Page_loaded" Unloaded="Grid_Unloaded">
-        <Label x:Name="title" Content="キャプチャ画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+       
         <Button x:Name="inactivate" Content="停止" Margin="28,0,0,22" Click="inactivate_Click"  FontFamily="Yu Gothic" Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="43" Width="146"/>
         <DataGrid x:Name="CaptureData" Margin="49,85,50,104" AutoGenerateColumns="False" ForceCursor="True"  ScrollViewer.ScrollChanged="chaptureDataGrid_ScrollChanged">
             <DataGrid.RowStyle>
@@ -29,6 +29,7 @@
         </DataGrid>
         <Button x:Name="stop" Content="中断" Height="43" Margin="201,0,0,22" VerticalAlignment="Bottom" Click="stop_Click"  FontFamily="Yu Gothic" Background="Gray" FontSize="25" Foreground="White" FontWeight="Medium" BorderBrush="Gray" Width="146" HorizontalAlignment="Left" Grid.Column="1" />
         <Label x:Name="stopstatus" Content="検知中" Height="44" Margin="0,0,67,22"  Width="82" FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"/>
+        <Image Source="logoimage/capture.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-95,0,0"/>
 
     </Grid>
 </Page>
