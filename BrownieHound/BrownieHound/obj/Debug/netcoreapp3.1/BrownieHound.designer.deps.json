@@ -6,20 +6,53 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "BouncyCastle.Cryptography/2.2.1": {},
+      "BouncyCastle.Cryptography/2.2.1": {
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Cryptography.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.2.1.47552"
+          }
+        }
+      },
       "MailKit/4.1.0": {
         "dependencies": {
           "MimeKit": "4.1.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/MailKit.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.0.0"
+          }
         }
       },
-      "MaterialDesignColors/2.1.2": {},
+      "MaterialDesignColors/2.1.2": {
+        "runtime": {
+          "lib/netcoreapp3.1/MaterialDesignColors.dll": {
+            "assemblyVersion": "2.1.2.0",
+            "fileVersion": "2.1.2.0"
+          }
+        }
+      },
       "MaterialDesignThemes/4.8.0": {
         "dependencies": {
           "MaterialDesignColors": "2.1.2",
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/MaterialDesignThemes.Wpf.dll": {
+            "assemblyVersion": "4.8.0.0",
+            "fileVersion": "4.8.0.0"
+          }
         }
       },
-      "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {},
+      "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.Xaml.Behaviors.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.39.4716"
+          }
+        }
+      },
       "MimeKit/4.1.0": {
         "dependencies": {
           "BouncyCastle.Cryptography": "2.2.1",
@@ -28,50 +61,128 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0",
           "System.Security.Cryptography.Pkcs": "7.0.2",
           "System.Text.Encoding.CodePages": "7.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/MimeKit.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.0.0"
+          }
         }
       },
-      "Newtonsoft.Json/13.0.3": {},
+      "Newtonsoft.Json/13.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.3.27908"
+          }
+        }
+      },
       "ReactiveProperty/8.1.2": {
         "dependencies": {
           "ReactiveProperty.Core": "8.1.2",
           "System.ComponentModel.Annotations": "5.0.0",
           "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
         }
       },
-      "ReactiveProperty.Core/8.1.2": {},
+      "ReactiveProperty.Core/8.1.2": {
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.Core.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
+        }
+      },
       "ReactiveProperty.WPF/8.1.2": {
         "dependencies": {
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39",
           "ReactiveProperty": "8.1.2",
           "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/ReactiveProperty.WPF.dll": {
+            "assemblyVersion": "8.1.2.0",
+            "fileVersion": "8.1.2.0"
+          }
         }
       },
       "System.Buffers/4.5.1": {},
-      "System.ComponentModel.Annotations/5.0.0": {},
+      "System.ComponentModel.Annotations/5.0.0": {
+        "runtime": {
+          "lib/netstandard2.1/System.ComponentModel.Annotations.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        }
+      },
       "System.Formats.Asn1/7.0.0": {
         "dependencies": {
           "System.Buffers": "4.5.1",
           "System.Memory": "4.5.5"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Formats.Asn1.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
         }
       },
       "System.Memory/4.5.5": {},
       "System.Reactive/5.0.0": {},
-      "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
+      "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+        "runtime": {
+          "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
       "System.Security.Cryptography.Cng/5.0.0": {
         "dependencies": {
           "System.Formats.Asn1": "7.0.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/System.Security.Cryptography.Cng.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netcoreapp3.0/System.Security.Cryptography.Cng.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
         }
       },
       "System.Security.Cryptography.Pkcs/7.0.2": {
         "dependencies": {
           "System.Formats.Asn1": "7.0.0",
           "System.Security.Cryptography.Cng": "5.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/System.Security.Cryptography.Pkcs.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.723.27404"
+          }
         }
       },
       "System.Text.Encoding.CodePages/7.0.0": {
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Text.Encoding.CodePages.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
         }
       }
     }
