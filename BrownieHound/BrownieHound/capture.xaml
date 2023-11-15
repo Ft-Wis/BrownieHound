@@ -31,6 +31,6 @@
         <Label x:Name="stopstatus" Content="検知中" Height="44" Margin="0,0,67,22"  Width="82" FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"/>
         <Button x:Name="up" Content="↑" Height="50" Margin="0,20,20,0" VerticalAlignment="Top" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="Black" Width="42" HorizontalAlignment="Right" Click="up_Click" />
         <Button x:Name="doun" Content="↓" Margin="0,0,20,20" FontFamily="Britannic Bold" Background="Black" FontSize="20" Foreground="White" FontWeight="Medium" BorderBrush="Black" Width="42" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Click="doun_Click" />
-
+        <Image Source="logoimage/capture.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-96,0,0"/>
     </Grid>
 </Page>
