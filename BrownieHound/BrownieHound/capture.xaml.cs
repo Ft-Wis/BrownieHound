@@ -795,8 +795,6 @@ namespace BrownieHound
 
 
             viewPlace++;
-            //スクロールの問題で人間に観測できない更新頻度になる
-            //イベントの発生頻度をコントロールできれば？
             Debug.WriteLine(viewPlace);
             string[] viewPacketStrings = new string[501];
             using (StreamReader sr = new StreamReader($"temps\\temp{viewPlace / 10 + 1}.tmp"))
