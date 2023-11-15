@@ -134,7 +134,6 @@ namespace BrownieHound
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
         string mailAddress = null;
 
-        List<string> viewPacketString = new List<string>();
         List<int> recordPacketNo = new List<int>();
         int mostDitectionCount = 1;
         int packetCount = 0;
@@ -143,9 +142,10 @@ namespace BrownieHound
         private ObservableCollection<packetData> memoryPackets = new ObservableCollection<packetData> { };
         int dataCount = 0;
         string tempfileName = "temp0.tmp";
-        int writePlace = 0;
+        int writePlace = 1;
         int viewPlace = 0;
         bool viewUpdateflg = true;
+        bool processflg = false;
 
         public capture(string tsINumber)
         {
@@ -213,7 +213,7 @@ namespace BrownieHound
             {
                 Directory.CreateDirectory("temps");
             }
-            using (File.Create("temps\\temp0.tmp")) { }
+            using (File.Create("temps\\temp1.tmp")) { }
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -380,8 +380,6 @@ namespace BrownieHound
             }
 
             int countNumber = dataCount;
-            int endPoint = viewPacketString.Count;
-            int readPoint = 0;
             //writeFile(endPoint);
             if (countNumber > 0)
             {
@@ -407,7 +405,7 @@ namespace BrownieHound
             }
 
             clock++;
-
+            GC.Collect();
         }
         private packetData transfar(string msg)
         {
@@ -441,11 +439,11 @@ namespace BrownieHound
             {
                 for(int i = 0;i < endPoint; i++)
                 {
-                    sw.WriteLine(viewPacketString[i]);
+
                 }
 
             }
-            viewPacketString.RemoveRange(0, endPoint);
+
         }
         private void readFile(int start,int end)
         {
@@ -717,10 +715,13 @@ namespace BrownieHound
                 {
                     dataCount++;
                     packetCount++;
-                    viewPacketString.Add(msg);
                     using (StreamWriter sw = new StreamWriter($"temps\\temp{writePlace}.tmp",true))
                     {
                         sw.WriteLine(msg);
+                    }
+                    if (viewUpdateflg)
+                    {
+                        viewPlace = dataCount / 500;
                     }
                     if (dataCount % 5000 == 0)
                     {
@@ -744,15 +745,14 @@ namespace BrownieHound
                     {
                         sw.WriteLine(msg);
                     }
-                    if (viewUpdateflg && dataCount % 1000 == 0)
+                    if (viewUpdateflg)
                     {
-                        viewPlace++;
+                        viewPlace = dataCount / 500;
                     }
                     if (dataCount % 5000 == 0)
                     {
                         writePlace++;
                     }
-                    viewPacketString.Add(msg);
                     memoryPackets.Add(new packetData(msg));
                 }
             }
@@ -762,6 +762,7 @@ namespace BrownieHound
         {
             DataGrid dataGrid = (DataGrid)sender;
             ScrollViewer scrollViewer = GetScrollViewer(dataGrid);
+            Debug.WriteLine($"::{scrollViewer.VerticalOffset} / {scrollViewer.ExtentHeight}");
 
             if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight)
             {
@@ -769,34 +770,76 @@ namespace BrownieHound
             }
             if (!viewUpdateflg)
             {
-                if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.75)
+                //await Task.Delay(10);
+                if (!processflg &&  scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.85 && CaptureData.Items.Count % 500 == 0)
                 {
-                    if(viewPlace < writePlace * 5)
+                    processflg = true;
+                    
+                    if(viewPlace < writePlace * 10 - 1)
                     {
-                        viewPlace++;
-                        string[] viewPacketStrings;
-                        using (StreamReader sr = new StreamReader($"temps\\temp{viewPlace / 5}.tmp"))
-                        {
-                            sr.ReadLine().Skip((viewPlace % 5) * 1000);
-                            //どうやって範囲の物を読み込むか
-                            viewPacketStrings = sr.ReadToEnd().Split('\n');
-                        }
-                        for (int i = 0; i < viewPacketStrings.Length - 1; i++)
-                        {
-                            CaptureData.Items.Add(transfar(viewPacketStrings[i]));
-                        }
-                        if(1 < viewPlace)
-                        {
-                            for (int i = 0; i < 1000; i++)
-                            {
-                                CaptureData.Items.RemoveAt(0);
-                            }
-                        }
-                        viewPacketStrings = null;
-                        GC.Collect();
+                        readToNext(scrollViewer);
+                    }
+
+                    processflg = false;
+                }
+            }
+        }
+        private void readToNext(ScrollViewer scrollViewer)
+        {
+            
+            double scrollPlace = scrollViewer.VerticalOffset;
+            scrollViewer.ScrollToVerticalOffset(scrollPlace % 500);
+            //await Task.Delay(1000);
+            scrollViewer.IsEnabled = false;
+            //await Task.Delay(1000);
+
+
+            viewPlace++;
+            //スクロールの問題で人間に観測できない更新頻度になる
+            //イベントの発生頻度をコントロールできれば？
+            Debug.WriteLine(viewPlace);
+            string[] viewPacketStrings = new string[501];
+            using (StreamReader sr = new StreamReader($"temps\\temp{viewPlace / 10 + 1}.tmp"))
+            {
+                for (int i = 0; i < (viewPlace % 10) * 500; i++)
+                {
+                    sr.ReadLine();
+                }
+                for (int i = 0; i < 500; i++)
+                {
+                    string lines = sr.ReadLine();
+                    if (lines != null)
+                    {
+                        viewPacketStrings[i] = lines;
+                    }
+                    else
+                    {
+                        viewPacketStrings[i] = lines;
+                        break;
                     }
                 }
             }
+            for (int i = 0; viewPacketStrings[i] != null; i++)
+            {
+                CaptureData.Items.Add(transfar(viewPacketStrings[i]));
+            }
+            if (1 < viewPlace && CaptureData.Items.Count > 1000)
+            {
+                for (int i = 0; i < 500; i++)
+                {
+                    CaptureData.Items.RemoveAt(0);
+                }
+            }
+            viewPacketStrings = null;
+            GC.Collect();
+            Debug.WriteLine($"before:{scrollPlace} / {scrollViewer.ExtentHeight}");
+            scrollViewer.IsEnabled = true;
+
+            //await Task.Delay(1000);
+            Debug.WriteLine($"after:{scrollViewer.VerticalOffset} / {scrollViewer.ExtentHeight}");
+
+
+
         }
 
         private ScrollViewer GetScrollViewer(DependencyObject depObj)
@@ -852,35 +895,47 @@ namespace BrownieHound
 
         private void up_Click(object sender, RoutedEventArgs e)
         {
+            viewUpdateflg = true;
             CaptureData.ItemsSource = null;
             CaptureData.Items.Clear();
-            viewUpdateflg = false;
-            string[] viewPacketStrings;
-            viewPlace = 0;
-            using(StreamReader sr = new StreamReader("temps\\temp0.tmp"))
+
+            string[] viewPacketStrings = new string[501];
+
+            using(StreamReader sr = new StreamReader("temps\\temp1.tmp"))
             {
-                viewPacketStrings = sr.ReadToEnd().Split('\n');
+                for (int i = 0; i < 500; i++)
+                {
+                    string lines = sr.ReadLine();
+                    if (lines != null)
+                    {
+                        viewPacketStrings[i] = lines;
+                    }
+                    else
+                    {
+                        viewPacketStrings[i] = lines;
+                        break;
+                    }
+                    
+                }
             }
-            Debug.WriteLine(viewPacketStrings[0]);
-            Debug.WriteLine(viewPacketStrings[1]);
 
-            Debug.WriteLine(viewPacketStrings[2]);
-
-            for (int i = 0;i < viewPacketStrings.Length - 1;i++)
+            for (int i = 0;viewPacketStrings[i] != null;i++)
             {
                 CaptureData.Items.Add(transfar(viewPacketStrings[i]));
             }
             viewPacketStrings = null;
             GC.Collect();
+            viewPlace = 0;
             CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(0));
             CaptureData.SelectedIndex = 0;
+            viewUpdateflg = false;
         }
 
         private void doun_Click(object sender, RoutedEventArgs e)
         {
             viewUpdateflg = true;
             CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
-            viewPlace = dataCount / 1000;
+            viewPlace = dataCount / 500;
             GC.Collect();
         }
 
