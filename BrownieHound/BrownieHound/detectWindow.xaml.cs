@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -28,19 +29,44 @@ namespace BrownieHound
             public string data { get; set; }
             public string color { get; set; }
             public packetData packet { get; set; }
-            public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();  
+            public ObservableCollection<detectionData> children { get; set; } = new ObservableCollection<detectionData>();
         }
         public detectWindow(List<ruleGroupData> ruleGroupDatas)
         {
             InitializeComponent();
-            for(int i = 0; i < ruleGroupDatas.Count; i++)
+
+            //this.Owner = App.Current.MainWindow;
+
+            double xOffset = -150;  // X軸方向のオフセット
+            double yOffset = -25;  // Y軸方向のオフセット
+
+            double newX = App.Current.MainWindow.Left + App.Current.MainWindow.Width / 2 + xOffset;
+            double newY = App.Current.MainWindow.Top + App.Current.MainWindow.Height / 2 + yOffset;
+
+            //double newX = this.Owner.Left + this.Owner.Width / 2 + xOffset;
+            //double newY = this.Owner.Top + this.Owner.Height / 2 + yOffset;
+
+            this.Left = newX;
+            this.Top = newY;
+
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Show();
+
+
+            for (int i = 0; i < ruleGroupDatas.Count; i++)
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
-                foreach(ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
+                string message = "";
+                foreach(RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
-                    string message = $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
-                    detectionDatas[i].children.Add(new detectionData() { data = message,color= "IndianRed"});
+                    if(detectionRuleData.ruleNo != 0)
+                    {
+                        message += "\n";
+                    }
+                    message += $"{detectionRuleData.ruleNo}::[interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
+                    
                 }
+                detectionDatas[i].children.Add(new detectionData() { data = message, color = "IndianRed" });
             }
             DataContext = detectionDatas;
         }
@@ -50,10 +76,10 @@ namespace BrownieHound
             e.Cancel = true;
             this.WindowState = WindowState.Minimized;
         }
-        public void show_detection(packetData pd,int detectionNumber,int ruleNo)
+        public void show_detection(packetData pd,int detectionNumber)
         {
-            string message = $"[No:{pd.Number}]::[source:{pd.Source}][destination{pd.Destination}][protocol:{pd.Protocol}][sourceport:{pd.sourcePort}][destport:{pd.destinationPort}][length:{pd.frameLength}]";
-            detectionDatas[detectionNumber].children[ruleNo].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
+            string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
+            detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,packet = pd});
             detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
 
         }
@@ -64,7 +90,7 @@ namespace BrownieHound
             detectionData dD = (detectionData)detection_tree.SelectedValue as detectionData;
             try
             {
-                if (dD.packet != null)
+                if (dD != null && dD.packet != null)
                 {
                     packet_detail_Window packet_detail = new packet_detail_Window(dD.packet.Data);
                     packet_detail.Show();

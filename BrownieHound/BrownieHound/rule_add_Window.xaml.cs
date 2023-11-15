@@ -31,17 +31,35 @@ namespace BrownieHound
         public DataGridItem sendData;
         private int newRuleNo;
 
+        RuleDataValidation.Rule_Validation ruleValidation;
+
         public rule_add_Window(int ruleNo)
         {
             InitializeComponent();
             newRuleNo = ruleNo;
+            ruleValidation = new RuleDataValidation.Rule_Validation();
+
+            DataContext = ruleValidation;
+            this.Owner = App.Current.MainWindow;
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            setSendData();
-            MessageBox.Show(sendData.destination);
+            if ((!ruleValidation.sourceIP.HasErrors && !String.IsNullOrEmpty(ruleValidation.sourceIP.Value))
+                && (!ruleValidation.destinationIP.HasErrors && !String.IsNullOrEmpty(ruleValidation.destinationIP.Value))
+                && (!ruleValidation.portNum.HasErrors && !String.IsNullOrEmpty(ruleValidation.portNum.Value))
+                && (!ruleValidation.packetSize.HasErrors && !String.IsNullOrEmpty(ruleValidation.packetSize.Value))
+                && (!ruleValidation.detectionMins.HasErrors && !String.IsNullOrEmpty(ruleValidation.detectionMins.Value))
+                && (!ruleValidation.detectionCnt.HasErrors && !String.IsNullOrEmpty(ruleValidation.detectionCnt.Value)))
+            {
+                setSendData();
+                this.DialogResult = true;
+            }
+            else
+            {
+                MessageBox.Show("正しい形式で入力されていない項目があります");
+            }
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -56,26 +74,38 @@ namespace BrownieHound
             string protocolName;
             string sourcePortNum;
             string destinationPortNum;
+            string category;
 
             sourceIP = sourceTextBox.Text;
             destinationIP = destinationTextBox.Text;
             protocolName = protocolTextBox.Text;
 
+            //ホワイトリストにチェックがされている場合
+            if ((bool)whiteListRadioButton.IsChecked)
+            {
+                category = "1";
+            }
+            else
+            {
+                category = "0";
+            }
+
             //送信元ポートにチェックがされている場合
             if ((bool)sourceRadioButton.IsChecked)
             {
                 sourcePortNum = portnumberTextBox.Text;
-                destinationPortNum = null;
+                destinationPortNum ="all";
             }
             else
             {
-                sourcePortNum = null;
+                sourcePortNum = "all";
                 destinationPortNum = portnumberTextBox.Text;
             }
 
             //sendDataに格納
             sendData = new DataGridItem
             {
+                ruleCategory = category,
                 ruleNo = newRuleNo,
                 source = sourceIP,
                 destination = destinationIP,
@@ -97,7 +127,7 @@ namespace BrownieHound
                 //「すべて」
                 case 0:
                     sourceTextBox.IsEnabled = false;
-                    sourceTextBox.Text = "allIP";
+                    sourceTextBox.Text = "all";
                     break;
                 //「このPCのアドレス」
                 case 1:
@@ -124,7 +154,7 @@ namespace BrownieHound
                 //「すべて」
                 case 0:
                     destinationTextBox.IsEnabled = false;
-                    destinationTextBox.Text = "allIP";
+                    destinationTextBox.Text = "all";
                     break;
                 //「このPCのアドレス」
                 case 1:
@@ -188,7 +218,7 @@ namespace BrownieHound
                 else
                 {
                     //「すべてのプロトコル」のとき
-                    protocolTextBox.Text = "allProtocol";
+                    protocolTextBox.Text = "all";
                     protocolTextBox.IsEnabled = false;
                 }
 
@@ -227,11 +257,33 @@ namespace BrownieHound
                         portnumberTextBox.SelectAll();
                         break;
                     default:
-                        portnumberTextBox.Text = "allPortnumber";
+                        portnumberTextBox.Text = "all";
                         portnumberTextBox.IsEnabled = false;
                         break;
                 }
             }
+        }
+
+        private void blackListRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            //文字列変更
+            byteText.Text = "Bytes以上";
+            //「１秒間に１回以上」の固定解除
+            secondsTextBox.IsEnabled = true;
+            secondsTextBox.Text = "";
+            timesTextBox.IsEnabled = true;
+            timesTextBox.Text = "";
+        }
+
+        private void whiteListRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            //文字列変更
+            byteText.Text = "Bytes以下";
+            //「１秒間に１回以上」に固定する
+            secondsTextBox.IsEnabled = false;
+            secondsTextBox.Text = "1";
+            timesTextBox.IsEnabled = false;
+            timesTextBox.Text = "1";
         }
     }
 }

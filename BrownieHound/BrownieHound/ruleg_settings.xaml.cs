@@ -47,7 +47,7 @@ namespace BrownieHound
                     }
                     using (File.Create($"{path}\\{newGroupName}.txt")) { }
                     MessageBox.Show($"以下のルールグループを追加しました。\n{newGroupName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Show_Group(Read(path));
+                    Show_Group(RuleGroupDataReader.Read(path));
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace BrownieHound
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
-            Show_Group(Read(path));
+            Show_Group(RuleGroupDataReader.Read(path));
 
         }
         private void Show_Group(List<ruleGroupData> datas)
@@ -88,7 +88,7 @@ namespace BrownieHound
             {
                 Data.Add(data); 
             }
-            ruleGroupList.DataContext = Data;
+            ruleGroupList.ItemsSource = Data;
         }
 
         private void ListViewItem_DoubleClikck(object sender, MouseButtonEventArgs e)
@@ -122,7 +122,7 @@ namespace BrownieHound
                         file.Delete();
                         
                     }
-                    Show_Group(Read(path));
+                    Show_Group(RuleGroupDataReader.Read(path));
                 }
             }
             else
@@ -130,5 +130,58 @@ namespace BrownieHound
                 MessageBox.Show("ルールグループが選択されていません", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
+
+        private void checkAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            foreach (ruleGroupData item in Data)
+            {
+                item.isCheck = allSelect;
+                checkAll.Content = "すべて選択";
+                
+            }
+            ruleGroupList.ItemsSource = null;
+            ruleGroupList.ItemsSource = Data;
+            checkCount = 0;
+            delete.IsEnabled = false;
+        }
+
+        
+
+        private void checkAll_Checked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            foreach (ruleGroupData item in Data)
+            {
+                item.isCheck = allSelect;
+                checkAll.Content = "すべて選択解除";
+
+            }
+            ruleGroupList.ItemsSource = null;
+            ruleGroupList.ItemsSource = Data;
+            checkCount = ruleGroupList.Items.Count;
+            delete.IsEnabled = true;
+        }
+        int checkCount = 0;
+        private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+            detail.IsEnabled = true;
+        }
+        private void IsChecked_Checked(object sender, RoutedEventArgs e)
+        {
+            delete.IsEnabled = true;
+            checkCount++;
+        }
+        private void IsChecked_Unchecked(object sender, RoutedEventArgs e)
+        {
+            checkCount--;
+            if(checkCount == 0)
+                delete.IsEnabled = false;
+        }
+
     }
 }
