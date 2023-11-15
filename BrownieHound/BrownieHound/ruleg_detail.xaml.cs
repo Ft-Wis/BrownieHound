@@ -49,7 +49,7 @@ namespace BrownieHound
         {
             Application.Current.MainWindow.Width = 1200;
             InitializeComponent();
-            title.Content = $"{title.Content} - {name}";
+            //title.Content = $"{title.Content} - {name}";
             fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
             
@@ -331,6 +331,8 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             reDraw(allSelect);
             checkAll.Content = "すべて選択";
+            checkCount = 0;
+            inactivate.IsEnabled = false;
         }
 
 
@@ -341,6 +343,8 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             reDraw(allSelect);
             checkAll.Content = "すべて選択解除";
+            checkCount = rule_DataGrid.Items.Count;
+            inactivate.IsEnabled = true;
         }
         int checkCount = 0;
         private void DataGrid_Selected(object sender, RoutedEventArgs e)

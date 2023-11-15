@@ -145,6 +145,8 @@ namespace BrownieHound
             }
             ruleGroupList.ItemsSource = null;
             ruleGroupList.ItemsSource = Data;
+            checkCount = 0;
+            delete.IsEnabled = false;
         }
 
         
@@ -161,6 +163,8 @@ namespace BrownieHound
             }
             ruleGroupList.ItemsSource = null;
             ruleGroupList.ItemsSource = Data;
+            checkCount = ruleGroupList.Items.Count;
+            delete.IsEnabled = true;
         }
         int checkCount = 0;
         private void ListViewItem_Selected(object sender, RoutedEventArgs e)

@@ -12,7 +12,7 @@
         <Button x:Name="topTom_s" Content="メール設定" Height="43" Margin="0,0,198,22" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic"  FontSize="25" Foreground="White" Click="topTom_s_Click"  HorizontalAlignment="Right" Width="157"/>
         <Button x:Name="topTorg_s" Content="ルールグループ設定"  Height="43" Margin="0,0,372,22" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Foreground="White" Click="topTorg_s_Click" HorizontalAlignment="Right" Width="260"/>
 
-        <Label x:Name="title" Content="TOP画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+       
         <ListBox x:Name="interfaceList" Margin="63,120,37,120" ScrollViewer.CanContentScroll="True">
             <ListBox.ItemContainerStyle>
                 <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="{x:Type ListBoxItem}">
@@ -21,5 +21,6 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
+        <Image Source="logoimage/top.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="25,-73,0,0"/>
     </Grid>
 </Page>
