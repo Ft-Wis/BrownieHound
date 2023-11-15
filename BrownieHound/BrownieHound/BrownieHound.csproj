@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="logoimage\capture.png" />
+    <None Remove="logoimage\detect.png" />
     <None Remove="logoimage\icon.png" />
     <None Remove="logoimage\mail_setting.png" />
     <None Remove="logoimage\packet_detail.png" />
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <Resource Include="logoimage\capture.png" />
+    <Resource Include="logoimage\detect.png" />
     <Resource Include="logoimage\icon.png" />
     <Resource Include="logoimage\mail_setting.png" />
     <Resource Include="logoimage\packet_detail.png" />
