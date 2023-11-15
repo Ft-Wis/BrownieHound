@@ -21,11 +21,11 @@ namespace BrownieHound
     /// </summary>
     public partial class top : Page
     {
-        //public top()
-        //{
-            //InitializeComponent();
+        public top()
+        {
+            InitializeComponent();
 
-       // }
+        }
         Process processTsinterface = null;
         string path = @"conf";
         private void tsharkconnect()
