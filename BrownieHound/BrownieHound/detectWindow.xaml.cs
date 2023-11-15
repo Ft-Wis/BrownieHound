@@ -64,7 +64,7 @@ namespace BrownieHound
             {
                 detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
                 string message = "";
-                using (File.Create($"tempdetectionData\\{ruleGroupDatas[i].Name}.txt")) { }
+                using (File.Create($"tempdetectionData\\{ruleGroupDatas[i].Name}.tmp")) { }
                 detectionRuleNames.Add(ruleGroupDatas[i].Name);
                 foreach (RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
                 {
