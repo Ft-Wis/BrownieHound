@@ -524,7 +524,7 @@ namespace BrownieHound
                             }
                             if (flg == 6)
                             {
-                                foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                                foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
                                 {
                                     int wflg = 0;
                                     if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(memoryPackets[i].Source))
@@ -608,7 +608,7 @@ namespace BrownieHound
                         }
                         packetList.Add(memoryPackets[i]);
                     }
-                    foreach (ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                    foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
                     {
 
                         for (int i = 0; i < packetList.Count; i++)
