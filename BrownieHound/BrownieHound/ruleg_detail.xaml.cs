@@ -340,5 +340,12 @@ namespace BrownieHound
             if (checkCount == 0)
                 inactivate.IsEnabled = false;
         }
+
+        public static void correct_Click(object sender, RoutedEventArgs e)
+        {
+            string oldFile = @"./ruleGroup/";
+            string newFile = @"./ruleGroup/";
+            File.Copy(oldFile, newFile);
+        }
     }
 }
