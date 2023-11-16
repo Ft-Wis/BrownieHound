@@ -9,14 +9,14 @@
       Title="standby_rule">
 
     <Grid Loaded="Page_Loaded">
+        <Image Source="logoimage/standby_rule.png" HorizontalAlignment="Left" Height="320" VerticalAlignment="Top"  Margin="0,-79,0,0" Width="304"/>
         <Button x:Name="s_rTotop" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="s_rTotop_Click"/>
-        <Image Source="logoimage/standby_rule.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-95,0,0"/>
         <Label x:Name="interfaceLabel" Content="None" HorizontalAlignment="Left" Height="35" Margin="61,85,0,0" VerticalAlignment="Top" Width="702" FontSize="16"/>
         <ListView x:Name="ruleGroupList" Margin="40,130,40,100" ItemsSource="{Binding}">
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_DoubleClikck"/>
-                    <EventSetter Event="Selected" Handler="ListViewItem_Selected"/>
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="ListViewItem_DoubleClikck"/>
+                    <EventSetter Event="ListBoxItem.Selected" Handler="ListViewItem_Selected"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
@@ -31,7 +31,7 @@
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding isCheck}" />
                             </DataTemplate>
-                        </GridViewColumn.CellTemplate> 
+                        </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
                     <GridViewColumn Header="No" DisplayMemberBinding="{Binding No}" />
