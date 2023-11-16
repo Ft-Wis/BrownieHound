@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hRktwDkp8BNxWtKwHNcarXQES2Tg3kCglLddrHctt/Zt6G3FnZbxaJkVPpQn0zlne8FP8uFJsMfV134Iq9ebEg==",
+  "dgSpecHash": "J8KRThOZcf+A5Zn0/mknQYG23lAmAwGnBZPPt3BK1ehFXo7GOJhLGcTg+a2YG5aJ9RxARqWhmZ7nqR3X+HyF4w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Source\\Repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+  "projectFilePath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\mailkit\\4.1.0\\mailkit.4.1.0.nupkg.sha512",

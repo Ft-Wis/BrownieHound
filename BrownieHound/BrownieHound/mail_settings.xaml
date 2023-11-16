@@ -22,7 +22,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Button x:Name="m_sTotop_redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="45,0,0,28" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="s_rTotop_redo_Click" Grid.Column="0" Grid.Row="5"/>
-        <Label x:Name="title" Content="メール設定画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24" Grid.ColumnSpan="3"/>
+       
+        <Image Source="logoimage/mail_setting.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-96,0,0"/>
         <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="70,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Yu Gothic" FontWeight="Bold" FontSize="23" Height="36" Width="177"><Run Text="メール送信"/><Run Language="ja-jp" Text="設定"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
         <ToggleButton x:Name="enabledButton" Height="50" Width="50" HorizontalAlignment="Left" Margin="10,0,0,10" 
           Style="{StaticResource MaterialDesignSwitchToggleButton}"

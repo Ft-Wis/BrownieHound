@@ -976,11 +976,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Source\\Repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
       "projectName": "BrownieHound",
-      "projectPath": "C:\\Users\\user\\Source\\Repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
+      "projectPath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\BrownieHound.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Source\\Repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
+      "outputPath": "C:\\Users\\user\\Source\\Repos\\sotsuken\\BrownieHound\\BrownieHound\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -1055,7 +1055,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

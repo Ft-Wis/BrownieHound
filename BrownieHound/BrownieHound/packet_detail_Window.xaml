@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="packet_detail_Window" Height="450" Width="800">
     <Grid>
-        <Label x:Name="title" Content="パケット詳細画面" HorizontalAlignment="Left" Height="44" Margin="41,36,0,0" VerticalAlignment="Top" Width="238" FontSize="24"/>
+       
+        <Image Source="logoimage/packet_detail.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-82,0,0"/>
         <TreeView x:Name="detail_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5">
         </TreeView>
     </Grid>

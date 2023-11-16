@@ -49,7 +49,7 @@ namespace BrownieHound
         {
             Application.Current.MainWindow.Width = 1200;
             InitializeComponent();
-            title.Content = $"{title.Content} - {name}";
+            //title.Content = $"{title.Content} - {name}";
             fileName = name;
             gridItem = new ObservableCollection<DataGridItem>();
             
@@ -137,9 +137,9 @@ namespace BrownieHound
                 }
 
                 File.WriteAllLines(filePath, targetFile);
-                reDraw();
+                reDraw(false);
             }
-            reDraw();
+            reDraw(false);
         }
 
         //「編集」ボタンを押したとき
@@ -158,7 +158,7 @@ namespace BrownieHound
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 replaceLine(filePath,editLineNumber,insertText);
                 ReadFileByLine(filePath);
-                reDraw();
+                reDraw(false);
             }
             else
             {
@@ -180,7 +180,7 @@ namespace BrownieHound
                 string[] lines = File.ReadAllLines(filePath);
                 string[] result = addLine(lines,addText);
                 File.WriteAllLines(filePath, result);
-                reDraw();
+                reDraw(false);
             }
             else
             {
@@ -207,7 +207,7 @@ namespace BrownieHound
             }
         }
 
-        private void reDraw()
+        private void reDraw(bool checkStatus)
         {
             string filePath = "./ruleGroup/" + fileName + ".txt";
             string[] lines = File.ReadAllLines(filePath);
@@ -217,7 +217,8 @@ namespace BrownieHound
                 RuleData.ruleData rd = new RuleData.ruleData(lines[ruleNum]);
                 var gridData = new DataGridItem
                 {
-                    isCheck = false,
+                    //isCheck = false,
+                    isCheck = checkStatus, 
                     ruleNo = ruleNum,
                     detectionInterval = rd.detectionInterval,
                     detectionCount = rd.detectionCount,
@@ -323,6 +324,27 @@ namespace BrownieHound
 
             return selectedRuleNoArray;
             // selectedRuleNoArrayを適切に使用する処理を記述してください
+        }
+        private void checkAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            reDraw(allSelect);
+            checkAll.Content = "すべて選択";
+            checkCount = 0;
+            inactivate.IsEnabled = false;
+        }
+
+
+
+        private void checkAll_Checked(object sender, RoutedEventArgs e)
+        {
+            bool allSelect;
+            allSelect = (bool)checkAll.IsChecked;
+            reDraw(allSelect);
+            checkAll.Content = "すべて選択解除";
+            checkCount = rule_DataGrid.Items.Count;
+            inactivate.IsEnabled = true;
         }
         int checkCount = 0;
         private void DataGrid_Selected(object sender, RoutedEventArgs e)
