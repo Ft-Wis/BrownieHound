@@ -134,5 +134,27 @@ namespace BrownieHound
             }
 
         }
+
+        //検出したパケットの保存処理
+        private void save_button_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime currentDateTime = DateTime.Now;
+            string defaultFileName = currentDateTime.ToString("yyyymmddHHmm"); 
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.InitialDirectory = "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\bin\\Debug\\netcoreapp3.1";
+            dlg.FileName = defaultFileName+".tmp"; // Default file name
+            dlg.DefaultExt = ".tmp"; // Default file extension
+            dlg.Filter = "tempファイル(.tmp)|*.tmp"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+            }
+        }
     }
 }
