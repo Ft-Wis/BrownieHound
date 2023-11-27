@@ -102,7 +102,7 @@ namespace BrownieHound {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BrownieHound;component/ruleg_detail.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BrownieHound;V1.0.0.0;component/ruleg_detail.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\ruleg_detail.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

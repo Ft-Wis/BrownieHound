@@ -86,7 +86,7 @@ namespace BrownieHound {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BrownieHound;component/top.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BrownieHound;V1.0.0.0;component/top.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\top.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
