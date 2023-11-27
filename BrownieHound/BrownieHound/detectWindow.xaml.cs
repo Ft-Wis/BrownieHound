@@ -139,7 +139,7 @@ namespace BrownieHound
         private void save_button_Click(object sender, RoutedEventArgs e)
         {
             DateTime currentDateTime = DateTime.Now;
-            string defaultFileName = currentDateTime.ToString("yyyymmddHHmmss"); 
+            string defaultFileName = currentDateTime.ToString("yyyymmddHHmm"); 
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.InitialDirectory = "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\bin\\Debug\\netcoreapp3.1";
             dlg.FileName = defaultFileName+".tmp"; // Default file name
@@ -154,8 +154,6 @@ namespace BrownieHound
             {
                 // Save document
                 string filename = dlg.FileName;
-                string textToSave = "書き込み完了";
-                File.WriteAllText(filename,textToSave);
             }
         }
     }
