@@ -178,7 +178,10 @@ namespace BrownieHound
             {
                 
                 down_Scroll();
-                nextflg = true;
+                if(CaptureData.Items.Count > 500)
+                {
+                    nextflg = true;
+                }
                 viewUpdateflg = false;
             }
 
