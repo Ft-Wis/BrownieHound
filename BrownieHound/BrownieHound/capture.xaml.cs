@@ -737,7 +737,7 @@ namespace BrownieHound
                 if (!processflg &&  scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.85 && CaptureData.Items.Count % 500 == 0)
                 {
                     processflg = true;
-                    nextflg = true;
+                    
                     if(beforeflg)
                     {
                         viewPlace++;
@@ -748,6 +748,7 @@ namespace BrownieHound
                     {
                         
                         readToNext(scrollViewer);
+                        nextflg = true;
                     }
 
                     processflg = false;
@@ -755,7 +756,7 @@ namespace BrownieHound
                 if(!processflg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight <= scrollViewer.ExtentHeight * 0.15)
                 {
                     processflg = true;
-                    beforeflg = true;
+                    
                     if (nextflg)
                     {
                         viewPlace--;
@@ -765,6 +766,7 @@ namespace BrownieHound
                     {
                         
                         readTobefore(scrollViewer);
+                        beforeflg = true;
                     }
                     processflg = false;
                 }
@@ -948,6 +950,7 @@ namespace BrownieHound
             GC.Collect();
             viewPlace = 0;
             beforeflg = false;
+            nextflg = false;
             viewUpdateflg = false;
         }
         private void down_Scroll()
@@ -1034,6 +1037,7 @@ namespace BrownieHound
         private void down_Click(object sender, RoutedEventArgs e)
         {
             nextflg = false;
+            beforeflg = false;
             down_Scroll();
         }
 
