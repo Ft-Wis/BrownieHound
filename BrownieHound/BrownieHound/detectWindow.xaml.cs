@@ -138,22 +138,50 @@ namespace BrownieHound
         //検出したパケットの保存処理
         private void save_button_Click(object sender, RoutedEventArgs e)
         {
-            DateTime currentDateTime = DateTime.Now;
-            string defaultFileName = currentDateTime.ToString("yyyymmddHHmm"); 
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.InitialDirectory = "C:\\Users\\nkc20\\source\\repos\\Ft-Wis\\sotsuken\\BrownieHound\\BrownieHound\\bin\\Debug\\netcoreapp3.1";
-            dlg.FileName = defaultFileName+".tmp"; // Default file name
-            dlg.DefaultExt = ".tmp"; // Default file extension
-            dlg.Filter = "tempファイル(.tmp)|*.tmp"; // Filter files by extension
-
-            // Show save file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Process save file dialog box results
-            if (result == true)
+            //フォルダが存在しなければ新規作成する
+            if (!File.Exists("tempDetectionPackets"))
             {
-                // Save document
-                string filename = dlg.FileName;
+                Directory.CreateDirectory("tempDetectionPackets");
+            }
+
+            DateTime currentDateTime = DateTime.Now;
+            string nowTimeFileName = currentDateTime.ToString("yyyy_MM_dd_HH_mm");
+            //次のタスク「日付ごとにフォルダを作成する」
+            if (!File.Exists("tempDetectionPackets\\"+nowTimeFileName))
+            {
+                Directory.CreateDirectory("tempDetectionPackets\\" + nowTimeFileName);
+            }
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+
+            for (int i = 0; i < detectionRuleNames.Count; i++)
+            {
+                dlg.FileName = detectionRuleNames[i] + ".txt"; // Default file name
+                dlg.DefaultExt = ".txt"; // Default file extension
+                dlg.Filter = "textファイル(.txt)|*.txt"; // Filter files by extension
+
+                string currentDirPath = Directory.GetCurrentDirectory();
+
+                //ルールグループごとにフォルダを作成
+                if (!Directory.Exists(detectionRuleNames[i]))
+                {
+                    Directory.CreateDirectory("tempDetectionPackets\\" + nowTimeFileName + "\\" + detectionRuleNames[i]);
+                }
+
+                dlg.InitialDirectory = Directory.GetCurrentDirectory() + "\\tempDetectionPackets\\" + nowTimeFileName + "\\" + detectionRuleNames[i];
+
+                // Show save file dialog box
+                Nullable<bool> result = dlg.ShowDialog();
+
+                // Process save file dialog box results
+                if (result == true)
+                {
+                    //ファイルをコピーしてくる
+                    string tempContent = File.ReadAllText("tempdetectionData\\" + detectionRuleNames[i]+".tmp");
+
+                    string filename = dlg.FileName;
+                    File.WriteAllText(filename, tempContent);
+                }
             }
         }
     }
