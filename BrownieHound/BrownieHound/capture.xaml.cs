@@ -146,6 +146,9 @@ namespace BrownieHound
         int viewPlace = 0;
         bool viewUpdateflg = true;
         bool processflg = false;
+        bool beforeflg = false;
+        bool nextflg = false;
+        bool scrollflg = true;
 
         public capture(string tsINumber)
         {
@@ -170,8 +173,20 @@ namespace BrownieHound
         bool stopflag = false;
         private void stop_Click(object sende, RoutedEventArgs e) 
         {
-            processTscap.Kill();
             stopflag = true;
+            if (viewUpdateflg)
+            {
+                
+                down_Scroll();
+                if(CaptureData.Items.Count > 500)
+                {
+                    nextflg = true;
+                }
+                viewUpdateflg = false;
+            }
+
+            processTscap.Kill();
+            
             clockTimer.Stop();
             foreach (var detectTimer in detectTimerList)
             {
@@ -368,7 +383,7 @@ namespace BrownieHound
 
             if (detectionRuleGroups.Count == 0)
             {
-                while (recordPacketNo.Count > mostDitectionCount + 10 && memoryPackets.Count > 100)
+                while (recordPacketNo.Count > mostDitectionCount + 10 && memoryPackets.Count > 200)
                 {
                     while (memoryPackets[0].Number < recordPacketNo[1])
                     {
@@ -378,19 +393,6 @@ namespace BrownieHound
 
                 }
             }
-
-            int countNumber = dataCount;
-            //writeFile(endPoint);
-            if (countNumber > 0)
-            {
-                countNumber -= 1;
-            }
-            //viewPacketDatas = new ObservableCollection<packetData>();
-            //if(countNumber >= viewDistrictCount)
-            //{
-            //    readPoint = countNumber - viewDistrictCount;
-            //}
-            //readFile(readPoint, countNumber);
             if (viewUpdateflg)
             {
                 CaptureData.ItemsSource = null;
@@ -398,9 +400,14 @@ namespace BrownieHound
                 CaptureData.ItemsSource = memoryPackets;
                 bool isRowSelected = CaptureData.SelectedItems.Count > 0;
 
-                if (!isRowSelected && CaptureData.Items.Count > 0)
+                if (scrollflg)
                 {
                     CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
+                }
+
+                if (!isRowSelected && CaptureData.Items.Count > 0)
+                {
+                    //CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
                 }
             }
 
@@ -420,50 +427,11 @@ namespace BrownieHound
                 }
             catch
             {
-
-                //errなどはそのまま出力する
-                if (stopflag == true)
-                {
-                    stopstatus.Content = "中断中";
-                }
-                else
-                {
-                    pd = (new packetData(msg));
-                }
+                pd = (new packetData(msg));
             }
             return pd;
         }
-        private void writeFile(int endPoint)
-        {
-            using (StreamWriter sw = new StreamWriter($"temps\\{tempfileName}", true, Encoding.GetEncoding("UTF-8")))
-            {
-                for(int i = 0;i < endPoint; i++)
-                {
 
-                }
-
-            }
-
-        }
-        private void readFile(int start,int end)
-        {
-            
-            using(StreamReader sr = new StreamReader("temps\\temp.tmp"))
-            {
-                //List<string> temps = new List<string>(sr.ReadToEnd().Split("\n"));
-                //Debug.WriteLine(temps[start]);
-                for(int i = 0;i<start;i++)
-                {
-                    sr.ReadLine();
-                }
-                for(int i = start;i< end; i++)
-                {
-                    //viewPacketDatas.Add(transfar(temps[i]));
-                    viewPacketDatas.Add(transfar(sr.ReadLine()));
-                }
-
-            }
-        }
         private void detectLogic(int detectionNumber)
         {
             int recordEnd = recordPacketNo.Count - 1;
@@ -760,44 +728,100 @@ namespace BrownieHound
         }
         private void chaptureDataGrid_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            DataGrid dataGrid = (DataGrid)sender;
-            ScrollViewer scrollViewer = GetScrollViewer(dataGrid);
+            
+            ScrollViewer scrollViewer = GetScrollViewer(CaptureData);
             Debug.WriteLine($"::{scrollViewer.VerticalOffset} / {scrollViewer.ExtentHeight}");
-
-            if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight)
-            {
-                dataGrid.UnselectAll(); // DataGrid自体から選択を解除する場合
-            }
+            
             if (!viewUpdateflg)
             {
-                //await Task.Delay(10);
                 if (!processflg &&  scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.85 && CaptureData.Items.Count % 500 == 0)
                 {
                     processflg = true;
                     
+                    if(beforeflg)
+                    {
+                        viewPlace++;
+                        beforeflg = false;
+                    }
+                    
                     if(viewPlace < writePlace * 10 - 1)
                     {
+                        
                         readToNext(scrollViewer);
+                        nextflg = true;
                     }
 
                     processflg = false;
                 }
+                if(!processflg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight <= scrollViewer.ExtentHeight * 0.15)
+                {
+                    processflg = true;
+                    
+                    if (nextflg)
+                    {
+                        viewPlace--;
+                        nextflg = false;
+                    }
+                    if(viewPlace > 0)
+                    {
+                        
+                        readTobefore(scrollViewer);
+                        beforeflg = true;
+                    }
+                    processflg = false;
+                }
             }
+            else
+            {
+                if(scrollViewer.VerticalOffset + scrollViewer.ViewportHeight > scrollViewer.ExtentHeight * 0.95 || CaptureData.Items.Count <= 100)
+                {
+                    scrollflg = true;
+                }
+            }
+        }
+        private void readTobefore(ScrollViewer scrollViewer)
+        {
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + 500);
+            scrollViewer.IsEnabled = false;
+            viewPlace--;
+            string[] viewPacketStrings = new string[501];
+            using (StreamReader sr = new StreamReader($"temps\\temp{viewPlace / 10 + 1}.tmp"))
+            {
+                for (int i = 0; i < (viewPlace % 10) * 500; i++)
+                {
+                    sr.ReadLine();
+                }
+                for (int i = 0; i < 500; i++)
+                {
+                    viewPacketStrings[i] =  sr.ReadLine();
+
+                }
+            }
+            for (int i = 0; i < 500; i++)
+            {
+                CaptureData.Items.Insert(i, transfar(viewPacketStrings[i]));
+            }
+            if (CaptureData.Items.Count > 1000)
+            {
+                int end = CaptureData.Items.Count - 1000;
+                for (int i = 0;i < end; i++)
+                {
+                    CaptureData.Items.RemoveAt(1000);
+                }
+            }
+            viewPacketStrings = null;
+            GC.Collect();
+            scrollViewer.IsEnabled = true;
+
         }
         private void readToNext(ScrollViewer scrollViewer)
         {
             
             double scrollPlace = scrollViewer.VerticalOffset;
             scrollViewer.ScrollToVerticalOffset(scrollPlace % 500);
-            //await Task.Delay(1000);
             scrollViewer.IsEnabled = false;
-            //await Task.Delay(1000);
-
 
             viewPlace++;
-            //スクロールの問題で人間に観測できない更新頻度になる
-            //イベントの発生頻度をコントロールできれば？
-            Debug.WriteLine(viewPlace);
             string[] viewPacketStrings = new string[501];
             using (StreamReader sr = new StreamReader($"temps\\temp{viewPlace / 10 + 1}.tmp"))
             {
@@ -823,7 +847,7 @@ namespace BrownieHound
             {
                 CaptureData.Items.Add(transfar(viewPacketStrings[i]));
             }
-            if (1 < viewPlace && CaptureData.Items.Count > 1000)
+            if (CaptureData.Items.Count > 1000)
             {
                 for (int i = 0; i < 500; i++)
                 {
@@ -832,11 +856,8 @@ namespace BrownieHound
             }
             viewPacketStrings = null;
             GC.Collect();
-            Debug.WriteLine($"before:{scrollPlace} / {scrollViewer.ExtentHeight}");
             scrollViewer.IsEnabled = true;
 
-            //await Task.Delay(1000);
-            Debug.WriteLine($"after:{scrollViewer.VerticalOffset} / {scrollViewer.ExtentHeight}");
 
 
 
@@ -895,7 +916,9 @@ namespace BrownieHound
 
         private void up_Click(object sender, RoutedEventArgs e)
         {
-            viewUpdateflg = true;
+
+            ScrollViewer scrollViewer = GetScrollViewer(CaptureData);
+            scrollViewer.ScrollToVerticalOffset(0);
             CaptureData.ItemsSource = null;
             CaptureData.Items.Clear();
 
@@ -905,14 +928,14 @@ namespace BrownieHound
             {
                 for (int i = 0; i < 500; i++)
                 {
-                    string lines = sr.ReadLine();
-                    if (lines != null)
+                    string line = sr.ReadLine();
+                    if (line != null)
                     {
-                        viewPacketStrings[i] = lines;
+                        viewPacketStrings[i] = line;
                     }
                     else
                     {
-                        viewPacketStrings[i] = lines;
+                        viewPacketStrings[i] = line;
                         break;
                     }
                     
@@ -926,17 +949,96 @@ namespace BrownieHound
             viewPacketStrings = null;
             GC.Collect();
             viewPlace = 0;
-            CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(0));
-            CaptureData.SelectedIndex = 0;
+            beforeflg = false;
+            nextflg = false;
             viewUpdateflg = false;
         }
-
-        private void doun_Click(object sender, RoutedEventArgs e)
+        private void down_Scroll()
         {
-            viewUpdateflg = true;
-            CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
             viewPlace = dataCount / 500;
-            GC.Collect();
+            if (stopflag)
+            {
+                
+                CaptureData.ItemsSource = null;
+                CaptureData.Items.Clear();
+                string[] viewPacketStrings = new string[501];
+                if (dataCount % 500 == 0)
+                {
+                    viewPlace--;
+                }
+                else if(dataCount % 500 < 30 && viewPlace > 0)
+                {
+                    using (StreamReader sr = new StreamReader($"temps\\temp{(viewPlace - 1) / 10 + 1}.tmp"))
+                    {
+                        for (int i = 0; i < ((viewPlace - 1) % 10) * 500; i++)
+                        {
+                            sr.ReadLine();
+                        }
+                        for (int i = 0; i < 500; i++)
+                        {
+                            string line = sr.ReadLine();
+                            if (line != null)
+                            {
+                                viewPacketStrings[i] = line;
+                            }
+                            else
+                            {
+                                viewPacketStrings[i] = line;
+                                break;
+                            }
+                        }
+                    }
+                    for (int i = 0; viewPacketStrings[i] != null; i++)
+                    {
+                        CaptureData.Items.Add(transfar(viewPacketStrings[i]));
+                    }
+                    viewPacketStrings = new string[501];
+                    GC.Collect();
+                }
+                using (StreamReader sr = new StreamReader($"temps\\temp{viewPlace / 10 + 1}.tmp"))
+                {
+                    for (int i = 0; i < (viewPlace % 10) * 500; i++)
+                    {
+                        sr.ReadLine();
+                    }
+                    for (int i = 0; i < 500; i++)
+                    {
+                        string line = sr.ReadLine();
+                        if (line != null)
+                        {
+                            viewPacketStrings[i] = line;
+                        }
+                        else
+                        {
+                            viewPacketStrings[i] = line;
+                            break;
+                        }
+                    }
+                }
+                for (int i = 0; viewPacketStrings[i] != null; i++)
+                {
+                    CaptureData.Items.Add(transfar(viewPacketStrings[i]));
+                }
+                viewPacketStrings = null;
+                GC.Collect();
+                ScrollViewer scrollViewer = GetScrollViewer(CaptureData);
+                scrollViewer.ScrollToVerticalOffset(CaptureData.Items.Count);
+            }
+            else
+            {
+                viewUpdateflg = true;
+                CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
+
+                GC.Collect();
+            }
+
+        }
+
+        private void down_Click(object sender, RoutedEventArgs e)
+        {
+            nextflg = false;
+            beforeflg = false;
+            down_Scroll();
         }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -946,6 +1048,14 @@ namespace BrownieHound
             {
                 packet_detail_Window packet_detail = new packet_detail_Window(packet.Data);
                 packet_detail.Show();
+            }
+        }
+
+        private void CaptureData_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if(e.Delta > 0)
+            {
+                scrollflg = false;
             }
         }
     }
