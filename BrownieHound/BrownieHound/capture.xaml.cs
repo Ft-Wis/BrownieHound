@@ -36,6 +36,9 @@ using Reactive.Bindings.Extensions;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Bcpg;
 using static BrownieHound.RuleData;
+using System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
+using Application = System.Windows.Application;
 
 namespace BrownieHound
 {
@@ -167,38 +170,89 @@ namespace BrownieHound
 
         private void inactivate_Click(object sender, RoutedEventArgs e)
         {
-            closing();
+            MessageBoxResult result = MessageBox.Show(
+            "終了してルールグループ選択画面にもどります。\nよろしいですか？",
+            "確認",
+            MessageBoxButton.OKCancel,
+            MessageBoxImage.Question,
+            MessageBoxResult.Cancel);
+            if(result == MessageBoxResult.OK)
+            {
+                closing();
+                NavigationService.GoBack();
+            }
+            
             
         }
         bool stopflag = false;
         private void stop_Click(object sende, RoutedEventArgs e) 
         {
-            stopflag = true;
-            if (viewUpdateflg)
+            MessageBoxResult result = MessageBox.Show(
+                "検知とキャプチャを停止します。\n検知を停止することで検知データを保存することができます。",
+                "確認",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question,
+                MessageBoxResult.Cancel);
+            if (result == MessageBoxResult.OK)
             {
-                
-                down_Scroll();
-                if(CaptureData.Items.Count > 500)
-                {
-                    nextflg = true;
-                }
-                viewUpdateflg = false;
-            }
 
-            processTscap.Kill();
-            
-            clockTimer.Stop();
-            foreach (var detectTimer in detectTimerList)
-            {
-                detectTimer.Stop();
-            }
-            if (mailTimer != null)
-            {
-                mailTimer.Stop();
+                stop.IsEnabled = false;
+                viewable.IsEnabled = false;
+                stopflag = true;
+                if (viewUpdateflg)
+                {
+
+                    down_Scroll();
+                    if (CaptureData.Items.Count > 500)
+                    {
+                        nextflg = true;
+                    }
+                    viewUpdateflg = false;
+                }
+
+                processTscap.Kill();
+
+                clockTimer.Stop();
+                foreach (var detectTimer in detectTimerList)
+                {
+                    detectTimer.Stop();
+                }
+                if (mailTimer != null)
+                {
+                    mailTimer.Stop();
+                }
             }
 
         }
-       
+
+        private void viewable_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (!stopflag)
+            {
+                stopflag = true;
+                if (viewUpdateflg)
+                {
+
+                    down_Scroll();
+                    if (CaptureData.Items.Count > 500)
+                    {
+                        nextflg = true;
+                    }
+                    viewUpdateflg = false;
+                }
+                stopstatus.Content = "閲覧中";
+            }
+            else
+            {
+                stopflag = false;
+                nextflg = false;
+                beforeflg = false;
+                viewUpdateflg = true;
+                stopstatus.Content = "更新中";
+            }
+        }
+
         private void tsStart(string tsDirectory, string args)
         {
             processTscap = new Process();
@@ -405,10 +459,6 @@ namespace BrownieHound
                     CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
                 }
 
-                if (!isRowSelected && CaptureData.Items.Count > 0)
-                {
-                    //CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
-                }
             }
 
             clock++;
@@ -681,32 +731,29 @@ namespace BrownieHound
                 JObject packetObject = JObject.Parse(msg);
                 if (packetObject["layers"] != null)
                 {
-                    dataCount++;
-                    packetCount++;
-                    using (StreamWriter sw = new StreamWriter($"temps\\temp{writePlace}.tmp",true))
+                    if (Directory.Exists("temps"))
                     {
-                        sw.WriteLine(msg);
+                        dataCount++;
+                        packetCount++;
+                        using (StreamWriter sw = new StreamWriter($"temps\\temp{writePlace}.tmp", true))
+                        {
+                            sw.WriteLine(msg);
+                        }
+                        if (viewUpdateflg)
+                        {
+                            viewPlace = dataCount / 500;
+                        }
+                        if (dataCount % 5000 == 0)
+                        {
+                            writePlace++;
+                        }
+                        memoryPackets.Add(new packetData((JObject)packetObject["layers"]));
                     }
-                    if (viewUpdateflg)
-                    {
-                        viewPlace = dataCount / 500;
-                    }
-                    if (dataCount % 5000 == 0)
-                    {
-                        writePlace++;
-                    }
-                    memoryPackets.Add(new packetData((JObject)packetObject["layers"]));
                 }
             }
             catch
             {
-
-                //errなどはそのまま出力する
-                if (stopflag == true)
-                {
-                    stopstatus.Content = "中断中";
-                }
-                else
+                if (Directory.Exists("temps") && stop.IsEnabled)
                 {
                     dataCount++;
                     using (StreamWriter sw = new StreamWriter($"temps\\temp{writePlace}.tmp", true))
@@ -857,10 +904,6 @@ namespace BrownieHound
             viewPacketStrings = null;
             GC.Collect();
             scrollViewer.IsEnabled = true;
-
-
-
-
         }
 
         private ScrollViewer GetScrollViewer(DependencyObject depObj)
@@ -884,6 +927,19 @@ namespace BrownieHound
         }
         private void closing()
         {
+            if (processTscap != null && !processTscap.HasExited)
+            {
+                processTscap.Kill();
+            }
+            clockTimer.Stop();
+            foreach (var detectTimer in detectTimerList)
+            {
+                detectTimer.Stop();
+            }
+            if (mailTimer != null)
+            {
+                mailTimer.Stop();
+            }
             if (Directory.Exists("temps"))
             {
                 Directory.Delete("temps",true);
@@ -892,21 +948,7 @@ namespace BrownieHound
             {
                 Directory.Delete("tempdetectionData",true);
             }
-
-            if (processTscap != null && !processTscap.HasExited)
-            {
-                processTscap.Kill();
-            }
-            clockTimer.Stop();
-            foreach(var detectTimer in detectTimerList)
-            {
-                detectTimer.Stop();
-            }
-            if(mailTimer != null)
-            {
-                mailTimer.Stop();
-            }
-            Application.Current.Shutdown();
+            
 
         }
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
@@ -1058,5 +1100,7 @@ namespace BrownieHound
                 scrollflg = false;
             }
         }
+
+
     }
 }
