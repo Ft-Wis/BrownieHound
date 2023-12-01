@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,18 @@ namespace BrownieHound
 
             Uri uri = new Uri("/top.xaml", UriKind.Relative);
             frame.Source = uri;
+        }
+
+        private void BrownieHound_Closed(object sender, EventArgs e)
+        {
+            if (Directory.Exists("temps"))
+            {
+                Directory.Delete("temps",true);
+            }
+            if (Directory.Exists("tempdetectionData"))
+            {
+                Directory.Delete("tempdetectionData",true);
+            }
         }
     }
 }
