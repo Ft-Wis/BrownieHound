@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using static BrownieHound.App;
 using static BrownieHound.capture;
+using static BrownieHound.ReadPacketData;
 
 namespace BrownieHound
 {
