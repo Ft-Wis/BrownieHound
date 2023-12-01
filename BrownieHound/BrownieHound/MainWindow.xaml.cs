@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,15 +30,35 @@ namespace BrownieHound
             frame.Source = uri;
         }
 
-        private void BrownieHound_Closed(object sender, EventArgs e)
+        private void BrownieHound_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (Directory.Exists("temps"))
+            
+            Debug.WriteLine(frame.Content.ToString());
+            if (frame.Content.ToString().Equals("BrownieHound.capture"))
             {
-                Directory.Delete("temps",true);
-            }
-            if (Directory.Exists("tempdetectionData"))
-            {
-                Directory.Delete("tempdetectionData",true);
+                MessageBoxResult result = MessageBox.Show(
+                    "このまま終了しますか？",
+                    "確認",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.Cancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+
+                    if (Directory.Exists("temps"))
+                    {
+                        Directory.Delete("temps", true);
+                    }
+                    if (Directory.Exists("tempdetectionData"))
+                    {
+                        Directory.Delete("tempdetectionData", true);
+                    }
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
             }
         }
     }
