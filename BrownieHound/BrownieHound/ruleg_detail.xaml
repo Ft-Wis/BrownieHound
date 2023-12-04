@@ -10,14 +10,18 @@
       Title="ruleg_detail" Cursor="" Width="1112" HorizontalAlignment="Center">
 
     <Grid Background="White" HorizontalAlignment="Center" Width="1120">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="263*"/>
+            <ColumnDefinition Width="297*"/>
+        </Grid.ColumnDefinitions>
         <Image Source="logoimage/rule_detail.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-99,0,0"/>
-        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="837,0,0,22" VerticalAlignment="Bottom" Width="153" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click"/>
-        <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="612,0,0,22" VerticalAlignment="Bottom" Width="156" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click" IsEnabled="False"/>
+        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="311,0,0,22" VerticalAlignment="Bottom" Width="153" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" Grid.Column="1"/>
+        <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="86,0,0,22" VerticalAlignment="Bottom" Width="156" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click" IsEnabled="False" Grid.Column="1"/>
         <Button x:Name="redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="58,0,0,22" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click"/>
         <Button x:Name="inactivate" Content="削除" HorizontalAlignment="Left" Height="43" Margin="331,0,0,22" VerticalAlignment="Bottom" Width="124" Click="inactivate_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" IsEnabled="False" />
-        <Button x:Name="correct" Content="編集" Margin="0,36,50,0" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" HorizontalAlignment="Right" Width="110" Height="44" VerticalAlignment="Top" Click="correct_Click"/>
-
-        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="254" VerticalAlignment="Center" Width="1037"  AutoGenerateColumns="False" Margin="25,0,0,0" SelectionChanged="DataGrid_Selected">
+        <Button x:Name="correct" Content="名前の修正" Margin="0,25,58,0" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" HorizontalAlignment="Right" Width="157" Height="44" VerticalAlignment="Top" Grid.Column="1" Click="correct_Click"/>
+        <TextBox x:Name="filename" HorizontalAlignment="Left" Margin="299,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Cascadia Code" FontWeight="Bold" FontSize="23" Foreground="#FF0C9CB6" Height="43" Width="568" IsEnabled="False" Grid.ColumnSpan="2" Cursor="" Background="{x:Null}"/>
+        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="254" VerticalAlignment="Center" Width="1037"  AutoGenerateColumns="False" Margin="9,0,0,0" SelectionChanged="DataGrid_Selected" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
