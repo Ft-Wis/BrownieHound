@@ -39,6 +39,7 @@
             </ComboBox.Resources>
             <ComboBoxItem Content="すべて" />
             <ComboBoxItem Content="このPCのアドレス" />
+            <ComboBoxItem Content="ブロードキャスト" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
         <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="262,145,0,0" TextWrapping="Wrap" Text="{Binding destinationIP.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
