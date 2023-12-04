@@ -75,10 +75,31 @@ namespace BrownieHound
                         {
                             if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
                             {
-                                detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                if (detectionRuleGroups[i].ruleDatas[j].destinationPort.Equals("broadcast"))
+                                {
+                                    detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                    detectionRuleGroups[i].blackListRules[detectionRuleGroups[i].blackListRules.Count - 1].Destination = "255.255.255.255";
+                                    detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                    detectionRuleGroups[i].blackListRules[detectionRuleGroups[i].blackListRules.Count - 1].Destination = "ff:ff:ff:ff:ff:ff";
+                                }
+                                else
+                                {
+                                    detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                }
                             }
                             else if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 1)
                             {
+                                if (detectionRuleGroups[i].ruleDatas[j].destinationPort.Equals("broadcast"))
+                                {
+                                    detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                    detectionRuleGroups[i].whiteListRules[detectionRuleGroups[i].whiteListRules.Count - 1].Destination = "255.255.255.255";
+                                    detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                    detectionRuleGroups[i].whiteListRules[detectionRuleGroups[i].whiteListRules.Count - 1].Destination = "ff:ff:ff:ff:ff:ff";
+                                }
+                                else
+                                {
+                                    detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                }
                                 detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
                             }
                             detectionRuleGroups[i].ruleDatas[j].Source = detectionRuleGroups[i].ruleDatas[j].Source.Replace("myAddress",myAddress.ToString());
