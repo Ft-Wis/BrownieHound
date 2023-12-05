@@ -389,15 +389,17 @@ namespace BrownieHound
                         while (File.Exists($"./ruleGroup/{newFileName}.txt"))
                         {
                             newFileName = $"{filename.Text} - {i}";
-                        ++i;
-                    }
-
+                            ++i;
+                            if (newFileName == fileName)
+                            {
+                                break;
+                            }
+                        }
                         string oldFilePath = $"./ruleGroup/{fileName}.txt";
                         string newFilePath = $"./ruleGroup/{newFileName}.txt";
                         File.Move(oldFilePath, newFilePath);
                         fileName = newFileName;
                         filename.Text = newFileName;
-
                         MessageBox.Show($"以下のルールグループを修正しました。\n{newFileName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
