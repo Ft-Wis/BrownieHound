@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="detectWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
+        <Image Source="logoimage/detect.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-17,-90,0,0"/>
         <TreeView x:Name="detection_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding children}">
@@ -14,6 +15,6 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <Image Source="logoimage/detect.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-17,-90,0,0"/>
+        <Button x:Name="save_button" Content="保存" HorizontalAlignment="Right" Height="43" Margin="0,0,55,354" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="save_button_Click"/>
     </Grid>
 </Window>
