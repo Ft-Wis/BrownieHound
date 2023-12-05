@@ -375,9 +375,9 @@ namespace BrownieHound
                 buttonflg = false;
                 correct.Content = "確定";
             }
-            else 
+            else
             {
-               filename.IsEnabled = false;
+                filename.IsEnabled = false;
                 buttonflg = true;
                 correct.Content = "名前の修正";
                 if (filename.Text.Length != 0)
@@ -385,29 +385,31 @@ namespace BrownieHound
                     int i = 1;
                     string newFileName = filename.Text;
                     if (newFileName == fileName)
-                        return;
-                        while (File.Exists($"./ruleGroup/{newFileName}.txt"))
-                        {
-                            newFileName = $"{filename.Text} - {i}";
-                            ++i;
-                            if (newFileName == fileName)
-                            {
-                                break;
-                            }
-                        }
-                        string oldFilePath = $"./ruleGroup/{fileName}.txt";
-                        string newFilePath = $"./ruleGroup/{newFileName}.txt";
-                        File.Move(oldFilePath, newFilePath);
-                        fileName = newFileName;
-                        filename.Text = newFileName;
-                        MessageBox.Show($"以下のルールグループを修正しました。\n{newFileName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
                     {
-                        filename.Text = fileName;
-                        MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    } 
+                    while (File.Exists($"./ruleGroup/{newFileName}.txt"))
+                    {
+                        newFileName = $"{filename.Text} - {i}";
+                        ++i;
+                        if (newFileName == fileName)
+                        {
+                            break;
+                        }
                     }
+                    string oldFilePath = $"./ruleGroup/{fileName}.txt";
+                    string newFilePath = $"./ruleGroup/{newFileName}.txt";
+                    File.Move(oldFilePath, newFilePath);
+                    fileName = newFileName;
+                    filename.Text = newFileName;
+                    MessageBox.Show($"以下のルールグループを修正しました。\n{newFileName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    filename.Text = fileName;
+                    MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
+    }
 }
