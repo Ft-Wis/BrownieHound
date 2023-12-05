@@ -106,6 +106,13 @@ namespace BrownieHound
             {
                 closing();
                 NavigationService.GoBack();
+                if (dWindow != null)
+                {
+                    dWindow.winClose();
+                    dWindow.Close();
+                    
+                }
+                
             }
             
             
@@ -686,7 +693,6 @@ namespace BrownieHound
         {
             
             ScrollViewer scrollViewer = GetScrollViewer(CaptureData);
-            Debug.WriteLine($"::{scrollViewer.VerticalOffset} / {scrollViewer.ExtentHeight}");
             
             if (!viewUpdateflg)
             {

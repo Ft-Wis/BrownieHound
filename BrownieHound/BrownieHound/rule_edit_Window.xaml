@@ -56,6 +56,7 @@
                 </ComboBox.Resources>
                 <ComboBoxItem Content="すべて" />
                 <ComboBoxItem Content="このPCのアドレス" />
+                <ComboBoxItem Content="ブロードキャスト" />
                 <ComboBoxItem Content="手動で設定" />
             </ComboBox>
 
