@@ -75,12 +75,11 @@ namespace BrownieHound
                         {
                             if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
                             {
-                                if (detectionRuleGroups[i].ruleDatas[j].destinationPort.Equals("broadcast"))
+                                if (detectionRuleGroups[i].ruleDatas[j].Destination.Equals("broadcast"))
                                 {
-                                    detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
-                                    detectionRuleGroups[i].blackListRules[detectionRuleGroups[i].blackListRules.Count - 1].Destination = "255.255.255.255";
-                                    detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
-                                    detectionRuleGroups[i].blackListRules[detectionRuleGroups[i].blackListRules.Count - 1].Destination = "ff:ff:ff:ff:ff:ff";
+                                    RuleData.ruleData broadcast = detectionRuleGroups[i].ruleDatas[j];
+                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "255.255.255.255", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
+                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
                                 }
                                 else
                                 {
@@ -89,18 +88,16 @@ namespace BrownieHound
                             }
                             else if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 1)
                             {
-                                if (detectionRuleGroups[i].ruleDatas[j].destinationPort.Equals("broadcast"))
+                                if (detectionRuleGroups[i].ruleDatas[j].Destination.Equals("broadcast"))
                                 {
-                                    detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
-                                    detectionRuleGroups[i].whiteListRules[detectionRuleGroups[i].whiteListRules.Count - 1].Destination = "255.255.255.255";
-                                    detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
-                                    detectionRuleGroups[i].whiteListRules[detectionRuleGroups[i].whiteListRules.Count - 1].Destination = "ff:ff:ff:ff:ff:ff";
+                                    RuleData.ruleData broadcast = detectionRuleGroups[i].ruleDatas[j];
+                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData{ruleGroupNo = broadcast.ruleGroupNo,ruleNo = broadcast.ruleNo,detectionInterval = broadcast.detectionInterval,detectionCount = broadcast.detectionCount,Source = broadcast.Source,Destination = "255.255.255.255",Protocol = broadcast.Protocol,sourcePort=broadcast.sourcePort,destinationPort = broadcast.destinationPort,frameLength = broadcast.frameLength,ruleCategory = broadcast.ruleCategory});
+                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
                                 }
                                 else
                                 {
                                     detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
                                 }
-                                detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
                             }
                             detectionRuleGroups[i].ruleDatas[j].Source = detectionRuleGroups[i].ruleDatas[j].Source.Replace("myAddress",myAddress.ToString());
                             detectionRuleGroups[i].ruleDatas[j].Destination = detectionRuleGroups[i].ruleDatas[j].Destination.Replace("myAddress", myAddress.ToString());

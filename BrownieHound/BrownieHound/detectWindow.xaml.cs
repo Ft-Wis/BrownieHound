@@ -90,10 +90,19 @@ namespace BrownieHound
             DataContext = detectionDatas;
         }
 
+        bool closeflg = false;
+
+        public void winClose()
+        {
+            closeflg = true;
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
-            this.WindowState = WindowState.Minimized;
+            if (!closeflg)
+            {
+                e.Cancel = true;
+                this.WindowState = WindowState.Minimized;
+            }
         }
         public void show_detection(packetData pd,int detectionNumber)
         {

@@ -40,6 +40,10 @@ namespace BrownieHound
                 this.ruleNo = ruleNo;
                 ruleSplit(ruleSeet);
             }
+            public ruleData()
+            {
+                
+            }
 
             public ruleData(string ruleSheet)
             {
