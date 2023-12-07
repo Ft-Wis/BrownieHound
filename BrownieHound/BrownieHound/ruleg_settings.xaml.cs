@@ -101,6 +101,7 @@ namespace BrownieHound
 
         private void delete_Click(object sender, RoutedEventArgs e)
         {
+            delete.IsEnabled = false;
             string message = "以下のルールグループを削除しますか？\n";
             List<string> ruleGroupNames = new List<string>();
             foreach (ruleGroupData item in ruleGroupList.Items)
@@ -164,7 +165,14 @@ namespace BrownieHound
             ruleGroupList.ItemsSource = null;
             ruleGroupList.ItemsSource = Data;
             checkCount = ruleGroupList.Items.Count;
-            delete.IsEnabled = true;
+            if (checkCount > 0)
+            {
+                delete.IsEnabled = true;
+            }
+            else
+            {
+                delete.IsEnabled = false;
+            }
         }
         int checkCount = 0;
         private void ListViewItem_Selected(object sender, RoutedEventArgs e)
