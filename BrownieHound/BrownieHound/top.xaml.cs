@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -161,6 +162,29 @@ namespace BrownieHound
         private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
         {
             topTos_r.IsEnabled = true;
+        }
+
+        private void topTodp_v_Click(object sender, RoutedEventArgs e)
+        {
+            using (var cofd = new CommonOpenFileDialog()
+            {
+                Title = "フォルダを選択してください",
+                InitialDirectory = @"D:\Users\threeshark",
+                // フォルダ選択モードにする
+                IsFolderPicker = true,
+            })
+            {
+                if (cofd.ShowDialog() != CommonFileDialogResult.Ok)
+                {
+                    return;
+                }
+
+                // FileNameで選択されたフォルダを取得する
+
+                var nextPage = new detectionPacketsView(cofd.FileName);
+                NavigationService.Navigate(nextPage);
+            }
+
         }
     }
 }
