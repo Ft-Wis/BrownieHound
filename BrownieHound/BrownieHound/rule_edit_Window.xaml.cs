@@ -125,7 +125,7 @@ namespace BrownieHound
             if (judgeIPAdress(ruleItem.destination))
             {
                 //選択肢を「手動で設定」にする
-                destinationComboBox.SelectedIndex = 2;
+                destinationComboBox.SelectedIndex = 3;
                 destinationTextBox.IsEnabled = true;
             }
             else
@@ -136,10 +136,14 @@ namespace BrownieHound
                     destinationComboBox.SelectedIndex = 0;
                     
                 }
-                else
+                else if(ruleItem.destination.Equals("myAddress"))
                 {
                     //選択肢を「このPCのアドレス」にする
                     destinationComboBox.SelectedIndex = 1;
+                }
+                else
+                {
+                    destinationComboBox.SelectedIndex = 2;
                 }
             }
 
@@ -357,8 +361,13 @@ namespace BrownieHound
                     destinationTextBox.IsEnabled = false;
                     destinationTextBox.Text = "myAddress";
                     break;
-                //「手動で設定」
+                //「ブロードキャスト」
                 case 2:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "broadcast";
+                    break;
+                //「手動で設定」
+                case 3:
                     destinationTextBox.IsEnabled = true;
                     destinationTextBox.Focus();
                     destinationTextBox.SelectAll();

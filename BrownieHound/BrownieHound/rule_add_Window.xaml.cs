@@ -161,8 +161,13 @@ namespace BrownieHound
                     destinationTextBox.IsEnabled = false;
                     destinationTextBox.Text = "myAddress";
                     break;
-                //「手動で設定」
+                //「ブロードキャスト」
                 case 2:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "broadcast";
+                    break;
+                //「手動で設定」
+                case 3:
                     destinationTextBox.IsEnabled = true;
                     destinationTextBox.Focus();
                     destinationTextBox.SelectAll();
