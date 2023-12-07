@@ -16,7 +16,7 @@
         <Button x:Name="redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="58,0,0,22" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click"/>
         <Button x:Name="inactivate" Content="削除" HorizontalAlignment="Left" Height="43" Margin="331,0,0,22" VerticalAlignment="Bottom" Width="124" Click="inactivate_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" IsEnabled="False" />
 
-        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="254" VerticalAlignment="Center" Width="1037"  AutoGenerateColumns="False" Margin="25,0,0,0" SelectionChanged="DataGrid_Selected">
+        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Width="1037"  AutoGenerateColumns="False" Margin="25,98,0,98" SelectionChanged="DataGrid_Selected">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -38,6 +38,6 @@
                 <DataGridTextColumn Header="サイズ" Binding="{Binding frameLength}" IsReadOnly="True" MinWidth="60"/>
             </DataGrid.Columns>
         </DataGrid>
-        <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="41,88,0,0" VerticalAlignment="Top" Checked="checkAll_Checked" Unchecked="checkAll_Unchecked" Width="{Binding ElementName=title, Mode=OneWay}"/>
+        <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="25,80,0,0" VerticalAlignment="Top" Checked="checkAll_Checked" Unchecked="checkAll_Unchecked" Width="{Binding ElementName=title, Mode=OneWay}"/>
     </Grid>
 </Page>

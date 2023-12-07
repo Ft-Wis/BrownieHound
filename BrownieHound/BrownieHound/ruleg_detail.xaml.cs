@@ -128,6 +128,7 @@ namespace BrownieHound
             int[] selectedRules = GetSelectedRuleNumbers();
             string filePath = "./ruleGroup/" + fileName + ".txt";
             //チェックボックスで選んだ時
+            inactivate.IsEnabled = false;
             if (selectedRules.Length > 0)
             {
                 string[] targetFile = File.ReadAllLines(filePath);
@@ -344,7 +345,15 @@ namespace BrownieHound
             reDraw(allSelect);
             checkAll.Content = "すべて選択解除";
             checkCount = rule_DataGrid.Items.Count;
-            inactivate.IsEnabled = true;
+            if (checkCount > 0)
+            {
+                inactivate.IsEnabled = true;
+            }
+            else 
+            {
+                inactivate.IsEnabled = false;
+            }
+            
         }
         int checkCount = 0;
         private void DataGrid_Selected(object sender, RoutedEventArgs e)
