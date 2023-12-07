@@ -169,7 +169,7 @@ namespace BrownieHound
             using (var cofd = new CommonOpenFileDialog()
             {
                 Title = "フォルダを選択してください",
-                InitialDirectory = @"D:\Users\threeshark",
+                InitialDirectory = Directory.GetCurrentDirectory() + "\\tempDetectionPackets\\",
                 // フォルダ選択モードにする
                 IsFolderPicker = true,
             })

@@ -11,10 +11,9 @@
     <Grid>
         <Image Source="/logoimage/detect.png" HorizontalAlignment="Left" Height="315" VerticalAlignment="Top"  Margin="0,-79,0,0" Width="324"/>
 
-        <DataGrid x:Name="CaptureData" Margin="49,85,50,22" AutoGenerateColumns="False" ForceCursor="True"  ScrollViewer.ScrollChanged="chaptureDataGrid_ScrollChanged" EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" PreviewMouseWheel="CaptureData_PreviewMouseWheel">
+        <DataGrid x:Name="CaptureData" Margin="49,85,50,68" AutoGenerateColumns="False" ForceCursor="True"   EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <EventSetter Event="Control.MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
@@ -27,7 +26,8 @@
                 <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True" MinWidth="100" CanUserSort="False"/>
             </DataGrid.Columns>
         </DataGrid>
-        <ComboBox HorizontalAlignment="Left" Height="29" Margin="320,29,0,0" VerticalAlignment="Top" Width="430"/>
+        <ComboBox x:Name="filenameComboBox" HorizontalAlignment="Left" Height="29" Margin="320,29,0,0" VerticalAlignment="Top" Width="430"/>
+        <Button x:Name="redoButton" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="45,0,0,16" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click" Grid.Column="0"/>
 
     </Grid>
 </Page>
