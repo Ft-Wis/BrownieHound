@@ -45,11 +45,11 @@ namespace BrownieHound
         {
             string interfaceText = interfaceLabel.Content.ToString();
             string interfaceNumber = interfaceText.Substring(0, interfaceText.IndexOf("."));
-            string message = "以下のルールグループで開始しますか？\n";
+            string message = "ルール件数が0の物を除く、\n以下のルールグループで開始しますか？\n\n";
             List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
             foreach (ruleGroupData item in ruleGroupList.Items)
             {
-                if (item.isCheck)
+                if (item.isCheck && item.ruleItems > 0)
                 {
                     message += $"{item.No}:{item.Name}\n";
                     detectionRuleGroups.Add(item);

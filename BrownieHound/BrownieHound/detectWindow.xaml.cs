@@ -106,23 +106,31 @@ namespace BrownieHound
         }
         public void show_detection(packetData pd,int detectionNumber)
         {
-            string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
-            detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000" ,jpacketData = pd.Data});
-            detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
-            using (StreamWriter sw = new StreamWriter($"tempdetectionData\\{detectionRuleNames[detectionNumber]}.tmp", true))
+            try
             {
-                sw.WriteLine(pd.Data);
-            }
-            if (File.Exists("temps\\maildata.tmp"))
-            {
-                using(StreamWriter sw = new StreamWriter("temps\\maildata.tmp", true))
+                string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
+                detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000", jpacketData = pd.Data });
+                detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
+                using (StreamWriter sw = new StreamWriter($"tempdetectionData\\{detectionRuleNames[detectionNumber]}.tmp", true))
                 {
-                    sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.Time.TimeOfDay}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.sourcePort}</td><td>{pd.destinationPort}</td><td>{pd.frameLength}</td></tr></tbody>");
+                    sw.WriteLine(pd.Data);
                 }
+                if (File.Exists("temps\\maildata.tmp"))
+                {
+                    using (StreamWriter sw = new StreamWriter("temps\\maildata.tmp", true))
+                    {
+                        sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.Time.TimeOfDay}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.sourcePort}</td><td>{pd.destinationPort}</td><td>{pd.frameLength}</td></tr></tbody>");
+                    }
+                }
+                if (detectionDatas[detectionNumber].children[0].children.Count > 1000)
+                {
+                    detectionDatas[detectionNumber].children[0].children.RemoveAt(0);
+                }
+                DataContext = detectionDatas;
             }
-            if(detectionDatas[detectionNumber].children[0].children.Count > 1000)
+            catch (Exception ex)
             {
-                detectionDatas[detectionNumber].children[0].children.RemoveAt(0);
+                Debug.WriteLine("exception" + pd.Number + ex.ToString());
             }
         }
 
