@@ -838,7 +838,14 @@ namespace BrownieHound
         }
         private void PrintpacketByThread(string msg)
         {
-            Dispatcher.Invoke(new Action(() => Printpacket(msg)));
+            try
+            {
+                Dispatcher.Invoke(new Action(() => Printpacket(msg)));
+            }
+            catch
+            {
+
+            }
         }
         private void closing()
         {
