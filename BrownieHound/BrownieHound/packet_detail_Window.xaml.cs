@@ -25,6 +25,7 @@ namespace BrownieHound
     {
         public packet_detail_Window(string data)
         {
+            
             InitializeComponent();
             if (data != null)
             {
