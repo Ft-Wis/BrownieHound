@@ -29,6 +29,8 @@ namespace BrownieHound
     {
         public List<detectionData> detectionDatas = new List<detectionData>();
         public List<string> detectionRuleNames = new List<string>();
+        public int maildataCount = 0;
+        public int mailFileCount = 0;
         public class detectionData
         {
             public string data { get; set; }
@@ -115,12 +117,17 @@ namespace BrownieHound
                 {
                     sw.WriteLine(pd.Data);
                 }
-                if (File.Exists("temps\\maildata.tmp"))
+                if (File.Exists($"temps\\maildata{mailFileCount}.tmp"))
                 {
-                    using (StreamWriter sw = new StreamWriter("temps\\maildata.tmp", true))
+                    if(maildataCount % 5000 == 0 && maildataCount != 0)
+                    {
+                        mailFileCount++;
+                    }
+                    using (StreamWriter sw = new StreamWriter($"temps\\maildata{mailFileCount}.tmp", true))
                     {
                         sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.Time.TimeOfDay}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.sourcePort}</td><td>{pd.destinationPort}</td><td>{pd.frameLength}</td></tr></tbody>");
                     }
+                    maildataCount++;
                 }
                 if (detectionDatas[detectionNumber].children[0].children.Count > 1000)
                 {
