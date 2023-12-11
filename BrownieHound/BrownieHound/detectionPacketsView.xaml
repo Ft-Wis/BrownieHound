@@ -11,7 +11,7 @@
     <Grid>
         <Image Source="/logoimage/detect.png" HorizontalAlignment="Left" Height="315" VerticalAlignment="Top"  Margin="0,-79,0,0" Width="324"/>
 
-        <DataGrid x:Name="CaptureData" Margin="49,85,50,68" AutoGenerateColumns="False" ForceCursor="True"   EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+        <DataGrid x:Name="detectionPacketDataGrid" DataContext="" Margin="49,85,50,68" AutoGenerateColumns="False" ForceCursor="True"   EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                 </Style>

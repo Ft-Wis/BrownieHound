@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static BrownieHound.ReadPacketData;
 
 namespace BrownieHound
 {
@@ -29,13 +30,24 @@ namespace BrownieHound
             string[] folderNames = GetFolderNames(pathToFolder);
             foreach (string folderName in folderNames)
             {
-                System.Windows.MessageBox.Show($"{folderName}");
                 filenameComboBox.Items.Add(System.IO.Path.GetFileName(folderName));
             }
 
             //一番上を選択しておき、読み込み開始
             filenameComboBox.SelectedIndex = 0;
-
+            using (StreamReader sr = new StreamReader(pathToFolder+"\\"+filenameComboBox.SelectedValue+"\\"+ filenameComboBox.SelectedValue+".txt"))
+            {
+                string line = "";
+                string[] detectionPackets;
+                while ((line = sr.ReadLine()) != null)
+                {
+                   //detectionPackets.Add(line);
+                }
+                //foreach (string detectionPacket in detectionPackets)
+                //{
+                //    detectionPacketDataGrid.Items.Add(transfer(detectionPacket));
+                //}
+            }
         }
 
         private string[] GetFileNames(string folderPath)
