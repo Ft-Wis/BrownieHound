@@ -112,7 +112,16 @@ namespace BrownieHound
                     dWindow.Close();
                     
                 }
-                
+                List<Window> windows = App.Current.Windows.Cast<Window>().ToList();
+                Window mainWindow = windows.FirstOrDefault(window => window is MainWindow);
+                foreach(Window window in windows)
+                {
+                    if(window  !=  mainWindow)
+                    {
+                        window.Close();
+                    }
+                }
+
             }
             
             

@@ -27,6 +27,7 @@ namespace BrownieHound
         {
             
             InitializeComponent();
+            this.Topmost = false;
             if (data != null)
             {
                 JObject packetObject = JObject.Parse(data);
