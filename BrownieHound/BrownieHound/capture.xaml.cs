@@ -377,13 +377,14 @@ namespace BrownieHound
                         body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
                     }
                     Debug.WriteLine("mail送信処理３.５");
-                    for (int j = 0; j < sendList[i].Count;j++)
+                    while(0 < sendList[i].Count)
                     {
                         addCount++;
-                        body.HtmlBody += sendList[i][j];
+                        body.HtmlBody += sendList[i][0];
+                        sendList[i].RemoveAt(0);
                         //ここがメモリを食ってる？
                     }
-                    sendList[i].RemoveRange(0, addCount);
+                    //sendList[i].RemoveRange(0, addCount);
                     Debug.WriteLine("mail送信処理４");
                     body.HtmlBody += "</table><br>";
                     body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
