@@ -151,7 +151,6 @@ namespace BrownieHound
                 {
                     packet_detail_Window packet_detail = new packet_detail_Window(dD.jpacketData);
                     packet_detail.Show();
-                    packet_detail.Owner = this;
                 }
             }
             catch
