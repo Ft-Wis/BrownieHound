@@ -67,12 +67,12 @@ namespace BrownieHound
         int mostDitectionCount = 1;
         int packetCount = 0;
         int viewDistrictCount = 100;
-        private ObservableCollection<packetData> viewPacketDatas;
         private ObservableCollection<packetData> memoryPackets = new ObservableCollection<packetData> { };
         int dataCount = 0;
-        string tempfileName = "temp0.tmp";
+        int capturePacketsValue = 0;
         int writePlace = 1;
         int viewPlace = 0;
+        int mailDetectionCount = 0;
         bool viewUpdateflg = true;
         bool processflg = false;
         bool beforeflg = false;
@@ -309,9 +309,11 @@ namespace BrownieHound
         }
         private async Task SendEmailNew()
         {
-            int captureCount = 0;
+            int captureCount = capturePacketsValue;
             DateTime sendTime = DateTime.Now;
-            Debug.WriteLine("mail送信処理");
+            //ここに閾値のIF分岐を挿入
+            Debug.WriteLine(mailDetectionCount);
+            mailDetectionCount = 0;
             for (int mailFileNo = 0; File.Exists($"temps\\maildata{mailFileNo}.tmp");mailFileNo++)
             {
                 var email = new MimeMessage();
@@ -325,7 +327,6 @@ namespace BrownieHound
                 
                 string[] origindata;
                 List<List<string>> sendList = new List<List<string>>();
-                Debug.WriteLine("mail送信処理１");
                 for (int i = 0; i < detectionRuleGroups.Count; i++)
                 {
                     sendList.Add(new List<string>());
@@ -336,13 +337,11 @@ namespace BrownieHound
                     origindata = sr.ReadToEnd().Split('\n');
                 }
 
-                Debug.WriteLine("mail送信処理２");
                 if (mailFileNo == 0)
                 {
                     using (File.Create("temps\\maildata0.tmp")) { }
                     dWindow.maildataCount = 0;
                     dWindow.mailFileCount = 0;
-                    captureCount = packetCount;
                     sendTime = DateTime.Now;
                 }
                 else
@@ -359,7 +358,6 @@ namespace BrownieHound
                 origindata = null;
                 for (int i = 0; i < detectionRuleGroups.Count; i++)
                 {
-                    Debug.WriteLine("mail送信処理３");
                     addCount = 0;
                     body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
                     body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
@@ -376,26 +374,20 @@ namespace BrownieHound
                         }
                         body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
                     }
-                    Debug.WriteLine("mail送信処理３.５");
                     while(0 < sendList[i].Count)
                     {
                         addCount++;
                         body.HtmlBody += sendList[i][0];
                         sendList[i].RemoveAt(0);
-                        //ここがメモリを食ってる？
                     }
-                    //sendList[i].RemoveRange(0, addCount);
-                    Debug.WriteLine("mail送信処理４");
                     body.HtmlBody += "</table><br>";
                     body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
 
                 }
                 sendList = null;
                 body.HtmlBody += "</body></html>";
-                Debug.WriteLine("mail送信処理５");
                 email.Body = body.ToMessageBody();
                 body = null;
-                //どこかでformatExceptionが起きている
                 using (var smtp = new SmtpClient())
                 {
                     await smtp.ConnectAsync("smtp.gmail.com", 587, false);
@@ -404,7 +396,6 @@ namespace BrownieHound
                     await smtp.DisconnectAsync(true);
                 }
             }
-            Debug.WriteLine("mail送信処理終了");
         }
 
         private void recordTime(object sender,EventArgs e)
@@ -445,6 +436,7 @@ namespace BrownieHound
         {
             int recordEnd = recordPacketNo.Count - 1;
             int end = recordPacketNo[recordEnd] - 1;
+            capturePacketsValue = end;
             List<packetData> packetList = new List<packetData>();
             if (detectionRuleGroups[detectionNumber].blackListRules.Count > 0)
             {
@@ -634,6 +626,7 @@ namespace BrownieHound
                 {
                     dWindow.show_detection(packet, detectionNumber);
                     detectionNumbers[detectionNumber].Add(packet.Number);
+                    mailDetectionCount++;
                 }
 
             }

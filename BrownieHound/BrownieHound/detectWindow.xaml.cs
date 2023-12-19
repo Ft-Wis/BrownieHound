@@ -119,7 +119,7 @@ namespace BrownieHound
                 }
                 if (File.Exists($"temps\\maildata{mailFileCount}.tmp"))
                 {
-                    if(maildataCount % 5000 == 0 && maildataCount != 0)
+                    if(maildataCount % 3000 == 0 && maildataCount != 0)
                     {
                         mailFileCount++;
                     }
