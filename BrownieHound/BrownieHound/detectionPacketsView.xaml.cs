@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -8,11 +10,13 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static BrownieHound.ReadPacketData;
+using MessageBox = System.Windows.MessageBox;
 
 namespace BrownieHound
 {
@@ -21,10 +25,11 @@ namespace BrownieHound
     /// </summary>
     public partial class detectionPacketsView : Page
     {
-        public detectionPacketsView(string pathToFolder)
+        private string pathToFolder;
+        public detectionPacketsView(string path)
         {
             InitializeComponent();
-            System.Windows.MessageBox.Show($"{pathToFolder}を選択しました");
+            this.pathToFolder = path;
 
             //コンボボックスのアイテムにファイル名を代入
             string[] folderNames = GetFolderNames(pathToFolder);
@@ -35,18 +40,24 @@ namespace BrownieHound
 
             //一番上を選択しておき、読み込み開始
             filenameComboBox.SelectedIndex = 0;
-            using (StreamReader sr = new StreamReader(pathToFolder+"\\"+filenameComboBox.SelectedValue+"\\"+ filenameComboBox.SelectedValue+".txt"))
+        }
+
+        private void  showDetectionPackets(string filePath)
+        {
+            using (StreamReader sr = new StreamReader(filePath))
             {
                 string line = "";
-                string[] detectionPackets;
+                List<String> detectionPackets = new List<String> { };
+                int i = 0;
+
                 while ((line = sr.ReadLine()) != null)
                 {
-                   //detectionPackets.Add(line);
+                    detectionPackets.Add(line);
+                    packetData pd;
+                    JObject packetObject = JObject.Parse(detectionPackets[i++]);
+                    pd = new packetData(packetObject);
+                    detectionPacketDataGrid.Items.Add(pd);
                 }
-                //foreach (string detectionPacket in detectionPackets)
-                //{
-                //    detectionPacketDataGrid.Items.Add(transfer(detectionPacket));
-                //}
             }
         }
 
@@ -103,5 +114,13 @@ namespace BrownieHound
             NavigationService.GoBack();
         }
 
+        private void filenameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show(filenameComboBox.SelectedItem.ToString());
+            string selectedFileName = filenameComboBox.SelectedItem.ToString();
+            string pathToSelectedFile = pathToFolder + "\\" + selectedFileName + "\\" + selectedFileName + ".txt";
+            detectionPacketDataGrid.Items.Clear();
+            showDetectionPackets(pathToSelectedFile);
+        }
     }
 }

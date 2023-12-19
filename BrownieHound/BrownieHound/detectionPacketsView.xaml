@@ -26,7 +26,7 @@
                 <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True" MinWidth="100" CanUserSort="False"/>
             </DataGrid.Columns>
         </DataGrid>
-        <ComboBox x:Name="filenameComboBox" HorizontalAlignment="Left" Height="29" Margin="320,29,0,0" VerticalAlignment="Top" Width="430"/>
+        <ComboBox x:Name="filenameComboBox" HorizontalAlignment="Left" Height="29" Margin="320,29,0,0" VerticalAlignment="Top" Width="430" SelectionChanged="filenameComboBox_SelectionChanged"/>
         <Button x:Name="redoButton" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="45,0,0,16" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click" Grid.Column="0"/>
 
     </Grid>
