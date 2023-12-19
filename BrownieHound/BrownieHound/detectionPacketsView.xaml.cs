@@ -116,11 +116,20 @@ namespace BrownieHound
 
         private void filenameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show(filenameComboBox.SelectedItem.ToString());
             string selectedFileName = filenameComboBox.SelectedItem.ToString();
             string pathToSelectedFile = pathToFolder + "\\" + selectedFileName + "\\" + selectedFileName + ".txt";
             detectionPacketDataGrid.Items.Clear();
             showDetectionPackets(pathToSelectedFile);
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            packetData packet = (packetData)detectionPacketDataGrid.SelectedItem;
+            if (packet != null)
+            {
+                packet_detail_Window packet_detail = new packet_detail_Window(packet.Data);
+                packet_detail.Show();
+            }
         }
     }
 }
