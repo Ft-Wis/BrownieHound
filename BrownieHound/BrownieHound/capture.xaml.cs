@@ -112,7 +112,16 @@ namespace BrownieHound
                     dWindow.Close();
                     
                 }
-                
+                List<Window> windows = App.Current.Windows.Cast<Window>().ToList();
+                Window mainWindow = windows.FirstOrDefault(window => window is MainWindow);
+                foreach(Window window in windows)
+                {
+                    if(window  !=  mainWindow)
+                    {
+                        window.Close();
+                    }
+                }
+
             }
             
             
@@ -121,14 +130,14 @@ namespace BrownieHound
         private void stop_Click(object sende, RoutedEventArgs e) 
         {
             MessageBoxResult result = MessageBox.Show(
-                "検知とキャプチャを停止します。\n検知を停止することで検知データを保存することができます。",
+                "検知とキャプチャを停止します。",
                 "確認",
                 MessageBoxButton.OKCancel,
                 MessageBoxImage.Question,
                 MessageBoxResult.Cancel);
             if (result == MessageBoxResult.OK)
             {
-
+                stopstatus.Content = "停止";
                 stop.IsEnabled = false;
                 viewable.IsEnabled = false;
                 stopflag = true;
@@ -387,7 +396,7 @@ namespace BrownieHound
                 CaptureData.ItemsSource = memoryPackets;
                 bool isRowSelected = CaptureData.SelectedItems.Count > 0;
 
-                if (scrollflg)
+                if (scrollflg && CaptureData.Items.Count > 0)
                 {
                     CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
                 }

@@ -347,7 +347,6 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             reDraw(allSelect);
             checkAll.Content = "すべて選択解除";
-            checkCount = rule_DataGrid.Items.Count;
             if (checkCount > 0)
             {
                 inactivate.IsEnabled = true;
