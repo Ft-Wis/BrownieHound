@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -111,6 +112,15 @@ namespace BrownieHound
 
         private void redoButton_Click(object sender, RoutedEventArgs e)
         {
+            List<Window> windows = App.Current.Windows.Cast<Window>().ToList();
+            Window mainWindow = windows.FirstOrDefault(window => window is MainWindow);
+            foreach (Window window in windows)
+            {
+                if (window != mainWindow)
+                {
+                    window.Close();
+                }
+            }
             NavigationService.GoBack();
         }
 
