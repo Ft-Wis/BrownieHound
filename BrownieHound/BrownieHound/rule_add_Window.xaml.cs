@@ -275,9 +275,9 @@ namespace BrownieHound
             byteText.Text = "Bytes以上";
             //「１秒間に１回以上」の固定解除
             secondsTextBox.IsEnabled = true;
-            secondsTextBox.Text = "";
+            secondsTextBox.Text = "1";
             timesTextBox.IsEnabled = true;
-            timesTextBox.Text = "";
+            timesTextBox.Text = "1";
         }
 
         private void whiteListRadioButton_Checked(object sender, RoutedEventArgs e)
