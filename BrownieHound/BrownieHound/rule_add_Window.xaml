@@ -39,6 +39,7 @@
             </ComboBox.Resources>
             <ComboBoxItem Content="すべて" />
             <ComboBoxItem Content="このPCのアドレス" />
+            <ComboBoxItem Content="ブロードキャスト" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
         <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="262,145,0,0" TextWrapping="Wrap" Text="{Binding destinationIP.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
@@ -77,13 +78,10 @@
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="177,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
         <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="230,334,0,0" TextWrapping="Wrap" Text="{Binding detectionCnt.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="50"/>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="285,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43"><Run Language="ja-jp" Text="回以上"/></TextBlock>
-        <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="98,257,0,0" IsChecked="True"/>
-        <RadioButton x:Name="sourceRadioButton" Content="送信元" HorizontalAlignment="Left" Margin="98,239,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False"/>
-        <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="138,83,0,0" IsChecked="True"  Checked="whiteListRadioButton_Checked"/>
-        <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="138,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="False" Checked="blackListRadioButton_Checked"/>
-
-
-
+        <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="98,257,0,0" IsChecked="False"/>
+        <RadioButton x:Name="sourceRadioButton" Content="送信元" HorizontalAlignment="Left" Margin="98,239,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True"/>
+        <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="138,83,0,0" IsChecked="False"  Checked="whiteListRadioButton_Checked"/>
+        <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="138,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True" Checked="blackListRadioButton_Checked"/>
     </Grid>
 
 </Window> 

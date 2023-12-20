@@ -45,11 +45,11 @@ namespace BrownieHound
         {
             string interfaceText = interfaceLabel.Content.ToString();
             string interfaceNumber = interfaceText.Substring(0, interfaceText.IndexOf("."));
-            string message = "以下のルールグループで開始しますか？\n";
+            string message = "ルール件数が0の物を除く、\n以下のルールグループで開始しますか？\n\n";
             List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
             foreach (ruleGroupData item in ruleGroupList.Items)
             {
-                if (item.isCheck)
+                if (item.isCheck && item.ruleItems > 0)
                 {
                     message += $"{item.No}:{item.Name}\n";
                     detectionRuleGroups.Add(item);
@@ -75,11 +75,29 @@ namespace BrownieHound
                         {
                             if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
                             {
-                                detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                if (detectionRuleGroups[i].ruleDatas[j].Destination.Equals("broadcast"))
+                                {
+                                    RuleData.ruleData broadcast = detectionRuleGroups[i].ruleDatas[j];
+                                    detectionRuleGroups[i].blackListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "255.255.255.255", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
+                                    detectionRuleGroups[i].blackListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
+                                }
+                                else
+                                {
+                                    detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                }
                             }
                             else if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 1)
                             {
-                                detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                if (detectionRuleGroups[i].ruleDatas[j].Destination.Equals("broadcast"))
+                                {
+                                    RuleData.ruleData broadcast = detectionRuleGroups[i].ruleDatas[j];
+                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData{ruleGroupNo = broadcast.ruleGroupNo,ruleNo = broadcast.ruleNo,detectionInterval = broadcast.detectionInterval,detectionCount = broadcast.detectionCount,Source = broadcast.Source,Destination = "255.255.255.255",Protocol = broadcast.Protocol,sourcePort=broadcast.sourcePort,destinationPort = broadcast.destinationPort,frameLength = broadcast.frameLength,ruleCategory = broadcast.ruleCategory});
+                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
+                                }
+                                else
+                                {
+                                    detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                }
                             }
                             detectionRuleGroups[i].ruleDatas[j].Source = detectionRuleGroups[i].ruleDatas[j].Source.Replace("myAddress",myAddress.ToString());
                             detectionRuleGroups[i].ruleDatas[j].Destination = detectionRuleGroups[i].ruleDatas[j].Destination.Replace("myAddress", myAddress.ToString());

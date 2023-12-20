@@ -5,16 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
+        MinWidth="800"
+        MinHeight="400"
         Title="detectWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="113*"/>
+            <ColumnDefinition Width="47*"/>
+        </Grid.ColumnDefinitions>
         <Image Source="logoimage/detect.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-17,-90,0,0"/>
-        <TreeView x:Name="detection_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+        <TreeView x:Name="detection_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.ColumnSpan="2">
+            <TreeView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource MaterialDesignTreeViewItem}" TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding children}">
                     <TextBlock Text="{Binding data}" Foreground="{Binding color}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <Button x:Name="save_button" Content="保存" HorizontalAlignment="Right" Height="43" Margin="0,0,55,354" VerticalAlignment="Bottom" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="save_button_Click"/>
+        <Button x:Name="save_button" Content="保存" HorizontalAlignment="Right" Height="43" Margin="0,28,55,0" VerticalAlignment="Top" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="save_button_Click" Grid.Column="1"/>
     </Grid>
 </Window>

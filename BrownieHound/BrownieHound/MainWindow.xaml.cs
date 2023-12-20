@@ -25,7 +25,14 @@ namespace BrownieHound
         public MainWindow()
         {
             InitializeComponent();
-
+            if (Directory.Exists("temps"))
+            {
+                Directory.Delete("temps", true);
+            }
+            if (Directory.Exists("tempdetectionData"))
+            {
+                Directory.Delete("tempdetectionData", true);
+            }
             Uri uri = new Uri("/top.xaml", UriKind.Relative);
             frame.Source = uri;
         }

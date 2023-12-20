@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using static BrownieHound.App;
 
 namespace BrownieHound
@@ -51,6 +53,7 @@ namespace BrownieHound
             InitializeComponent();
             //title.Content = $"{title.Content} - {name}";
             fileName = name;
+            filename.Text = fileName;
             gridItem = new ObservableCollection<DataGridItem>();
             
             foreach (RuleData.ruleData rd in ruledata)
@@ -128,6 +131,7 @@ namespace BrownieHound
             int[] selectedRules = GetSelectedRuleNumbers();
             string filePath = "./ruleGroup/" + fileName + ".txt";
             //チェックボックスで選んだ時
+            inactivate.IsEnabled = false;
             if (selectedRules.Length > 0)
             {
                 string[] targetFile = File.ReadAllLines(filePath);
@@ -343,8 +347,15 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             reDraw(allSelect);
             checkAll.Content = "すべて選択解除";
-            checkCount = rule_DataGrid.Items.Count;
-            inactivate.IsEnabled = true;
+            if (checkCount > 0)
+            {
+                inactivate.IsEnabled = true;
+            }
+            else 
+            {
+                inactivate.IsEnabled = false;
+            }
+            
         }
         int checkCount = 0;
         private void DataGrid_Selected(object sender, RoutedEventArgs e)
@@ -361,6 +372,52 @@ namespace BrownieHound
             checkCount--;
             if (checkCount == 0)
                 inactivate.IsEnabled = false;
+        }
+
+        bool buttonflg = true;
+        private void correct_Click(object sender, RoutedEventArgs e)
+        {
+            if (buttonflg)
+            {
+                filename.IsEnabled = true;
+                buttonflg = false;
+                correct.Content = "確定";
+            }
+            else
+            {
+                filename.IsEnabled = false;
+                buttonflg = true;
+                correct.Content = "名前の修正";
+                if (filename.Text.Length != 0)
+                {
+                    int i = 1;
+                    string newFileName = filename.Text;
+                    if (newFileName == fileName)
+                    {
+                        return;
+                    } 
+                    while (File.Exists($"./ruleGroup/{newFileName}.txt"))
+                    {
+                        newFileName = $"{filename.Text} - {i}";
+                        ++i;
+                        if (newFileName == fileName)
+                        {
+                            break;
+                        }
+                    }
+                    string oldFilePath = $"./ruleGroup/{fileName}.txt";
+                    string newFilePath = $"./ruleGroup/{newFileName}.txt";
+                    File.Move(oldFilePath, newFilePath);
+                    fileName = newFileName;
+                    filename.Text = newFileName;
+                    MessageBox.Show($"以下のルールグループを修正しました。\n{newFileName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    filename.Text = fileName;
+                    MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }
