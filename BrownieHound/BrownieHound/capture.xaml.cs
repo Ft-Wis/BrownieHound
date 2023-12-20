@@ -486,8 +486,8 @@ namespace BrownieHound
                             if (detectionRule.Value.destinationPort.Equals("all") || detectionRule.Value.destinationPort.Equals(memoryPackets[i].destinationPort))
                             {
                                 flg++;
-                            }
-                            if (memoryPackets[i].frameLength >= detectionRule.Value.frameLength)
+                                                            }
+                            if (detectionRule.Value.frameLength.Equals("none")|| Int32.Parse(memoryPackets[i].frameLength) >= Int32.Parse(detectionRule.Value.frameLength))
                             {
                                 flg++;
                             }
@@ -516,7 +516,7 @@ namespace BrownieHound
                                     {
                                         wflg++;
                                     }
-                                    if (memoryPackets[i].frameLength <= whiteListRule.frameLength)
+                                    if (whiteListRule.frameLength.Equals("none") || Int32.Parse(memoryPackets[i].frameLength) <= Int32.Parse(whiteListRule.frameLength))
                                     {
                                         wflg++;
                                     }
@@ -603,7 +603,7 @@ namespace BrownieHound
                             {
                                 wflg++;
                             }
-                            if (packetList[i].frameLength <= whiteListRule.frameLength)
+                            if (whiteListRule.frameLength.Equals("none") || Int32.Parse(packetList[i].frameLength) <= Int32.Parse(whiteListRule.frameLength))
                             {
                                 wflg++;
                             }

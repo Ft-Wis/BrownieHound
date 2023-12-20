@@ -39,7 +39,7 @@ namespace BrownieHound
             public string destination { get; set; }
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
-            public int frameLength { get; set; }
+            public string frameLength { get; set; }
             public string ruleCategory { get; set; }
         }
 

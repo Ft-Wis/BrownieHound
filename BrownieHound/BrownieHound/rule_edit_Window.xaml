@@ -98,12 +98,16 @@
             <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="34,348,0,0" TextWrapping="Wrap" Text="{Binding detectionCnt.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50" Grid.Column="2" Grid.ColumnSpan="2"/>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="27,360,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43" Grid.Column="3" Grid.ColumnSpan="3"><Run Language="ja-jp" Text="回以上"/></TextBlock>
             <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="84,277,0,0" IsChecked="False" Grid.Column="1"/>
-            
+
             <RadioButton x:Name="sourceRadioButton" Grid.Column="1" Content="送信元" HorizontalAlignment="Left" Margin="84,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Margin="22,82,0,0" Grid.Column="1"><Run Language="ja-jp" Text="検知方式"/></TextBlock>
             <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="133,102,0,0" IsChecked="False" Grid.Column="1" Grid.ColumnSpan="2"  Checked="whiteListRadioButton_Checked"/>
             <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="133,81,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True" Grid.Column="1" Grid.ColumnSpan="2" Checked="blackListRadioButton_Checked"/>
-
+            <CheckBox x:Name="sizeNoneCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Unchecked="sizeNoneCheckBox_Unchecked" Checked="sizeNoneCheckBox_Checked" Margin="52,314,0,0" IsEnabled="True" Grid.Column="2" Width="118" Grid.ColumnSpan="5">
+                <CheckBox.Content>
+                    <TextBlock Text="サイズを指定しない"></TextBlock>
+                </CheckBox.Content>
+            </CheckBox>
 
         </Grid>
     </DockPanel>

@@ -17,7 +17,7 @@ namespace BrownieHound
             public string Protocol { get; set; }
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
-            public int frameLength { get; set; }
+            public string frameLength { get; set; }
             public int ruleCategory { get; set; } = 0;
 
             private void ruleSplit(string ruleSeet)
@@ -32,7 +32,7 @@ namespace BrownieHound
                 Protocol = data[i++];
                 sourcePort = data[i++];
                 destinationPort = data[i++];
-                frameLength = Int32.Parse(data[i]);
+                frameLength = data[i];
             }
             public ruleData(string ruleSeet, int ruleGroupNo, int ruleNo)
             {

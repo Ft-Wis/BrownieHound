@@ -19,7 +19,7 @@ namespace BrownieHound
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
             public string Protocol { get; set; }
-            public int frameLength { get; set; }
+            public string frameLength { get; set; }
             public string Info { get; set; }
             public string Data { get; set; }
             List<string> protocols = new List<string>();
@@ -77,7 +77,7 @@ namespace BrownieHound
                 }
                 Protocol = Protocol.ToUpper();
 
-                frameLength = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"]);
+                frameLength = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"];
                 Info += $" {protocols.Last()}";
                 //Debug.WriteLine($"{Number} : {time.TimeOfDay} : {Source} : {Destination} : {Protocol} : {Length} :: {Info}");
             }
