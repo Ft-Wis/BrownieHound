@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MessageBox = System.Windows.MessageBox;
 
 namespace BrownieHound
 {
@@ -180,11 +181,17 @@ namespace BrownieHound
                 }
 
                 // FileNameで選択されたフォルダを取得する
-
-                var nextPage = new detectionPacketsView(cofd.FileName);
-                NavigationService.Navigate(nextPage);
+                //フォルダ内にサブフォルダがあるか調べる
+                if (0 < System.IO.Directory.GetDirectories(cofd.FileName).Length)
+                {
+                    var nextPage = new detectionPacketsView(cofd.FileName);
+                    NavigationService.Navigate(nextPage);
+                }
+                else
+                {
+                    MessageBox.Show("正しいフォルダ構造ではありません。");
+                }
             }
-
         }
     }
 }

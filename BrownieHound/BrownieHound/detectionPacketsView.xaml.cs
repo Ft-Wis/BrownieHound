@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static BrownieHound.ReadPacketData;
+using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
 namespace BrownieHound
@@ -30,6 +31,7 @@ namespace BrownieHound
         public detectionPacketsView(string path)
         {
             InitializeComponent();
+            Application.Current.MainWindow.Width = 850;
             this.pathToFolder = path;
 
             //コンボボックスのアイテムにファイル名を代入
@@ -45,21 +47,37 @@ namespace BrownieHound
 
         private void  showDetectionPackets(string filePath)
         {
-            using (StreamReader sr = new StreamReader(filePath))
+            if(File.Exists(filePath))
             {
-                string line = "";
-                List<String> detectionPackets = new List<String> { };
-                int i = 0;
-
-                while ((line = sr.ReadLine()) != null)
+                using (StreamReader sr = new StreamReader(filePath))
                 {
-                    detectionPackets.Add(line);
-                    packetData pd;
-                    JObject packetObject = JObject.Parse(detectionPackets[i++]);
-                    pd = new packetData(packetObject);
-                    detectionPacketDataGrid.Items.Add(pd);
+                    string line = "";
+                    List<String> detectionPackets = new List<String> { };
+                    int i = 0;
+
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        detectionPackets.Add(line);
+                        packetData pd;
+                        try
+                        {
+                            JObject packetObject = JObject.Parse(detectionPackets[i++]);
+                            pd = new packetData(packetObject);
+                            detectionPacketDataGrid.Items.Add(pd);
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show($"ファイル形式が正しくないため読み込みができませんでした。: {ex.Message}");
+                        }
+                    }
                 }
             }
+            else
+            {
+                MessageBox.Show("ファイルが存在しませんでした。もう一度お試しください。");
+                redo();
+            }
+
         }
 
         private string[] GetFileNames(string folderPath)
@@ -110,7 +128,21 @@ namespace BrownieHound
             return new string[0]; // エラーが発生した場合は空の配列を返す
         }
 
+        //戻るボタンを押したとき
         private void redoButton_Click(object sender, RoutedEventArgs e)
+        {
+            redo();
+        }
+
+        //top画面に戻る処理
+        private void redo()
+        {
+            closeMainWindow();
+            NavigationService.GoBack();
+            Application.Current.MainWindow.Width = 800;
+        }
+
+        private void closeMainWindow()
         {
             List<Window> windows = App.Current.Windows.Cast<Window>().ToList();
             Window mainWindow = windows.FirstOrDefault(window => window is MainWindow);
@@ -121,9 +153,9 @@ namespace BrownieHound
                     window.Close();
                 }
             }
-            NavigationService.GoBack();
         }
 
+        //コンボボックスの選択肢が変更されたとき
         private void filenameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selectedFileName = filenameComboBox.SelectedItem.ToString();
@@ -132,6 +164,7 @@ namespace BrownieHound
             showDetectionPackets(pathToSelectedFile);
         }
 
+        //DataGridの行をダブルクリックしたときにパケットの詳細画面を表示する
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             packetData packet = (packetData)detectionPacketDataGrid.SelectedItem;
