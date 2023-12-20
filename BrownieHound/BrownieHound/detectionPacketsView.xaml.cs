@@ -75,7 +75,6 @@ namespace BrownieHound
             else
             {
                 MessageBox.Show("ファイルが存在しませんでした。もう一度お試しください。");
-                redo();
             }
 
         }
