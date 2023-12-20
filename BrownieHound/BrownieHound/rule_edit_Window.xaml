@@ -63,7 +63,7 @@
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" Grid.Column="1"><Run Language="ja-jp" Text="プロトコル"/></TextBlock>
 
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66" Grid.Column="1"><Run Language="ja-jp" Text="ポート番号"/></TextBlock>
-            <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,313,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="1"><Run Language="ja-jp" Text="サイズ"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,313,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="1"><Run Language="ja-jp" Text="パケットサイズ"/></TextBlock>
             <TextBlock HorizontalAlignment="Left" Height="16" Margin="24,358,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67" Grid.Column="1"><Run Language="ja-jp" Text="間隔"/></TextBlock>
             <ComboBox x:Name="protocolComboBox"  HorizontalAlignment="Left" Margin="163,208,0,0" materialDesign:HintAssist.Hint="" VerticalAlignment="Top" Width="105" Grid.Column="1" SelectionChanged="protocolComboBox_SelectionChanged" Grid.ColumnSpan="3">
                 <ComboBox.Resources>
