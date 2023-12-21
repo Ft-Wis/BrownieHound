@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
-        Title="rule_add_Window" Height="498" Width="409">
+        Title="BrownieHound" Height="498" Width="409">
     <Grid Margin="0,0,0,-36">
 
 
