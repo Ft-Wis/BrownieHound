@@ -1,9 +1,11 @@
 ﻿using MaterialDesignThemes.Wpf;
+using MS.WindowsAPICodePack.Internal;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
@@ -46,7 +48,7 @@ namespace BrownieHound
         ObservableCollection<DataGridItem> gridItem;
 
         private string fileName;
-
+        bool checkLink = false;
         public ruleg_detail(int no ,String name, List<RuleData.ruleData> ruledata)
         {
             Application.Current.MainWindow.Width = 1200;
@@ -55,34 +57,9 @@ namespace BrownieHound
             fileName = name;
             filename.Text = fileName;
             gridItem = new ObservableCollection<DataGridItem>();
-            
-            foreach (RuleData.ruleData rd in ruledata)
-            {
-                DataGridItem gridData = new DataGridItem
-                {
-                    isCheck = false,
-                    ruleNo = rd.ruleNo,
-                    detectionInterval = rd.detectionInterval,
-                    detectionCount = rd.detectionCount,
-                    source = rd.Source,
-                    protocol = rd.Protocol,
-                    sourcePort = rd.sourcePort,
-                    destinationPort = rd.destinationPort,
-                    destination = rd.Destination,
-                    frameLength = rd.frameLength,
-                    ruleCategory = rd.ruleCategory.ToString()
-                };
 
-                if (gridData.ruleCategory=="0")
-                {
-                    gridData.ruleCategory = "検出";
-                }
-                else
-                {
-                    gridData.ruleCategory = "否検出";
-                }
-                rule_DataGrid.Items.Add(gridData);
-            }
+            //linkCheck.DataContext = checkLink;
+            reDraw(false);
 
             //rule_DataGrid.ItemsSource= gridItem;
             
@@ -161,7 +138,6 @@ namespace BrownieHound
 
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 replaceLine(filePath,editLineNumber,insertText);
-                ReadFileByLine(filePath);
                 reDraw(false);
             }
             else
@@ -192,57 +168,57 @@ namespace BrownieHound
             }
         }
 
-        private void ReadFileByLine(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("ファイルが存在しません。");
-            }
-        }
-
         private void reDraw(bool checkStatus)
         {
             string filePath = "./ruleGroup/" + fileName + ".txt";
             string[] lines = File.ReadAllLines(filePath);
-            rule_DataGrid.Items.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
-            for (int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
+            if (lines.Length != 0)
             {
-                RuleData.ruleData rd = new RuleData.ruleData(lines[ruleNum]);
-                var gridData = new DataGridItem
+                if (lines[0].ToString().Equals("StandardRule"))
                 {
-                    //isCheck = false,
-                    isCheck = checkStatus, 
-                    ruleNo = ruleNum,
-                    detectionInterval = rd.detectionInterval,
-                    detectionCount = rd.detectionCount,
-                    source = rd.Source,
-                    protocol = rd.Protocol,
-                    sourcePort = rd.sourcePort,
-                    destinationPort = rd.destinationPort,
-                    destination = rd.Destination,
-                    frameLength = rd.frameLength,
-                    ruleCategory = rd.ruleCategory.ToString()
-                };
-                if(gridData.ruleCategory == "0")
-                {
-                    gridData.ruleCategory = "検出";
+                    linkCheck.IsChecked = false;
                 }
-                else
+                else if (lines[0].ToString().Equals("ExtendRule"))
                 {
-                    gridData.ruleCategory = "否検出";
+                    linkCheck.IsChecked = true;
                 }
-                rule_DataGrid.Items.Add(gridData);
+                rule_DataGrid.Items.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
+                for (int ruleNum = 1; ruleNum < lines.Length; ruleNum++)
+                {
+                    RuleData.ruleData rd = new RuleData.ruleData(lines[ruleNum]);
+                    var gridData = new DataGridItem
+                    {
+                        //isCheck = false,
+                        isCheck = checkStatus,
+                        ruleNo = ruleNum,
+                        detectionInterval = rd.detectionInterval,
+                        detectionCount = rd.detectionCount,
+                        source = rd.Source,
+                        protocol = rd.Protocol,
+                        sourcePort = rd.sourcePort,
+                        destinationPort = rd.destinationPort,
+                        destination = rd.Destination,
+                        frameLength = rd.frameLength,
+                        ruleCategory = rd.ruleCategory.ToString()
+                    };
+                    if (gridData.ruleCategory == "0")
+                    {
+                        gridData.ruleCategory = "検出";
+                    }
+                    else
+                    {
+                        gridData.ruleCategory = "否検出";
+                    }
+                    rule_DataGrid.Items.Add(gridData);
+                }
+            }
+            else
+            {
+  
+                using(StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.WriteLine("StandardRule");
+                }
             }
         }
 
@@ -418,6 +394,18 @@ namespace BrownieHound
                     MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        private void linkCheck_Checked(object sender, RoutedEventArgs e)
+        {
+            string filePath = "./ruleGroup/" + fileName + ".txt";
+            replaceLine(filePath, 0, "ExtendRule");
+        }
+
+        private void linkCheck_Unchecked(object sender, RoutedEventArgs e)
+        {
+            string filePath = "./ruleGroup/" + fileName + ".txt";
+            replaceLine(filePath, 0, "StandardRule");
         }
     }
 }

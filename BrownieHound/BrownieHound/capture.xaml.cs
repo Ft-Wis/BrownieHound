@@ -331,7 +331,6 @@ namespace BrownieHound
                 {
                     sendList.Add(new List<string>());
                 }
-                Debug.WriteLine("");
                 using (StreamReader sr = new StreamReader($"temps\\maildata{mailFileNo}.tmp"))
                 {
                     origindata = sr.ReadToEnd().Split('\n');
@@ -434,6 +433,7 @@ namespace BrownieHound
 
         private void detectLogic(int detectionNumber)
         {
+            bool detectflg = true;
             int recordEnd = recordPacketNo.Count - 1;
             int end = recordPacketNo[recordEnd] - 1;
             capturePacketsValue = end;
@@ -539,6 +539,11 @@ namespace BrownieHound
 
                         if (temp[detectionRule.Index] < detectionRule.Value.detectionCount)
                         {
+                            if (detectionRuleGroups[detectionNumber].extendflg)
+                            {
+                                detectflg = false;
+                                break;
+                            }
                             int startIndex = 0;
                             int i = 0;
                             for (; i < temp.Count - 1 - 1; i++)
@@ -622,7 +627,7 @@ namespace BrownieHound
             packetList.Sort((a,b)=>a.Number - b.Number);
             foreach(var packet in packetList)
             {
-                if (!detectionNumbers[detectionNumber].Contains(packet.Number))
+                if (detectflg &&  !detectionNumbers[detectionNumber].Contains(packet.Number))
                 {
                     dWindow.show_detection(packet, detectionNumber);
                     detectionNumbers[detectionNumber].Add(packet.Number);
