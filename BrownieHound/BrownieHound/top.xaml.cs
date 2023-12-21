@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MessageBox = System.Windows.MessageBox;
 
 namespace BrownieHound
 {
@@ -161,6 +163,35 @@ namespace BrownieHound
         private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
         {
             topTos_r.IsEnabled = true;
+        }
+
+        private void topTodp_v_Click(object sender, RoutedEventArgs e)
+        {
+            using (var cofd = new CommonOpenFileDialog()
+            {
+                Title = "フォルダを選択してください",
+                InitialDirectory = Directory.GetCurrentDirectory() + "\\tempDetectionPackets\\",
+                // フォルダ選択モードにする
+                IsFolderPicker = true,
+            })
+            {
+                if (cofd.ShowDialog() != CommonFileDialogResult.Ok)
+                {
+                    return;
+                }
+
+                // FileNameで選択されたフォルダを取得する
+                //フォルダ内にサブフォルダがあるか調べる
+                if (0 < System.IO.Directory.GetDirectories(cofd.FileName).Length)
+                {
+                    var nextPage = new detectionPacketsView(cofd.FileName);
+                    NavigationService.Navigate(nextPage);
+                }
+                else
+                {
+                    MessageBox.Show("正しいフォルダ構造ではありません。");
+                }
+            }
         }
     }
 }

@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup />
+  <PropertyGroup>
+    <_LastSelectedProfileId>C:\Users\nkc20\source\repos\Ft-Wis\sotsuken\BrownieHound\BrownieHound\Properties\PublishProfiles\ClickOnceProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="detectionPacketsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="detectWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -27,6 +32,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="detectionPacketsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="packet_detail_Window.xaml">
       <SubType>Designer</SubType>
     </Page>

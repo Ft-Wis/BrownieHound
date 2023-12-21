@@ -43,7 +43,7 @@ namespace BrownieHound {
     public partial class ruleg_detail : System.Windows.Controls.Page, System.Windows.Markup.IComponentConnector, System.Windows.Markup.IStyleConnector {
         
         
-        #line 14 "..\..\..\ruleg_detail.xaml"
+        #line 18 "..\..\..\ruleg_detail.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button add;
         
@@ -51,7 +51,7 @@ namespace BrownieHound {
         #line hidden
         
         
-        #line 15 "..\..\..\ruleg_detail.xaml"
+        #line 19 "..\..\..\ruleg_detail.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button edit;
         
@@ -59,7 +59,7 @@ namespace BrownieHound {
         #line hidden
         
         
-        #line 16 "..\..\..\ruleg_detail.xaml"
+        #line 20 "..\..\..\ruleg_detail.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button redo;
         
@@ -67,7 +67,7 @@ namespace BrownieHound {
         #line hidden
         
         
-        #line 17 "..\..\..\ruleg_detail.xaml"
+        #line 21 "..\..\..\ruleg_detail.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button inactivate;
         
@@ -75,7 +75,23 @@ namespace BrownieHound {
         #line hidden
         
         
-        #line 19 "..\..\..\ruleg_detail.xaml"
+        #line 22 "..\..\..\ruleg_detail.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button correct;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 23 "..\..\..\ruleg_detail.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.TextBox filename;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 24 "..\..\..\ruleg_detail.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.DataGrid rule_DataGrid;
         
@@ -96,7 +112,7 @@ namespace BrownieHound {
         /// InitializeComponent
         /// </summary>
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.5.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.11.0")]
         public void InitializeComponent() {
             if (_contentLoaded) {
                 return;
@@ -112,7 +128,7 @@ namespace BrownieHound {
         }
         
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.5.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.11.0")]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
@@ -123,7 +139,7 @@ namespace BrownieHound {
             case 1:
             this.add = ((System.Windows.Controls.Button)(target));
             
-            #line 14 "..\..\..\ruleg_detail.xaml"
+            #line 18 "..\..\..\ruleg_detail.xaml"
             this.add.Click += new System.Windows.RoutedEventHandler(this.addButton_Click);
             
             #line default
@@ -132,7 +148,7 @@ namespace BrownieHound {
             case 2:
             this.edit = ((System.Windows.Controls.Button)(target));
             
-            #line 15 "..\..\..\ruleg_detail.xaml"
+            #line 19 "..\..\..\ruleg_detail.xaml"
             this.edit.Click += new System.Windows.RoutedEventHandler(this.editButton_Click);
             
             #line default
@@ -141,7 +157,7 @@ namespace BrownieHound {
             case 3:
             this.redo = ((System.Windows.Controls.Button)(target));
             
-            #line 16 "..\..\..\ruleg_detail.xaml"
+            #line 20 "..\..\..\ruleg_detail.xaml"
             this.redo.Click += new System.Windows.RoutedEventHandler(this.redoButton_Click);
             
             #line default
@@ -150,22 +166,34 @@ namespace BrownieHound {
             case 4:
             this.inactivate = ((System.Windows.Controls.Button)(target));
             
-            #line 17 "..\..\..\ruleg_detail.xaml"
+            #line 21 "..\..\..\ruleg_detail.xaml"
             this.inactivate.Click += new System.Windows.RoutedEventHandler(this.inactivate_Click);
             
             #line default
             #line hidden
             return;
             case 5:
+            this.correct = ((System.Windows.Controls.Button)(target));
+            
+            #line 22 "..\..\..\ruleg_detail.xaml"
+            this.correct.Click += new System.Windows.RoutedEventHandler(this.correct_Click);
+            
+            #line default
+            #line hidden
+            return;
+            case 6:
+            this.filename = ((System.Windows.Controls.TextBox)(target));
+            return;
+            case 7:
             this.rule_DataGrid = ((System.Windows.Controls.DataGrid)(target));
             
-            #line 19 "..\..\..\ruleg_detail.xaml"
+            #line 24 "..\..\..\ruleg_detail.xaml"
             this.rule_DataGrid.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.DataGrid_Selected);
             
             #line default
             #line hidden
             return;
-            case 7:
+            case 9:
             this.checkAll = ((System.Windows.Controls.CheckBox)(target));
             
             #line 41 "..\..\..\ruleg_detail.xaml"
@@ -185,7 +213,7 @@ namespace BrownieHound {
         }
         
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.5.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "7.0.11.0")]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -193,15 +221,15 @@ namespace BrownieHound {
         void System.Windows.Markup.IStyleConnector.Connect(int connectionId, object target) {
             switch (connectionId)
             {
-            case 6:
+            case 8:
             
-            #line 24 "..\..\..\ruleg_detail.xaml"
+            #line 29 "..\..\..\ruleg_detail.xaml"
             ((System.Windows.Controls.CheckBox)(target)).Checked += new System.Windows.RoutedEventHandler(this.IsChecked_Checked);
             
             #line default
             #line hidden
             
-            #line 24 "..\..\..\ruleg_detail.xaml"
+            #line 29 "..\..\..\ruleg_detail.xaml"
             ((System.Windows.Controls.CheckBox)(target)).Unchecked += new System.Windows.RoutedEventHandler(this.IsChecked_Unchecked);
             
             #line default

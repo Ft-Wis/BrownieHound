@@ -30,6 +30,7 @@ namespace BrownieHound
 
         public DataGridItem sendData;
         private int newRuleNo;
+        private string saveFrameLength = ""; 
 
         RuleDataValidation.Rule_Validation ruleValidation;
 
@@ -112,7 +113,7 @@ namespace BrownieHound
                 protocol = protocolName,
                 sourcePort = sourcePortNum,
                 destinationPort = destinationPortNum,
-                frameLength = int.Parse(sizeTextBox.Text),
+                frameLength = sizeTextBox.Text,
                 detectionInterval = int.Parse(secondsTextBox.Text),
                 detectionCount = int.Parse(timesTextBox.Text)
             };
@@ -161,8 +162,13 @@ namespace BrownieHound
                     destinationTextBox.IsEnabled = false;
                     destinationTextBox.Text = "myAddress";
                     break;
-                //「手動で設定」
+                //「ブロードキャスト」
                 case 2:
+                    destinationTextBox.IsEnabled = false;
+                    destinationTextBox.Text = "broadcast";
+                    break;
+                //「手動で設定」
+                case 3:
                     destinationTextBox.IsEnabled = true;
                     destinationTextBox.Focus();
                     destinationTextBox.SelectAll();
@@ -270,9 +276,9 @@ namespace BrownieHound
             byteText.Text = "Bytes以上";
             //「１秒間に１回以上」の固定解除
             secondsTextBox.IsEnabled = true;
-            secondsTextBox.Text = "";
+            secondsTextBox.Text = "1";
             timesTextBox.IsEnabled = true;
-            timesTextBox.Text = "";
+            timesTextBox.Text = "1";
         }
 
         private void whiteListRadioButton_Checked(object sender, RoutedEventArgs e)
@@ -284,6 +290,19 @@ namespace BrownieHound
             secondsTextBox.Text = "1";
             timesTextBox.IsEnabled = false;
             timesTextBox.Text = "1";
+        }
+
+        private void sizeNoneCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            sizeTextBox.IsEnabled = true;
+            sizeTextBox.Text = saveFrameLength;
+        }
+
+        private void sizeNoneCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            saveFrameLength = sizeTextBox.Text;
+            sizeTextBox.IsEnabled = false;
+            sizeTextBox.Text = "none";
         }
     }
 }
