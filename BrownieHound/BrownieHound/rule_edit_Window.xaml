@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BrownieHound"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="rule_edit_Window" Height="510" Width="405">
+        Title="BrownieHound" Height="510" Width="405">
     <DockPanel Margin="1,1,1,20">
         <StackPanel DockPanel.Dock="Bottom" 
                     Orientation="Horizontal" HorizontalAlignment="Right">

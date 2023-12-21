@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
-        Title="detectWindow" Height="450" Width="800" Closing="Window_Closing">
+        Title="BrownieHound" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
         <Image Source="logoimage/detect.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-17,-90,0,0"/>
         <TreeView x:Name="detection_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
