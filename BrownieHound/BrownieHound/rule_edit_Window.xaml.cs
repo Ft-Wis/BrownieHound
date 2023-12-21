@@ -35,6 +35,7 @@ namespace BrownieHound
     {
         private DataGridItem ruleItem;
         public DataGridItem sendData;
+        private string saveFrameLength = "";
 
         //ipアドレスの正規表現
         private static readonly string ipAddressPattern =@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$";
@@ -251,7 +252,15 @@ namespace BrownieHound
 
 
             //サイズに値を代入
-            ruleValidation.packetSize.Value = ruleItem.frameLength.ToString();
+            ruleValidation.packetSize.Value = ruleItem.frameLength;
+            if(ruleValidation.packetSize.Value == "none")
+            {
+                sizeNoneCheckBox.IsChecked = true;
+            }
+            else
+            {
+                sizeNoneCheckBox.IsChecked = false;
+            }
             sizeTextBox.Text = ruleValidation.packetSize.Value;
 
             //間隔に値を代入
@@ -312,7 +321,7 @@ namespace BrownieHound
                 protocol = protocolName,
                 sourcePort = sourcePortNum,
                 destinationPort = destinationPortNum,
-                frameLength =int.Parse(sizeTextBox.Text),
+                frameLength =sizeTextBox.Text,
                 detectionInterval = int.Parse(secondsTextBox.Text),
                 detectionCount = int.Parse(timesTextBox.Text)
             };
@@ -491,6 +500,19 @@ namespace BrownieHound
             secondsTextBox.Text= "1";
             timesTextBox.IsEnabled = false;
             timesTextBox.Text = "1";
+        }
+
+        private void sizeNoneCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            sizeTextBox.IsEnabled = true;
+            sizeTextBox.Text = saveFrameLength;
+        }
+
+        private void sizeNoneCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            saveFrameLength = sizeTextBox.Text;
+            sizeTextBox.IsEnabled = false;
+            sizeTextBox.Text = "none";
         }
     }
 }

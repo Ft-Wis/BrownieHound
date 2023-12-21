@@ -9,10 +9,11 @@
         mc:Ignorable="d"
         Title="rule_add_Window" Height="498" Width="409">
     <Grid Margin="0,0,0,-36">
+
+
         <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Center" Height="44" VerticalAlignment="Top" Width="159" FontSize="24" Margin="0,-3,0,0"/>
         <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="221,0,0,52" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" IsDefault="True"/>
         <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,52" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
-
         <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Center" Height="361" CornerRadius="10"   Margin="0,38,0,0" VerticalAlignment="Top" Width="379">
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Margin="11,27,0,0"><Run Language="ja-jp" Text="検知方式"/></TextBlock>
 
@@ -29,7 +30,7 @@
             <ComboBoxItem Content="このPCのアドレス" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <TextBox x:Name="sourceTextBox"  HorizontalAlignment="Left" Margin="262,113,0,0" TextWrapping="Wrap" Text="{Binding sourceIP.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
+        <TextBox x:Name="sourceTextBox"  HorizontalAlignment="Left" Margin="262,113,0,0" TextWrapping="Wrap" Text="{Binding sourceIP.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
         <TextBlock x:Name="destinationTextBlock" HorizontalAlignment="Left" Margin="27,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"><Run Language="ja-jp" Text="送信先IPアドレス"/></TextBlock>
         <ComboBox x:Name="destinationComboBox"  HorizontalAlignment="Left" Margin="144,147,0,0" controls:HintAssist.Hint="" VerticalAlignment="Top" Width="105" SelectionChanged="destinationComboBox_SelectionChanged">
             <ComboBox.Resources>
@@ -42,7 +43,7 @@
             <ComboBoxItem Content="ブロードキャスト" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="262,145,0,0" TextWrapping="Wrap" Text="{Binding destinationIP.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
+        <TextBox x:Name="destinationTextBox"  HorizontalAlignment="Left" Margin="262,145,0,0" TextWrapping="Wrap" Text="{Binding destinationIP.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="XXX.XXX.AAA.BBB" VerticalAlignment="Top" FontSize="13" Width="120" IsEnabled="False"/>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="32,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"><Run Language="ja-jp" Text="プロトコル"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="32,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="66"><Run Language="ja-jp" Text="ポート番号"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Height="16" Margin="31,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67"><Run Language="ja-jp" Text="パケットサイズ"/></TextBlock>
@@ -71,17 +72,22 @@
             <ComboBoxItem Content="DNS(53)" />
             <ComboBoxItem Content="手動で設定" />
         </ComboBox>
-        <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="290,242,0,0" TextWrapping="Wrap" Text="{Binding portNum.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False"/>
-        <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="98,286,0,0" TextWrapping="Wrap" Text="{Binding packetSize.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="116"/>
-        <TextBlock x:Name="byteText" HorizontalAlignment="Left" Height="16" Margin="222,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
-        <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="99,334,0,0" TextWrapping="Wrap" Text="{Binding detectionMins.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="75"/>
-        <TextBlock HorizontalAlignment="Left" Height="16" Margin="177,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
-        <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="230,334,0,0" TextWrapping="Wrap" Text="{Binding detectionCnt.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="50"/>
-        <TextBlock HorizontalAlignment="Left" Height="16" Margin="285,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43"><Run Language="ja-jp" Text="回以上"/></TextBlock>
+        <TextBox x:Name="portnumberTextBox" HorizontalAlignment="Left" Height="24" Margin="290,242,0,0" TextWrapping="Wrap" Text="{Binding portNum.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" controls:HintAssist.Hint="ポート番号" VerticalAlignment="Top" Width="86" IsEnabled="False"/>
+        <TextBox x:Name="sizeTextBox" HorizontalAlignment="Left" Height="26" Margin="76,287,0,0" TextWrapping="Wrap" Text="{Binding packetSize.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="116"/>
+        <TextBlock x:Name="byteText" HorizontalAlignment="Left" Height="16" Margin="200,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"><Run Language="ja-jp" Text="Bytes以上"/></TextBlock>
+        <TextBox x:Name="secondsTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="77,335,0,0" TextWrapping="Wrap" Text="{Binding detectionMins.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="75"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="155,345,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"><Run Language="ja-jp" Text="秒間に"/></TextBlock>
+        <TextBox x:Name="timesTextBox" InputScope="Number" TextAlignment="Right" HorizontalAlignment="Left" Height="26" Margin="208,335,0,0" TextWrapping="Wrap" Text="{Binding detectionCnt.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="50"/>
+        <TextBlock HorizontalAlignment="Left" Height="16" Margin="263,345,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43"><Run Language="ja-jp" Text="回以上"/></TextBlock>
         <RadioButton x:Name="destinationRadioButton" Content="送信先" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="98,257,0,0" IsChecked="False"/>
         <RadioButton x:Name="sourceRadioButton" Content="送信元" HorizontalAlignment="Left" Margin="98,239,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True"/>
         <RadioButton x:Name="whiteListRadioButton" Content="否検出" GroupName="detectionMethod" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" Margin="138,83,0,0" IsChecked="False"  Checked="whiteListRadioButton_Checked"/>
         <RadioButton x:Name="blackListRadioButton" Content="検出" GroupName="detectionMethod" HorizontalAlignment="Left" Margin="138,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.265,-0.598" IsChecked="True" Checked="blackListRadioButton_Checked"/>
+        <CheckBox x:Name="sizeNoneCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Unchecked="sizeNoneCheckBox_Unchecked" Checked="sizeNoneCheckBox_Checked" IsEnabled="True" Margin="269,297,0,0">
+            <CheckBox.Content>
+                <TextBlock Text="サイズを指定しない"></TextBlock>
+            </CheckBox.Content>
+        </CheckBox>
     </Grid>
 
 </Window> 

@@ -21,7 +21,7 @@ namespace BrownieHound
             [RegularExpression("all|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$", ErrorMessage = "ポート番号は1～65535の間で指定してください")]
             public ReactiveProperty<string> portNum { get; set; }
 
-            [RegularExpression("[1-9][0-9]{0,3}", ErrorMessage = "サイズは1～9999の間で指定してください")]
+            [RegularExpression("none|[1-9][0-9]{0,3}", ErrorMessage = "サイズは1～9999の間で指定してください")]
             public ReactiveProperty<string> packetSize { get; set; }
 
             [RegularExpression("[1-9][0-9]{0,3}", ErrorMessage = "回数は1～9999の間で指定してください")]
