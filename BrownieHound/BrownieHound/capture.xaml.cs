@@ -448,12 +448,6 @@ namespace BrownieHound
                     if (detectionRule.Value.detectionInterval <= recordEnd)
                     {
                         int start = recordPacketNo[recordEnd - detectionRule.Value.detectionInterval];
-                        //if (recordEnd > detectionRule.Value.detectionInterval && start == recordPacketNo[recordEnd - detectionRule.Value.detectionInterval - 1] && start < end)
-                        //{
-                        //    //検知する範囲内で出現したパケットのみを対象とする処理
-                        //    //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
-                        //    start++;
-                        //}
                         int detectIndex = 0;
                         while(detectIndex < memoryPackets.Count)
                         {
@@ -561,10 +555,6 @@ namespace BrownieHound
                 if (1 <= recordEnd)
                 {
                     int start = recordPacketNo[recordEnd - 1];
-                    //if (recordEnd > 1 && start == recordPacketNo[recordEnd - 1 - 1] && start < end)
-                    //{
-                    //    start++;
-                    //}
                     int detectIndex = 0;
                     while (detectIndex < memoryPackets.Count)
                     {
