@@ -45,7 +45,11 @@ namespace BrownieHound
                             break;
                         }
                     }
-                    using (File.Create($"{path}\\{newGroupName}.txt")) { }
+                    using(StreamWriter sw = new StreamWriter($"{path}\\{newGroupName}.txt"))
+                    {
+                        sw.WriteLine("StandardRule");
+                    }
+                    //using (File.Create($"{path}\\{newGroupName}.txt")) { }
                     MessageBox.Show($"以下のルールグループを追加しました。\n{newGroupName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
                     Show_Group(RuleGroupDataReader.Read(path));
                 }

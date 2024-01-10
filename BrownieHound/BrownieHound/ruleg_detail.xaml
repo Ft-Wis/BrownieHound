@@ -44,5 +44,6 @@
             </DataGrid.Columns>
         </DataGrid>
         <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="25,80,0,0" VerticalAlignment="Top" Checked="checkAll_Checked" Unchecked="checkAll_Unchecked" Width="{Binding ElementName=title, Mode=OneWay}"/>
+        <CheckBox x:Name="linkCheck" Content="ルールのグループ化" HorizontalAlignment="Left" Margin="120,80,0,0" VerticalAlignment="Top" Checked="linkCheck_Checked" Unchecked="linkCheck_Unchecked" Width="{Binding ElementName=title, Mode=OneWay}"/>
     </Grid>
 </Page>

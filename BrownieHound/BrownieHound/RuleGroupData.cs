@@ -9,6 +9,7 @@ namespace BrownieHound
         public int No { get; set; }
         public String Name { get; set; }
         public int ruleItems { get; set; } = 0;
+        public bool extendflg { get; set; } = false;
         public List<RuleData.ruleData> ruleDatas { get; set; } = new List<RuleData.ruleData>();
         public List<RuleData.ruleData> blackListRules { get; set; } = new List<RuleData.ruleData>();
         public List<RuleData.ruleData> whiteListRules { get; set; } = new List<RuleData.ruleData>();
@@ -21,7 +22,18 @@ namespace BrownieHound
 
         public void ruleSet(string ruleLine)
         {
-            ruleDatas.Add(new RuleData.ruleData(ruleLine, this.No, this.ruleItems++));
+            if (ruleLine.Equals("ExtendRule"))
+            {
+                extendflg = true;
+            }
+            else if (ruleLine.Equals("StandardRule"))
+            {
+                extendflg = false;
+            }
+            else
+            {
+                ruleDatas.Add(new RuleData.ruleData(ruleLine, this.No, this.ruleItems++));
+            }
         }
     }
 }

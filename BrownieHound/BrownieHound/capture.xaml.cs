@@ -331,7 +331,6 @@ namespace BrownieHound
                 {
                     sendList.Add(new List<string>());
                 }
-                Debug.WriteLine("");
                 using (StreamReader sr = new StreamReader($"temps\\maildata{mailFileNo}.tmp"))
                 {
                     origindata = sr.ReadToEnd().Split('\n');
@@ -434,26 +433,22 @@ namespace BrownieHound
 
         private void detectLogic(int detectionNumber)
         {
+            bool detectflg = true;
             int recordEnd = recordPacketNo.Count - 1;
             int end = recordPacketNo[recordEnd] - 1;
             capturePacketsValue = end;
             List<packetData> packetList = new List<packetData>();
             if (detectionRuleGroups[detectionNumber].blackListRules.Count > 0)
             {
+                List<int> detectionCount = new List<int>();
                 List<int> temp = new List<int>();
                 foreach (var detectionRule in detectionRuleGroups[detectionNumber].blackListRules.Select((Value, Index) => new { Value, Index }))
                 {
                     temp.Add(0);
-
+                    detectionCount.Add(0);
                     if (detectionRule.Value.detectionInterval <= recordEnd)
                     {
                         int start = recordPacketNo[recordEnd - detectionRule.Value.detectionInterval];
-                        //if (recordEnd > detectionRule.Value.detectionInterval && start == recordPacketNo[recordEnd - detectionRule.Value.detectionInterval - 1] && start < end)
-                        //{
-                        //    //検知する範囲内で出現したパケットのみを対象とする処理
-                        //    //0,0,2,2,3...等の時に２回目の試行には0を入れたくない
-                        //    start++;
-                        //}
                         int detectIndex = 0;
                         while(detectIndex < memoryPackets.Count)
                         {
@@ -527,6 +522,7 @@ namespace BrownieHound
                                 }
                                 if (flg == 6)
                                 {
+                                    detectionCount[detectionRule.Index]++;
                                     if (!packetList.Contains(memoryPackets[i]))
                                     {
                                         packetList.Add(memoryPackets[i]);
@@ -537,8 +533,13 @@ namespace BrownieHound
                             }
                         }
 
-                        if (temp[detectionRule.Index] < detectionRule.Value.detectionCount)
+                        if (detectionCount[detectionRule.Index] < detectionRule.Value.detectionCount)
                         {
+                            if (detectionRuleGroups[detectionNumber].extendflg)
+                            {
+                                detectflg = false;
+                                break;
+                            }
                             int startIndex = 0;
                             int i = 0;
                             for (; i < temp.Count - 1 - 1; i++)
@@ -556,10 +557,6 @@ namespace BrownieHound
                 if (1 <= recordEnd)
                 {
                     int start = recordPacketNo[recordEnd - 1];
-                    //if (recordEnd > 1 && start == recordPacketNo[recordEnd - 1 - 1] && start < end)
-                    //{
-                    //    start++;
-                    //}
                     int detectIndex = 0;
                     while (detectIndex < memoryPackets.Count)
                     {
@@ -622,7 +619,7 @@ namespace BrownieHound
             packetList.Sort((a,b)=>a.Number - b.Number);
             foreach(var packet in packetList)
             {
-                if (!detectionNumbers[detectionNumber].Contains(packet.Number))
+                if (detectflg &&  !detectionNumbers[detectionNumber].Contains(packet.Number))
                 {
                     dWindow.show_detection(packet, detectionNumber);
                     detectionNumbers[detectionNumber].Add(packet.Number);
