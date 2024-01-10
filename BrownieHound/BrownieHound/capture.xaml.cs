@@ -1052,6 +1052,13 @@ namespace BrownieHound
             if (packet != null)
             {
                 packet_detail_Window packet_detail = new packet_detail_Window(packet.Data);
+
+                double capchaLeft = App.Current.MainWindow.Left;
+                double capchaTop = App.Current.MainWindow.Top;
+                
+                //新しいウィンドウを配置
+                packet_detail.Left = capchaLeft + 50;
+                packet_detail.Top = capchaTop + 50;
                 packet_detail.Show();
             }
         }

@@ -157,6 +157,14 @@ namespace BrownieHound
                 if (dD != null && dD.jpacketData != null)
                 {
                     packet_detail_Window packet_detail = new packet_detail_Window(dD.jpacketData);
+
+                    double detectLeft = this.Left;
+                    double detectTop = this.Top;
+
+                    // 新しいウィンドウを配置
+                    packet_detail.Left = detectLeft + 50;
+                    packet_detail.Top = detectTop + 50;
+
                     packet_detail.Show();
                 }
             }
