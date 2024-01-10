@@ -53,15 +53,12 @@ namespace BrownieHound
         {
             Application.Current.MainWindow.Width = 1200;
             InitializeComponent();
-            //title.Content = $"{title.Content} - {name}";
             fileName = name;
             filename.Text = fileName;
             gridItem = new ObservableCollection<DataGridItem>();
 
-            //linkCheck.DataContext = checkLink;
             reDraw(false);
 
-            //rule_DataGrid.ItemsSource= gridItem;
             
         }
 
