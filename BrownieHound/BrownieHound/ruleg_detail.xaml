@@ -21,7 +21,7 @@
         <Button x:Name="inactivate" Content="削除" HorizontalAlignment="Left" Height="43" Margin="331,0,0,22" VerticalAlignment="Bottom" Width="124" Click="inactivate_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" IsEnabled="False" />
         <Button x:Name="correct" Content="名前の修正" Margin="0,25,58,0" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" HorizontalAlignment="Right" Width="157" Height="44" VerticalAlignment="Top" Grid.Column="1" Click="correct_Click"/>
         <TextBox x:Name="filename" HorizontalAlignment="Left" Margin="299,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Cascadia Code" FontWeight="Bold" FontSize="23" Foreground="#FF0C9CB6" Height="43" Width="568" IsEnabled="False" Grid.ColumnSpan="2" Cursor="" Background="{x:Null}"/>
-        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Width="1037"  AutoGenerateColumns="False" Margin="25,98,0,98" SelectionChanged="DataGrid_Selected" Grid.ColumnSpan="2">
+        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}"  AutoGenerateColumns="False" Margin="25,98,25,98" SelectionChanged="DataGrid_Selected" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

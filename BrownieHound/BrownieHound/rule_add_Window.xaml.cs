@@ -30,6 +30,7 @@ namespace BrownieHound
 
         public DataGridItem sendData;
         private int newRuleNo;
+        private string saveFrameLength = ""; 
 
         RuleDataValidation.Rule_Validation ruleValidation;
 
@@ -112,7 +113,7 @@ namespace BrownieHound
                 protocol = protocolName,
                 sourcePort = sourcePortNum,
                 destinationPort = destinationPortNum,
-                frameLength = int.Parse(sizeTextBox.Text),
+                frameLength = sizeTextBox.Text,
                 detectionInterval = int.Parse(secondsTextBox.Text),
                 detectionCount = int.Parse(timesTextBox.Text)
             };
@@ -289,6 +290,19 @@ namespace BrownieHound
             secondsTextBox.Text = "1";
             timesTextBox.IsEnabled = false;
             timesTextBox.Text = "1";
+        }
+
+        private void sizeNoneCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            sizeTextBox.IsEnabled = true;
+            sizeTextBox.Text = saveFrameLength;
+        }
+
+        private void sizeNoneCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            saveFrameLength = sizeTextBox.Text;
+            sizeTextBox.IsEnabled = false;
+            sizeTextBox.Text = "none";
         }
     }
 }
