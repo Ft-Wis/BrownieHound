@@ -65,7 +65,14 @@ namespace BrownieHound
             }
             for(int i = 0; i < ruleGroupDatas.Count; i++)
             {
-                detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}",color= "#0000cd" });
+                if (ruleGroupDatas[i].extendflg)
+                {
+                    detectionDatas.Add(new detectionData() { data = $"LinkRuleGroup:{ruleGroupDatas[i].Name}", color = "#b8860b" });
+                }
+                else
+                {
+                    detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}", color = "#0000cd" });
+                }
                 string message = "";
                 using (File.Create($"tempdetectionData\\{ruleGroupDatas[i].Name}.tmp")) { }
                 detectionRuleNames.Add(ruleGroupDatas[i].Name);

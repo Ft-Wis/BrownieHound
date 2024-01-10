@@ -358,6 +358,10 @@ namespace BrownieHound
                 for (int i = 0; i < detectionRuleGroups.Count; i++)
                 {
                     addCount = 0;
+                    if (detectionRuleGroups[i].extendflg)
+                    {
+                        body.HtmlBody += $"<h3>Link Rule</h3>";
+                    }
                     body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
                     body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
                     for (int j = 0; j < detectionRuleGroups[i].ruleDatas.Count; j++)
@@ -462,6 +466,10 @@ namespace BrownieHound
                         for (int i = detectIndex; memoryPackets[i].Number <= end; i++)
                         {
                             int flg = 0;
+                            if (memoryPackets[i].Number == 0)
+                            {
+                                continue;
+                            }
                             if (detectionRule.Value.Source.Equals("all") || detectionRule.Value.Source.Equals(memoryPackets[i].Source))
                             {
                                 flg++;
