@@ -440,11 +440,12 @@ namespace BrownieHound
             List<packetData> packetList = new List<packetData>();
             if (detectionRuleGroups[detectionNumber].blackListRules.Count > 0)
             {
+                List<int> detectionCount = new List<int>();
                 List<int> temp = new List<int>();
                 foreach (var detectionRule in detectionRuleGroups[detectionNumber].blackListRules.Select((Value, Index) => new { Value, Index }))
                 {
                     temp.Add(0);
-
+                    detectionCount.Add(0);
                     if (detectionRule.Value.detectionInterval <= recordEnd)
                     {
                         int start = recordPacketNo[recordEnd - detectionRule.Value.detectionInterval];
@@ -521,6 +522,7 @@ namespace BrownieHound
                                 }
                                 if (flg == 6)
                                 {
+                                    detectionCount[detectionRule.Index]++;
                                     if (!packetList.Contains(memoryPackets[i]))
                                     {
                                         packetList.Add(memoryPackets[i]);
@@ -531,7 +533,7 @@ namespace BrownieHound
                             }
                         }
 
-                        if (temp[detectionRule.Index] < detectionRule.Value.detectionCount)
+                        if (detectionCount[detectionRule.Index] < detectionRule.Value.detectionCount)
                         {
                             if (detectionRuleGroups[detectionNumber].extendflg)
                             {
