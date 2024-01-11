@@ -30,6 +30,7 @@ namespace BrownieHound
     {
         Mail_Validation mailValidation;
         string path = @"conf\mail.conf";
+        string authorizedPath = @"conf\authorize.conf"; 
         string authorize;
         public mail_settings()
         {
@@ -56,6 +57,15 @@ namespace BrownieHound
             {
                 if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
                 {
+                    //メール認証処理
+                    if (!File.Exists(authorizedPath))
+                    {
+                        certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
+                        if(certificationWindow.ShowDialog() ==  true)
+                        {
+
+                        }
+                    }
 
                     using (StreamWriter sw = new StreamWriter(path, false, Encoding.GetEncoding("UTF-8")))
                     {
@@ -65,9 +75,6 @@ namespace BrownieHound
                         sw.WriteLine($"Authorized:Unauthorized");
 
                     }
-                    MessageBox.Show("メール設定を保存しました。", "メール設定成功", MessageBoxButton.OK, MessageBoxImage.Information);
-                    var nextPage = new top();
-                    NavigationService.Navigate(nextPage);
 
                 }
                 else
@@ -84,9 +91,7 @@ namespace BrownieHound
                     sw.WriteLine($"sendMailAddress:{mailValidation.mailAddress.Value}");
                     sw.WriteLine($"Authorized:Unauthorized");
                 }
-                MessageBox.Show("メール設定を保存しました。", "メール設定成功", MessageBoxButton.OK, MessageBoxImage.Information);
-                var nextPage = new top();
-                NavigationService.Navigate(nextPage);
+
             }
 
 
@@ -124,6 +129,10 @@ namespace BrownieHound
 
             }
             //Debug.WriteLine(authorize);
+        }
+
+        private class InputDialog
+        {
         }
     }
     public class Mail_Validation:INotifyPropertyChanged
