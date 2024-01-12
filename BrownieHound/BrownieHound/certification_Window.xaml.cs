@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MimeKit;
 using MailKit.Net.Smtp;
+using static Org.BouncyCastle.Asn1.Cmp.Challenge;
+using System.Net.Mail;
 
 namespace BrownieHound
 {
@@ -22,8 +24,32 @@ namespace BrownieHound
         public certification_Window(string mailAddress)
         {
             InitializeComponent();
-            MessageBox.Show(this, mailAddress);
+            //MessageBox.Show(this, mailAddress);
 
+            string code = Randomcerti();
+            //sendEmail(mailAddress);
+        }
+
+        private string Randomcerti (){
+            string authCode = "";
+            Random r = new Random();
+            int intAuthCode = r.Next(99999);
+            //５桁以下なら0埋め
+            if (intAuthCode < 100000)
+            {
+                authCode = intAuthCode.ToString("D6");
+            }
+            else
+            {
+                authCode = intAuthCode.ToString();
+            }
+
+            MessageBox.Show(authCode);
+            return authCode;
+        }
+
+        private void sendEmail(string mailAddress)
+        {
             var host = "smtp.gmail.com";
             var port = 587;
             using (var smtp = new MailKit.Net.Smtp.SmtpClient())
@@ -44,14 +70,6 @@ namespace BrownieHound
                 smtp.Send(email);
             }
         }
-
-        private string Randomcerti (){
-            Random random = new System.Random();
-            
-            Console.WriteLine(random.ToString);//random.Next(0, 10)
-            return random;
-        }
-
 
     private void authorizeButton_Click(object sender, RoutedEventArgs e)
         {
