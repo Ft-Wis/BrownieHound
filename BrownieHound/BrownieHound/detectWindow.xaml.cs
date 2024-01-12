@@ -28,11 +28,9 @@ namespace BrownieHound
     public partial class detectWindow : Window
     {
         public ObservableCollection<detectionData> detectionDatas = new ObservableCollection<detectionData>();
-        //public List<detectionData> detectionDatas = new List<detectionData>();
         public List<string> detectionRuleNames = new List<string>();
         public int maildataCount = 0;
         public int mailFileCount = 0;
-        //あとはデータの振り分け
         public class detectionData
         {
             public string data { get; set; }
