@@ -14,7 +14,16 @@
             <ColumnDefinition Width="47*"/>
         </Grid.ColumnDefinitions>
         <Image Source="logoimage/detect.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-17,-90,0,0"/>
-        <TreeView x:Name="detection_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.ColumnSpan="2">
+        <Grid Grid.ColumnSpan="2" Margin="22,104,22,30">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2">
+                <StackPanel x:Name="DetectionPanel" Margin="0" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <StackPanel.Background>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+                    </StackPanel.Background>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <!--<TreeView x:Name="detection_tree" ItemsSource="{Binding}" Margin="22,104,22,30" Background="#FFE5E5E5" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.ColumnSpan="2">
             <TreeView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource MaterialDesignTreeViewItem}" TargetType="{x:Type TreeViewItem}">
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -28,7 +37,7 @@
                     <TextBlock Text="{Binding data}" Foreground="{Binding color}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
-        </TreeView>
+        </TreeView>-->
         <Button x:Name="save_button" Content="保存" HorizontalAlignment="Right" Height="43" Margin="0,28,55,0" VerticalAlignment="Top" Width="146" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="save_button_Click" Grid.Column="1"/>
     </Grid>
 </Window>
