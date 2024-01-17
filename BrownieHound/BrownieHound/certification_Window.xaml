@@ -14,8 +14,8 @@
         <Button x:Name="cancelButton" Content="キャンセル" Height="42" Margin="0,0,218,10" VerticalAlignment="Bottom"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black"  IsCancel="True" Click="cancelButton_Click" HorizontalAlignment="Right" Width="168"/>
 
         <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Margin="33,17,50,0"><Run Language="ja-jp" Text="xxxxxxx@gmail.com"/></TextBlock>
-        <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Margin="33,52,50,0"><Run Language="ja-jp" Text="宛てに送信された認証番号を入力してください。"/></TextBlock>
-        <TextBox TextWrapping="Wrap" Text="" FontSize="36" Margin="33,96,225,0" Height="52" VerticalAlignment="Top"/>
+        <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Margin="33,52,50,0"><Run Text="宛てに送信された認証番号を入力してください。"/><LineBreak/><Run Text="パスワード有効期限は15分です。"/></TextBlock>
+        <TextBox x:Name="certitext" TextWrapping="Wrap" Text="" FontSize="36" Margin="33,96,225,0" Height="52" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
     </Grid>
 
 </Window> 
