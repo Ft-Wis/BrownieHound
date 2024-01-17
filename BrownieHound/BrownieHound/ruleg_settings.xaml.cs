@@ -35,28 +35,13 @@ namespace BrownieHound
             if(addWindow.ShowDialog() == true ) 
             {
                 string newGroupName = addWindow.newGroupName;
-                if (newGroupName.Length != 0)
+
+                using (StreamWriter sw = new StreamWriter($"{path}\\{newGroupName}.txt"))
                 {
-                    for (int i = 1; File.Exists($"{path}\\{newGroupName}.txt");i++)
-                    {
-                        if (!File.Exists($"{path}\\{newGroupName} - {i}.txt"))
-                        {
-                            newGroupName = $"{newGroupName} - {i}";
-                            break;
-                        }
-                    }
-                    using(StreamWriter sw = new StreamWriter($"{path}\\{newGroupName}.txt"))
-                    {
-                        sw.WriteLine("StandardRule");
-                    }
-                    //using (File.Create($"{path}\\{newGroupName}.txt")) { }
-                    MessageBox.Show($"以下のルールグループを追加しました。\n{newGroupName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Show_Group(RuleGroupDataReader.Read(path));
+                    sw.WriteLine("StandardRule");
                 }
-                else
-                {
-                    MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!",MessageBoxButton.OK,MessageBoxImage.Error);
-                }
+                MessageBox.Show($"以下のルールグループを追加しました。\n{newGroupName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
+                Show_Group(RuleGroupDataReader.Read(path));
             }
         }
 

@@ -10,6 +10,7 @@ namespace BrownieHound
         public String Name { get; set; }
         public int ruleItems { get; set; } = 0;
         public bool extendflg { get; set; } = false;
+        public string linked { get; set; }
         public List<RuleData.ruleData> ruleDatas { get; set; } = new List<RuleData.ruleData>();
         public List<RuleData.ruleData> blackListRules { get; set; } = new List<RuleData.ruleData>();
         public List<RuleData.ruleData> whiteListRules { get; set; } = new List<RuleData.ruleData>();
@@ -25,10 +26,12 @@ namespace BrownieHound
             if (ruleLine.Equals("ExtendRule"))
             {
                 extendflg = true;
+                linked = "linked";
             }
             else if (ruleLine.Equals("StandardRule"))
             {
                 extendflg = false;
+                linked = "--";
             }
             else
             {
