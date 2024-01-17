@@ -366,7 +366,7 @@ namespace BrownieHound
                 if (!ruleGroupNameValidation.ruleGroupName.HasErrors)
                 {
 
-                    if (ruleGroupName.Text.Length != 0)
+                    if (ruleGroupNameValidation.ruleGroupName.Value.Length != 0)
                     {
                         int i = 1;
                         string newFileName = ruleGroupNameValidation.ruleGroupName.Value;
