@@ -32,6 +32,7 @@ namespace BrownieHound
             //MessageBox.Show(this, mailAddress);
 
             this.senderMailAddress = mailAddress;
+            mailblock.Text = mailAddress;
             certiCode = Randomcerti();
             sendEmail(mailAddress, certiCode);
         }
