@@ -22,6 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using static BrownieHound.App;
+using static BrownieHound.RuleGroupNameValidation;
 
 namespace BrownieHound
 {
@@ -30,6 +31,7 @@ namespace BrownieHound
     /// </summary>
     public partial class ruleg_detail : Page
     {
+        RuleName_Validation ruleGroupNameValidation = new RuleName_Validation();
         public struct DataGridItem
         {
             public bool isCheck { get; set; }
@@ -52,9 +54,11 @@ namespace BrownieHound
         public ruleg_detail(int no ,String name, List<RuleData.ruleData> ruledata)
         {
             Application.Current.MainWindow.Width = 1200;
+            Application.Current.MainWindow.MinWidth = 1200;
             InitializeComponent();
             fileName = name;
-            filename.Text = fileName;
+            ruleGroupNameValidation.ruleGroupName.Value = fileName;
+            ruleGroupName.DataContext = ruleGroupNameValidation;
             gridItem = new ObservableCollection<DataGridItem>();
 
             reDraw(false);
@@ -95,6 +99,7 @@ namespace BrownieHound
         private void redoButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+            Application.Current.MainWindow.MinWidth = 800;
             Application.Current.MainWindow.Width = 800;
         }
 
@@ -352,44 +357,64 @@ namespace BrownieHound
         {
             if (buttonflg)
             {
-                filename.IsEnabled = true;
+                ruleGroupName.IsEnabled = true;
                 buttonflg = false;
                 correct.Content = "確定";
             }
             else
             {
-                filename.IsEnabled = false;
-                buttonflg = true;
-                correct.Content = "名前の修正";
-                if (filename.Text.Length != 0)
+                if (!ruleGroupNameValidation.ruleGroupName.HasErrors)
                 {
-                    int i = 1;
-                    string newFileName = filename.Text;
-                    if (newFileName == fileName)
+
+                    if (ruleGroupName.Text.Length != 0)
                     {
-                        return;
-                    } 
-                    while (File.Exists($"./ruleGroup/{newFileName}.txt"))
-                    {
-                        newFileName = $"{filename.Text} - {i}";
-                        ++i;
+                        int i = 1;
+                        string newFileName = ruleGroupNameValidation.ruleGroupName.Value;
                         if (newFileName == fileName)
                         {
-                            break;
+                            ruleGroupName.IsEnabled = false;
+                            buttonflg = true;
+                            correct.Content = "名前の修正";
+                            return;
+                        }
+                        while (File.Exists($"./ruleGroup/{newFileName}.txt"))
+                        {
+                            newFileName = $"{ruleGroupNameValidation.ruleGroupName.Value}-{i}";
+                            ++i;
+                            if (newFileName == fileName)
+                            {
+                                break;
+                            }
+                        }
+                        if (newFileName.Length > 34)
+                        {
+                            int overLength = newFileName.Length - 34;
+                            MessageBox.Show($"ルールグループ名が重複している為、連番を振ると文字列の制限を超えます。\nもう一度ご確認ください。\n超過する文字数：{overLength}\nファイル名：{newFileName}", "入力エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        else
+                        {
+                            ruleGroupName.IsEnabled = false;
+                            buttonflg = true;
+                            correct.Content = "名前の修正";
+                            string oldFilePath = $"./ruleGroup/{fileName}.txt";
+                            string newFilePath = $"./ruleGroup/{newFileName}.txt";
+                            File.Move(oldFilePath, newFilePath);
+                            fileName = newFileName;
+                            ruleGroupName.Text = newFileName;
+                            MessageBox.Show($"以下のルールグループを修正しました。\n{newFileName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
-                    string oldFilePath = $"./ruleGroup/{fileName}.txt";
-                    string newFilePath = $"./ruleGroup/{newFileName}.txt";
-                    File.Move(oldFilePath, newFilePath);
-                    fileName = newFileName;
-                    filename.Text = newFileName;
-                    MessageBox.Show($"以下のルールグループを修正しました。\n{newFileName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else
+                    {
+                        ruleGroupName.Text = fileName;
+                        MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else
                 {
-                    filename.Text = fileName;
-                    MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("ルールグループの名前の形式が正しくありません。\nもう一度ご確認ください。", "入力エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+
             }
         }
 

@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
-        Title="BrownieHound" Height="498" Width="409">
+        Title="BrownieHound" MinHeight="510" MinWidth="405" Height="510" Width="405" MaxHeight="510" MaxWidth="405">
     <Grid Margin="0,0,0,-36">
         <Grid.RowDefinitions>
             <RowDefinition Height="48*"/>

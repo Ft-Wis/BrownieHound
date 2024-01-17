@@ -22,13 +22,12 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <!--比率とか入れれないかな-->
                     <GridView.ColumnHeaderTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" MinWidth="80" TextAlignment="Left"  HorizontalAlignment="Left"/>
                         </DataTemplate>
                     </GridView.ColumnHeaderTemplate>
-                    <GridViewColumn Width="75">
+                    <GridViewColumn Width="85">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader IsEnabled="False"/>
                         </GridViewColumn.Header>
@@ -48,7 +47,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="305">
+                    <GridViewColumn Width="295">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Content="Name" IsEnabled="False"></GridViewColumnHeader>
                         </GridViewColumn.Header>
@@ -74,7 +73,7 @@
                         </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding extendflg}"/>
+                                <TextBlock Text="{Binding linked}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
