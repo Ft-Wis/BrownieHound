@@ -143,11 +143,11 @@ namespace BrownieHound
             {
                 using (StreamWriter sw = new StreamWriter(path, false, Encoding.GetEncoding("UTF-8")))
                 {
-                    sw.WriteLine($"userName");
-                    sw.WriteLine($"sendEnabled");
-                    sw.WriteLine($"sendSpan");
-                    sw.WriteLine($"mailLimit");
-                    sw.WriteLine($"sendMailAddress");
+                    sw.WriteLine($"userName:");
+                    sw.WriteLine($"sendEnabled:");
+                    sw.WriteLine($"sendSpan:");
+                    sw.WriteLine($"mailLimit:");
+                    sw.WriteLine($"sendMailAddress:");
                 }
             }
             using (StreamReader sr = new StreamReader(path, Encoding.GetEncoding("UTF-8")))

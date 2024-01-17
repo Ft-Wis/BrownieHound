@@ -105,27 +105,27 @@ namespace BrownieHound
                 if (userInput == certiCode)
                 {
                     //検証に成功したとき
-                    MessageBox.Show("数値が一致しました。ウィンドウを閉じます。");
+                    MessageBox.Show("認証完了");
                     writeToAuthConf();
                     Close();
                 }
                 else
                 {
                     //6桁の数字を間違えたとき
-                    MessageBox.Show("数値が一致しません。");
+                    MessageBox.Show("パスワードが一致しません。");
                     wrongcetiCode++;
                     MessageBox.Show(wrongcetiCode.ToString());
                     if (wrongcetiCode >= maxcertiCode)
                     {
                         //検証に失敗したとき
-                        MessageBox.Show("パスワードを5回間違えました。ウィンドウを閉じます。");
+                        MessageBox.Show("パスワードを5回間違えました。再度認証処理を行ってください。");
                         Close();
                     }
                 }
             }
             else
             {
-                MessageBox.Show("テキストボックスに入力がありません。");
+                MessageBox.Show("パスワードの入力がありません。");
                 // テキストボックスに入力がない場合の処理を追加
             }
         }
