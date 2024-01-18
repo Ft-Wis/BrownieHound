@@ -14,10 +14,7 @@
         <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,52" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
 
 
-        <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Center" Height="44" VerticalAlignment="Top" Width="159" FontSize="24" Margin="0,-3,0,0"/>
-        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="221,0,0,52" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" IsDefault="True" Grid.Row="1"/>
-        <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,52" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True" Grid.Row="1"/>
-        <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Center" Height="361" CornerRadius="10"   Margin="0,38,0,0" VerticalAlignment="Top" Width="379" Grid.RowSpan="2">
+       <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Center" Height="361" CornerRadius="10"   Margin="0,38,0,0" VerticalAlignment="Top" Width="379" Grid.RowSpan="2">
 
         </Border>
         <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" Margin="29,67,295,0"><Run Language="ja-jp" Text="検知方式"/></TextBlock>
