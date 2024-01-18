@@ -9,7 +9,6 @@
       Title="ruleg_settings">
 
     <Grid Background="White" Loaded="Page_Loaded" Cursor="">
-       
         <Image Source="logoimage/rule_ssetting.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="25,-83,0,0"/>
         <Button x:Name="add" Content="追加" Height="43" Margin="0,0,55,20" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" HorizontalAlignment="Right" Width="121"/>
         <Button x:Name="detail" Content="詳細" Height="43" Margin="0,0,200,20" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="detailButton_Click" HorizontalAlignment="Right" Width="121" IsEnabled="False" Cursor="Hand"/>
@@ -17,8 +16,8 @@
         <ListView x:Name="ruleGroupList" ItemsSource="{Binding}" Margin="40,110,40,110" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_DoubleClikck"/>
-                    <EventSetter Event="Selected" Handler="ListViewItem_Selected"/>
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="ListViewItem_DoubleClikck"/>
+                    <EventSetter Event="ListBoxItem.Selected" Handler="ListViewItem_Selected"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
@@ -31,7 +30,7 @@
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding isCheck}" Checked="IsChecked_Checked" Unchecked="IsChecked_Unchecked"></CheckBox>
+                                <CheckBox IsChecked="{Binding isCheck}" Checked="IsChecked_Checked" Unchecked="IsChecked_Unchecked"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

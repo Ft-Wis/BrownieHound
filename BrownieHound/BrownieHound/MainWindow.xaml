@@ -8,7 +8,7 @@
         Title="BrownieHound"
         MinWidth="800"
         MinHeight="400"
-        Height="450" Width="800">
+        Height="450" Width="800" Closing="BrownieHound_Closing">
     <Grid>
         <Frame Name="frame" NavigationUIVisibility="Hidden" MinWidth="800"/>
 

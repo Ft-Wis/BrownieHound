@@ -18,6 +18,23 @@ namespace BrownieHound
     /// </summary>
     public partial class App : Application
     {
-        
+        System.Threading.Mutex mutex = new System.Threading.Mutex(false,"BrownieHound");
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            if (!mutex.WaitOne(0, false))
+            {
+                mutex.Close();
+                this.Shutdown(); 
+            }
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            if (mutex != null)
+            {
+                mutex.ReleaseMutex();
+                mutex.Close();
+            }
+        }
     }
 }

@@ -1,9 +1,12 @@
 ﻿using MaterialDesignThemes.Wpf;
+using MS.WindowsAPICodePack.Internal;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -17,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using static BrownieHound.App;
 
 namespace BrownieHound
@@ -37,51 +41,24 @@ namespace BrownieHound
             public string destination { get; set; }
             public string sourcePort { get; set; }
             public string destinationPort { get; set; }
-            public int frameLength { get; set; }
+            public string frameLength { get; set; }
             public string ruleCategory { get; set; }
         }
 
         ObservableCollection<DataGridItem> gridItem;
 
         private string fileName;
-
+        bool checkLink = false;
         public ruleg_detail(int no ,String name, List<RuleData.ruleData> ruledata)
         {
             Application.Current.MainWindow.Width = 1200;
             InitializeComponent();
-            //title.Content = $"{title.Content} - {name}";
             fileName = name;
+            filename.Text = fileName;
             gridItem = new ObservableCollection<DataGridItem>();
-            
-            foreach (RuleData.ruleData rd in ruledata)
-            {
-                DataGridItem gridData = new DataGridItem
-                {
-                    isCheck = false,
-                    ruleNo = rd.ruleNo,
-                    detectionInterval = rd.detectionInterval,
-                    detectionCount = rd.detectionCount,
-                    source = rd.Source,
-                    protocol = rd.Protocol,
-                    sourcePort = rd.sourcePort,
-                    destinationPort = rd.destinationPort,
-                    destination = rd.Destination,
-                    frameLength = rd.frameLength,
-                    ruleCategory = rd.ruleCategory.ToString()
-                };
 
-                if (gridData.ruleCategory=="0")
-                {
-                    gridData.ruleCategory = "検出";
-                }
-                else
-                {
-                    gridData.ruleCategory = "否検出";
-                }
-                rule_DataGrid.Items.Add(gridData);
-            }
+            reDraw(false);
 
-            //rule_DataGrid.ItemsSource= gridItem;
             
         }
 
@@ -128,6 +105,7 @@ namespace BrownieHound
             int[] selectedRules = GetSelectedRuleNumbers();
             string filePath = "./ruleGroup/" + fileName + ".txt";
             //チェックボックスで選んだ時
+            inactivate.IsEnabled = false;
             if (selectedRules.Length > 0)
             {
                 string[] targetFile = File.ReadAllLines(filePath);
@@ -157,7 +135,6 @@ namespace BrownieHound
 
                 //RemoveAndInsertLine(filePath,editLineNumber,insertText);
                 replaceLine(filePath,editLineNumber,insertText);
-                ReadFileByLine(filePath);
                 reDraw(false);
             }
             else
@@ -188,57 +165,57 @@ namespace BrownieHound
             }
         }
 
-        private void ReadFileByLine(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("ファイルが存在しません。");
-            }
-        }
-
         private void reDraw(bool checkStatus)
         {
             string filePath = "./ruleGroup/" + fileName + ".txt";
             string[] lines = File.ReadAllLines(filePath);
-            rule_DataGrid.Items.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
-            for (int ruleNum = 0; ruleNum < lines.Length; ruleNum++)
+            if (lines.Length != 0)
             {
-                RuleData.ruleData rd = new RuleData.ruleData(lines[ruleNum]);
-                var gridData = new DataGridItem
+                if (lines[0].ToString().Equals("StandardRule"))
                 {
-                    //isCheck = false,
-                    isCheck = checkStatus, 
-                    ruleNo = ruleNum,
-                    detectionInterval = rd.detectionInterval,
-                    detectionCount = rd.detectionCount,
-                    source = rd.Source,
-                    protocol = rd.Protocol,
-                    sourcePort = rd.sourcePort,
-                    destinationPort = rd.destinationPort,
-                    destination = rd.Destination,
-                    frameLength = rd.frameLength,
-                    ruleCategory = rd.ruleCategory.ToString()
-                };
-                if(gridData.ruleCategory == "0")
-                {
-                    gridData.ruleCategory = "検出";
+                    linkCheck.IsChecked = false;
                 }
-                else
+                else if (lines[0].ToString().Equals("ExtendRule"))
                 {
-                    gridData.ruleCategory = "否検出";
+                    linkCheck.IsChecked = true;
                 }
-                rule_DataGrid.Items.Add(gridData);
+                rule_DataGrid.Items.Clear(); // ObservableCollection の Clear メソッドを呼び出すだけで十分です
+                for (int ruleNum = 1; ruleNum < lines.Length; ruleNum++)
+                {
+                    RuleData.ruleData rd = new RuleData.ruleData(lines[ruleNum]);
+                    var gridData = new DataGridItem
+                    {
+                        //isCheck = false,
+                        isCheck = checkStatus,
+                        ruleNo = ruleNum,
+                        detectionInterval = rd.detectionInterval,
+                        detectionCount = rd.detectionCount,
+                        source = rd.Source,
+                        protocol = rd.Protocol,
+                        sourcePort = rd.sourcePort,
+                        destinationPort = rd.destinationPort,
+                        destination = rd.Destination,
+                        frameLength = rd.frameLength,
+                        ruleCategory = rd.ruleCategory.ToString()
+                    };
+                    if (gridData.ruleCategory == "0")
+                    {
+                        gridData.ruleCategory = "検出";
+                    }
+                    else
+                    {
+                        gridData.ruleCategory = "否検出";
+                    }
+                    rule_DataGrid.Items.Add(gridData);
+                }
+            }
+            else
+            {
+  
+                using(StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.WriteLine("StandardRule");
+                }
             }
         }
 
@@ -343,8 +320,15 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             reDraw(allSelect);
             checkAll.Content = "すべて選択解除";
-            checkCount = rule_DataGrid.Items.Count;
-            inactivate.IsEnabled = true;
+            if (checkCount > 0)
+            {
+                inactivate.IsEnabled = true;
+            }
+            else 
+            {
+                inactivate.IsEnabled = false;
+            }
+            
         }
         int checkCount = 0;
         private void DataGrid_Selected(object sender, RoutedEventArgs e)
@@ -361,6 +345,64 @@ namespace BrownieHound
             checkCount--;
             if (checkCount == 0)
                 inactivate.IsEnabled = false;
+        }
+
+        bool buttonflg = true;
+        private void correct_Click(object sender, RoutedEventArgs e)
+        {
+            if (buttonflg)
+            {
+                filename.IsEnabled = true;
+                buttonflg = false;
+                correct.Content = "確定";
+            }
+            else
+            {
+                filename.IsEnabled = false;
+                buttonflg = true;
+                correct.Content = "名前の修正";
+                if (filename.Text.Length != 0)
+                {
+                    int i = 1;
+                    string newFileName = filename.Text;
+                    if (newFileName == fileName)
+                    {
+                        return;
+                    } 
+                    while (File.Exists($"./ruleGroup/{newFileName}.txt"))
+                    {
+                        newFileName = $"{filename.Text} - {i}";
+                        ++i;
+                        if (newFileName == fileName)
+                        {
+                            break;
+                        }
+                    }
+                    string oldFilePath = $"./ruleGroup/{fileName}.txt";
+                    string newFilePath = $"./ruleGroup/{newFileName}.txt";
+                    File.Move(oldFilePath, newFilePath);
+                    fileName = newFileName;
+                    filename.Text = newFileName;
+                    MessageBox.Show($"以下のルールグループを修正しました。\n{newFileName}", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    filename.Text = fileName;
+                    MessageBox.Show("ルールグループの名前を\n入力してください。", "!警告!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void linkCheck_Checked(object sender, RoutedEventArgs e)
+        {
+            string filePath = "./ruleGroup/" + fileName + ".txt";
+            replaceLine(filePath, 0, "ExtendRule");
+        }
+
+        private void linkCheck_Unchecked(object sender, RoutedEventArgs e)
+        {
+            string filePath = "./ruleGroup/" + fileName + ".txt";
+            replaceLine(filePath, 0, "StandardRule");
         }
     }
 }
