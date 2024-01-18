@@ -23,20 +23,59 @@
                 <GridView>
                     <GridView.ColumnHeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" MinWidth="80" TextAlignment="Left" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding}" MinWidth="80" TextAlignment="Left"  HorizontalAlignment="Left"/>
                         </DataTemplate>
                     </GridView.ColumnHeaderTemplate>
-                    <GridViewColumn>
+                    <GridViewColumn Width="85">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader IsEnabled="False"/>
+                        </GridViewColumn.Header>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding isCheck}" />
+                                <CheckBox IsChecked="{Binding isCheck}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-
-                    <GridViewColumn Header="No" DisplayMemberBinding="{Binding No}" />
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="ruleItems" DisplayMemberBinding="{Binding ruleItems}"/>
+                    <GridViewColumn Width="100">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="No" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding No}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="295">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Name" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="120">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="ruleItems" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ruleItems}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="110">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Linked" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding linked}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

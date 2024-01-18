@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BrownieHound"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="BrownieHound" Height="510" Width="405">
+        Title="BrownieHound" MinHeight="510" MinWidth="405" Height="510" Width="405" MaxHeight="510" MaxWidth="405">
     <DockPanel Margin="1,1,1,20">
         <StackPanel DockPanel.Dock="Bottom" 
                     Orientation="Horizontal" HorizontalAlignment="Right">

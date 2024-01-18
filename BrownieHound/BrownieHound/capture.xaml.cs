@@ -353,6 +353,55 @@ namespace BrownieHound
                         origindata = sr.ReadToEnd().Split('\n');
                     }
 
+                if (mailFileNo == 0)
+                {
+                    using (File.Create("temps\\maildata0.tmp")) { }
+                    dWindow.maildataCount = 0;
+                    dWindow.mailFileCount = 0;
+                    sendTime = DateTime.Now;
+                }
+                else
+                {
+                    File.Delete($"temps\\maildata{mailFileNo}.tmp");
+                }
+                body.HtmlBody += $"<p><b>時間：{sendTime}</b></p>";
+                body.HtmlBody += $"<p><b>総キャプチャ数：{captureCount}</b></p>";
+                for (int i = 0; i < origindata.Count() - 1; i++)
+                {
+                    int number = Int32.Parse(origindata[i].Split("\\")[0]);
+                    sendList[number].Add(origindata[i].Split("\\")[1]);
+                }
+                origindata = null;
+                for (int i = 0; i < detectionRuleGroups.Count; i++)
+                {
+                    addCount = 0;
+                    if (detectionRuleGroups[i].extendflg)
+                    {
+                        body.HtmlBody += $"<h3 style='color:rgb(255, 179, 0)'>Link Rule</h3>";
+                    }
+                    body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
+                    body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
+                    for (int j = 0; j < detectionRuleGroups[i].ruleDatas.Count; j++)
+                    {
+                        string category;
+                        if (detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
+                        {
+                            category = "black";
+                        }
+                        else
+                        {
+                            category = "white";
+                        }
+                        body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
+                    }
+                    while(0 < sendList[i].Count)
+                    {
+                        addCount++;
+                        body.HtmlBody += sendList[i][0];
+                        sendList[i].RemoveAt(0);
+                    }
+                    body.HtmlBody += "</table><br>";
+                    body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
                     if (mailFileNo == 0)
                     {
                         using (File.Create("temps\\maildata0.tmp")) { }

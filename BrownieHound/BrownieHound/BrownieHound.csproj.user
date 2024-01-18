@@ -12,7 +12,10 @@
     <Compile Update="detectionPacketsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="certification_Window.xaml.cs">
+    <Compile Update="DetectionTreeLabel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DetectionTreeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="detectWindow.xaml.cs">
@@ -38,7 +41,10 @@
     <Page Update="detectionPacketsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="certification_Window.xaml">
+    <Page Update="DetectionTreeLabel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DetectionTreeView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="packet_detail_Window.xaml">

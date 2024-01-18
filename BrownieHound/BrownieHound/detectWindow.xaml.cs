@@ -27,7 +27,7 @@ namespace BrownieHound
     /// </summary>
     public partial class detectWindow : Window
     {
-        public List<detectionData> detectionDatas = new List<detectionData>();
+        public ObservableCollection<detectionData> detectionDatas = new ObservableCollection<detectionData>();
         public List<string> detectionRuleNames = new List<string>();
         public int maildataCount = 0;
         public int mailFileCount = 0;
@@ -44,14 +44,11 @@ namespace BrownieHound
 
             //this.Owner = App.Current.MainWindow;
 
-            double xOffset = -150;  // X軸方向のオフセット
-            double yOffset = -25;  // Y軸方向のオフセット
+            double xOffset = -200;  // X軸方向のオフセット
+            double yOffset = 50;  // Y軸方向のオフセット
 
             double newX = App.Current.MainWindow.Left + App.Current.MainWindow.Width / 2 + xOffset;
-            double newY = App.Current.MainWindow.Top + App.Current.MainWindow.Height / 2 + yOffset;
-
-            //double newX = this.Owner.Left + this.Owner.Width / 2 + xOffset;
-            //double newY = this.Owner.Top + this.Owner.Height / 2 + yOffset;
+            double newY = App.Current.MainWindow.Top - yOffset;
 
             this.Left = newX;
             this.Top = newY;
@@ -73,6 +70,20 @@ namespace BrownieHound
                 {
                     detectionDatas.Add(new detectionData() { data = $"RuleGroup:{ruleGroupDatas[i].Name}", color = "#0000cd" });
                 }
+                DetectionTreeLabel detectionTreeLabel = new DetectionTreeLabel()
+                {
+                    Content = detectionDatas[i].data,
+                    Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(detectionDatas[i].color)),
+                    Background = new SolidColorBrush(Color.FromArgb(0xFF,0xE5,0xE5,0xE5)),
+                    Margin = new Thickness(4,5,4,0),
+                
+                };
+                DetectionTreeView detectionTreeView = new DetectionTreeView()
+                {
+                    Name = ruleGroupDatas[i].Name,
+                };
+                DetectionPanel.Children.Add(detectionTreeLabel);
+                DetectionPanel.Children.Add(detectionTreeView);
                 string message = "";
                 using (File.Create($"tempdetectionData\\{ruleGroupDatas[i].Name}.tmp")) { }
                 detectionRuleNames.Add(ruleGroupDatas[i].Name);
@@ -96,7 +107,14 @@ namespace BrownieHound
                 }
                 detectionDatas[i].children.Add(new detectionData() { data = message, color = "IndianRed" });
             }
-            DataContext = detectionDatas;
+            for(int i = 0;i < ruleGroupDatas.Count;i++)
+            {
+                DetectionTreeView tree = DetectionPanel.Children[i * 2 + 1] as DetectionTreeView;
+                if (tree != null)
+                {
+                    tree.DataContext = detectionDatas[i];
+                }
+            }
         }
 
         bool closeflg = false;
@@ -119,7 +137,11 @@ namespace BrownieHound
             {
                 string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
                 detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000", jpacketData = pd.Data });
-                detection_tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
+                DetectionTreeView tree = DetectionPanel.Children[detectionNumber * 2 + 1] as DetectionTreeView;
+                if (tree != null)
+                {
+                    tree.MouseDoubleClick += TreeViewItem_MouseDoubleClick;
+                }
                 using (StreamWriter sw = new StreamWriter($"tempdetectionData\\{detectionRuleNames[detectionNumber]}.tmp", true))
                 {
                     sw.WriteLine(pd.Data);
@@ -140,38 +162,59 @@ namespace BrownieHound
                 {
                     detectionDatas[detectionNumber].children[0].children.RemoveAt(0);
                 }
-                DataContext = detectionDatas;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("exception" + pd.Number + ex.ToString());
             }
         }
+        private T FindAncestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            do
+            {
+                if (current is T ancestor)
+                {
+                    return ancestor;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            } while (current != null);
+
+            return null;
+        }
 
         private void TreeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            detectionData dD = (detectionData)detection_tree.SelectedValue as detectionData;
-            try
+            if(e.OriginalSource is FrameworkElement frameworkElement)
             {
-                if (dD != null && dD.jpacketData != null)
+                var treeViewitem = FindAncestor<TreeViewItem>(frameworkElement);
+                if(treeViewitem != null)
                 {
-                    packet_detail_Window packet_detail = new packet_detail_Window(dD.jpacketData);
+                    detectionData dD = (detectionData)treeViewitem.Header;
+                    try
+                    {
+                        if (dD != null && dD.jpacketData != null)
+                        {
+                            packet_detail_Window packet_detail = new packet_detail_Window(dD.jpacketData);
 
-                    double detectLeft = this.Left;
-                    double detectTop = this.Top;
+                            double detectLeft = this.Left;
+                            double detectTop = this.Top;
 
-                    // 新しいウィンドウを配置
-                    packet_detail.Left = detectLeft + 50;
-                    packet_detail.Top = detectTop + 50;
+                            // 新しいウィンドウを配置
+                            packet_detail.Left = detectLeft + 50;
+                            packet_detail.Top = detectTop + 50;
 
-                    packet_detail.Show();
+                            packet_detail.Show();
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                 }
             }
-            catch
-            {
 
-            }
+
 
         }
 
