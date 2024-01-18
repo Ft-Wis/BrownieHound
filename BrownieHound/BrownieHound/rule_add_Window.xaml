@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="rule_add_Window" Height="498" Width="409">
     <Grid Margin="0,0,0,-36">
-        <Label x:Name="title" Content="ルール追加画面" HorizontalAlignment="Center" Height="44" VerticalAlignment="Top" Width="159" FontSize="24" Margin="0,-3,0,0"/>
+        <Label x:Name="title" Content="ルール追加" HorizontalAlignment="Center" Height="44" VerticalAlignment="Top" Width="120" FontSize="24" Margin="0,-3,0,0"/>
         <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="221,0,0,52" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" IsDefault="True"/>
         <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="19,0,0,52" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True"/>
 

@@ -21,6 +21,6 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <Image Source="logoimage/top.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="25,-73,0,0"/>
+        <Image Source="logoimage/top.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="25,-85,0,0"/>
     </Grid>
 </Page>

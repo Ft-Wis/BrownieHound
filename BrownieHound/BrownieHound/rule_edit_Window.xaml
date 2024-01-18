@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
 
-            <Label x:Name="title" Content="ルール編集画面" HorizontalAlignment="Left" Height="44" Margin="20,11,0,0" VerticalAlignment="Top" Width="238" FontSize="24" Grid.ColumnSpan="3" Grid.Column="1"/>
+            <Label x:Name="title" Content="ルール編集" HorizontalAlignment="Left" Height="44" Margin="20,11,0,0" VerticalAlignment="Top" Width="238" FontSize="24" Grid.ColumnSpan="3" Grid.Column="1"/>
             <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="18,0,0,20" VerticalAlignment="Bottom" Width="168" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click" IsDefault="True" Grid.ColumnSpan="5" Grid.Column="2"/>
             <Button x:Name="cancel" Content="キャンセル" HorizontalAlignment="Left" Height="43" Margin="4,0,0,20" VerticalAlignment="Bottom" Width="168"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="cancelButton_Click" IsCancel="True" Grid.Column="1"/>
             <Border BorderBrush="#FFFF731D" BorderThickness="2" HorizontalAlignment="Left" Height="360" CornerRadius="10"   Margin="4,55,0,0" VerticalAlignment="Top" Width="379" Grid.ColumnSpan="6" Grid.Column="1">
