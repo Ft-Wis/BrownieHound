@@ -135,7 +135,7 @@ namespace BrownieHound
         {
             try
             {
-                string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
+                string message = $"[No:{pd.Number}] :: [src:{pd.Source}] [dest:{pd.Destination}] [proto:{pd.Protocol}] [sPort:{pd.sourcePort}] [dPort:{pd.destinationPort}] [length:{pd.frameLength}]";
                 detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000", jpacketData = pd.Data });
                 DetectionTreeView tree = DetectionPanel.Children[detectionNumber * 2 + 1] as DetectionTreeView;
                 if (tree != null)
@@ -154,7 +154,7 @@ namespace BrownieHound
                     }
                     using (StreamWriter sw = new StreamWriter($"temps\\maildata{mailFileCount}.tmp", true))
                     {
-                        sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.Time.TimeOfDay}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.sourcePort}</td><td>{pd.destinationPort}</td><td>{pd.frameLength}</td></tr></tbody>");
+                        sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.TimeString}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.sourcePort}</td><td>{pd.destinationPort}</td><td>{pd.frameLength}</td></tr></tbody>");
                     }
                     maildataCount++;
                 }

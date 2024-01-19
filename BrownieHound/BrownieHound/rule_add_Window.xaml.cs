@@ -43,6 +43,8 @@ namespace BrownieHound
             DataContext = ruleValidation;
             this.Owner = App.Current.MainWindow;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            blackListRadioButton.Checked += blackListRadioButton_Checked;
+            whiteListRadioButton.Checked += whiteListRadioButton_Checked;
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
