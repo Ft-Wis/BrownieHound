@@ -14,7 +14,7 @@ namespace BrownieHound
         public class packetData
         {
             public int Number { get; set; }
-            public DateTime Time { get; set; }
+            public string TimeString { get; set; } = "empty";
             public string Source { get; set; }
             public string Destination { get; set; }
             public string sourcePort { get; set; }
@@ -45,8 +45,9 @@ namespace BrownieHound
                 caputureTime = caputureTime.Substring(0, 27);
                 //精度が高すぎるので落とす
 
-                Time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+                DateTime Time = DateTime.ParseExact(caputureTime, "yyyy-MM-dd'T'HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
                 Time = Time.AddHours(9);
+                TimeString = Time.ToString("yyyy-MM-dd HH:mm:ss.FFFFFF");
 
 
                 string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
