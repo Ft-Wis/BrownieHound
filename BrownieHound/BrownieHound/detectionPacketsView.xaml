@@ -19,7 +19,7 @@
             </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No" Binding="{Binding Number}" IsReadOnly="True" MinWidth="60" CanUserSort="False"/>
-                <DataGridTextColumn Header="time" Binding="{Binding Time.TimeOfDay}" IsReadOnly="True" MinWidth="80" CanUserSort="False"/>
+                <DataGridTextColumn Header="time" Binding="{Binding TimeString}" IsReadOnly="True" MinWidth="80" CanUserSort="False"/>
                 <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True" MinWidth="100" CanUserSort="False"/>
                 <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True" MinWidth="100" CanUserSort="False"/>
                 <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True" MinWidth="50" CanUserSort="False"/>

@@ -135,7 +135,7 @@ namespace BrownieHound
         {
             try
             {
-                string message = $"[No:{pd.Number}]:: [src:{pd.Source}][dest:{pd.Destination}]  [proto:{pd.Protocol}]  [sPort:{pd.sourcePort}][dPort:{pd.destinationPort}]  [length:{pd.frameLength}]";
+                string message = $"[No:{pd.Number}] :: [src:{pd.Source}] [dest:{pd.Destination}] [proto:{pd.Protocol}] [sPort:{pd.sourcePort}] [dPort:{pd.destinationPort}] [length:{pd.frameLength}]";
                 detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000", jpacketData = pd.Data });
                 DetectionTreeView tree = DetectionPanel.Children[detectionNumber * 2 + 1] as DetectionTreeView;
                 if (tree != null)
