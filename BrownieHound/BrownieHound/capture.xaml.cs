@@ -61,8 +61,8 @@ namespace BrownieHound
         detectWindow dWindow;
         string path = @"conf";
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
-        string mailAddress = null;
-        string userName = null;
+        string mailAddress = "";
+        string userName = "";
         int safeLine = 0;
 
         List<int> recordPacketNo = new List<int>();
