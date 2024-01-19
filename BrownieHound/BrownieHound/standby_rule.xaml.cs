@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using static BrownieHound.App;
 using ListViewItem = System.Windows.Controls.ListViewItem;
 using MessageBox = System.Windows.MessageBox;
@@ -46,6 +48,26 @@ namespace BrownieHound
             string interfaceText = interfaceLabel.Content.ToString();
             string interfaceNumber = interfaceText.Substring(0, interfaceText.IndexOf("."));
             string message = "ルール件数が0の物を除く、\n以下のルールグループで開始しますか？\n\n";
+            //メール検証処理
+            HashFunction hashFunction = new HashFunction();
+            Mail_Validation mailValidation = new Mail_Validation();
+            using (StreamReader sr = new StreamReader(@$"conf\mail.conf", Encoding.GetEncoding("UTF-8")))
+            {
+                for(int i = 0; i < 4; i++)
+                {
+                    sr.ReadLine();
+                }
+                mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
+
+                if (!hashFunction.verifyMail(mailValidation.mailAddress.Value, @$"conf\authorize.conf"))
+                {
+                    MessageBox.Show("メールアドレスが認証されておりません。\nメール設定にてメールアドレスの認証を行ってください。");
+                    NavigationService.GoBack();
+                    return;
+                    
+                }
+            }
+
             List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
             foreach (ruleGroupData item in ruleGroupList.Items)
             {

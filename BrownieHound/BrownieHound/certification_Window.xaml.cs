@@ -15,6 +15,7 @@ using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 using System.Net.Mail;
 using System.Windows.Threading;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace BrownieHound
 {
@@ -26,15 +27,20 @@ namespace BrownieHound
         private string certiCode;
         private int wrongcetiCode = 0;
         private string senderMailAddress;
+        private DispatcherTimer timer = new DispatcherTimer();
+        private DispatcherTimer sendableTimer = new DispatcherTimer();
+        private int sendableSeconds = 15;
         public certification_Window(string mailAddress)
         {
             InitializeComponent();
             //MessageBox.Show(this, mailAddress);
+            sendableTimer.Tick += sendableTimer_Tick;
+            sendableTimer.Interval = TimeSpan.FromSeconds(1);
 
             this.senderMailAddress = mailAddress;
             mailblock.Text = mailAddress;
             certiCode = Randomcerti();
-            sendEmail(mailAddress, certiCode);
+            _ = sendEmail(mailAddress, certiCode);
         }
 
         private string Randomcerti (){
@@ -55,35 +61,36 @@ namespace BrownieHound
             return authCode;
         }
 
-        private void sendEmail(string mailAddress, string authCode)
+        private async Task sendEmail(string mailAddress, string authCode)
         {
             var host = "smtp.gmail.com";
             var port = 587;
+            var email = new MimeMessage();
+            var builder = new MimeKit.BodyBuilder();
+            email.From.Add(new MailboxAddress("browniehound", "browniehound2024@gmail.com"));
+            email.To.Add(new MailboxAddress("", mailAddress));
+            email.Subject = "メール認証";
+            MimeKit.TextPart textPart = new MimeKit.TextPart("Plain");
+            var body = new BodyBuilder();
+            body.HtmlBody = $"<html><body>下記の数字を画面に入力してください<h2>{authCode}</h2><br>" +
+                $"※このメールはBrownieHoundにてメール認証の手続きが行われたメールアドレスに自動送信しております。<br>認証手続きにお心当たりのない場合は、お手数ですがメールを破棄していただきますようお願いいたします。";
+            body.HtmlBody += "</body></html>";
+            email.Body = body.ToMessageBody();
+
             using (var smtp = new MailKit.Net.Smtp.SmtpClient())
             {
-                smtp.Connect(host, port);
-                smtp.Authenticate("browniehound2024", "eszyyyyhrwarlsns");
-
-                var email = new MimeMessage();
-                var builder = new MimeKit.BodyBuilder();
-                email.From.Add(new MailboxAddress("browniehound", "browniehound2024@gmail.com"));
-                email.To.Add(new MailboxAddress("", mailAddress));
-                email.Subject = "メール認証";
-                MimeKit.TextPart textPart = new MimeKit.TextPart("Plain");
-                var body = new BodyBuilder();
-                body.HtmlBody = $"<html><body>下記の数字を画面に入力してください<h2>{authCode}</h2><br>" +
-                    $"※このメールはBrownieHoundにてメール認証の手続きが行われたメールアドレスに自動送信しております。<br>認証手続きにお心当たりのない場合は、お手数ですがメールを破棄していただきますようお願いいたします。";
-                body.HtmlBody += "</body></html>";
-                email.Body = body.ToMessageBody();
-                smtp.Send(email);
-                // タイマーの初期化
-                DispatcherTimer timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMinutes(15);
-                timer.Tick += Timer_Tick;
-
-                // タイマーを開始
-                timer.Start();
+                await smtp.ConnectAsync(host, port);
+                await smtp.AuthenticateAsync("browniehound2024", "eszyyyyhrwarlsns");
+                await smtp.SendAsync(email);
+                await smtp.DisconnectAsync(true);
             }
+            // タイマーの初期化
+
+            timer.Interval = TimeSpan.FromMinutes(15);
+            timer.Tick += Timer_Tick;
+
+            // タイマーを開始
+            timer.Start();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -93,6 +100,32 @@ namespace BrownieHound
                       
             // ウィンドウを閉じる
             Close();
+        }
+
+        private void mailResendButton_Click(object sender, RoutedEventArgs e)
+        {
+            timer.Stop();
+
+            mailResendButton.IsEnabled = false;
+
+            mailResendButton.Content = "再送(15s)";
+            certiCode = Randomcerti();
+            _=sendEmail(senderMailAddress, certiCode);
+            sendableTimer.Start();
+        }
+
+        private void sendableTimer_Tick(object sender, EventArgs e)
+        {
+            sendableSeconds--;
+            mailResendButton.Content = "再送(" + sendableSeconds.ToString() + "s)";
+
+            if (sendableSeconds == 0)
+            {
+                mailResendButton.IsEnabled = true;
+                sendableSeconds = 15;
+                mailResendButton.Content = "再送(15s)";
+                sendableTimer.Stop();
+            }
         }
 
         private void authorizeButton_Click(object sender, RoutedEventArgs e)

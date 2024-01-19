@@ -16,6 +16,7 @@
         <TextBlock x:Name="mailblock" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Margin="33,17,50,0"><Run Language="ja-jp"/></TextBlock>
         <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Margin="33,52,50,0"><Run Text="宛てに送信された認証番号を入力してください。"/><LineBreak/><Run Text="パスワード有効期限は15分です。"/></TextBlock>
         <TextBox x:Name="certitext" TextWrapping="Wrap" Text="" FontSize="36" Margin="33,96,225,0" Height="52" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
+        <Button Content="再送" x:Name="mailResendButton"  Foreground="White" BorderBrush="LightSkyBlue" Background="LightSkyBlue" HorizontalAlignment="Left"  Margin="247,121,0,0" VerticalAlignment="Top" Width="117" Click="mailResendButton_Click"/>
     </Grid>
 
 </Window> 

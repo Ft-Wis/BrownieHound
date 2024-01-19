@@ -85,7 +85,7 @@ namespace BrownieHound
                             }
                             else
                             {
-                                MessageBox.Show("ご入力いただいたメールアドレスは認証されておりませんので、認証手続きに進みます。");
+                                MessageBox.Show("ご入力いただいたメールアドレスは認証されておりませんので、認証手続きに進みます。\n画面が切り替わるまで少々お待ちください。");
                                 certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
                                 if (certificationWindow.ShowDialog() == true)
                                 {
@@ -186,7 +186,7 @@ namespace BrownieHound
         [RegularExpression(@"[\w-.]+@[\w-._]+.[A-Za-z]+", ErrorMessage = "メールアドレスを正しく入力してください。")]
         public ReactiveProperty<string> mailAddress { get; }
 
-        [RegularExpression("[!-~]{4,20}", ErrorMessage = "ユーザー名は半角英数字で入力してください。")]
+        [RegularExpression("[!-~]{4,20}", ErrorMessage = "ユーザー名は4～20文字の半角英数字で入力してください。")]
         public ReactiveProperty<string> userName { get; }
 
         public ReactiveProperty<bool> isEnabled { get; }

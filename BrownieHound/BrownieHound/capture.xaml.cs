@@ -241,7 +241,6 @@ namespace BrownieHound
             }
             if (dWindow != null && File.Exists(@$"{path}\mail.conf"))
             {
-                HashFunction hashFunction = new HashFunction();
                 Mail_Validation mailValidation = new Mail_Validation();
                 using (StreamReader sr = new StreamReader(@$"{path}\mail.conf", Encoding.GetEncoding("UTF-8")))
                 {
@@ -259,11 +258,6 @@ namespace BrownieHound
                         mailValidation.mailLimit.Value = mailLimit.ToString();
                     }
                     mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
-
-                    if (!hashFunction.verifyMail(mailValidation.mailAddress.Value, @$"{path}\authorize.conf"))
-                    {
-                        MessageBox.Show("メールアドレスが認証されておりません。\nメール設定にてメールアドレスの認証を行ってください。");
-                    }
 
                     //MessageBox.Show(mailValidation.userName.Value +" "+ mailValidation.isEnabled.Value + " "+ mailValidation.span.Value + " "+ mailValidation.mailLimit.Value + " "+ mailValidation.mailAddress.Value + " ");
 
