@@ -63,7 +63,7 @@ namespace BrownieHound
         List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
         string mailAddress = null;
         string userName = null;
-        int safeLine = 0; 
+        int safeLine = 0;
 
         List<int> recordPacketNo = new List<int>();
         int mostDitectionCount = 1;
@@ -87,7 +87,7 @@ namespace BrownieHound
             this.tsInterfaceNumber = tsINumber;
 
         }
-        public capture(string tsINumber,List<ruleGroupData> detectionRuleGroups)
+        public capture(string tsINumber, List<ruleGroupData> detectionRuleGroups)
         {
             InitializeComponent();
             this.tsInterfaceNumber = tsINumber;
@@ -104,7 +104,7 @@ namespace BrownieHound
             MessageBoxButton.OKCancel,
             MessageBoxImage.Question,
             MessageBoxResult.Cancel);
-            if(result == MessageBoxResult.OK)
+            if (result == MessageBoxResult.OK)
             {
                 closing();
                 NavigationService.GoBack();
@@ -112,24 +112,24 @@ namespace BrownieHound
                 {
                     dWindow.winClose();
                     dWindow.Close();
-                    
+
                 }
                 List<Window> windows = App.Current.Windows.Cast<Window>().ToList();
                 Window mainWindow = windows.FirstOrDefault(window => window is MainWindow);
-                foreach(Window window in windows)
+                foreach (Window window in windows)
                 {
-                    if(window  !=  mainWindow)
+                    if (window != mainWindow)
                     {
                         window.Close();
                     }
                 }
 
             }
-            
-            
+
+
         }
         bool stopflag = false;
-        private void stop_Click(object sende, RoutedEventArgs e) 
+        private void stop_Click(object sende, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show(
                 "検知とキャプチャを停止します。",
@@ -269,7 +269,7 @@ namespace BrownieHound
 
                     if (mailValidation.isEnabled.Value)
                     {
-                        if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) 
+                        if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors)
                             && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors)
                             && (mailValidation.userName.Value != "" && !mailValidation.userName.HasErrors)
                             && (mailValidation.mailLimit.Value != "" && !mailValidation.mailLimit.HasErrors))
@@ -292,11 +292,11 @@ namespace BrownieHound
 
             string args = $"-i {tsInterfaceNumber} -T ek";
 
-            foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new {Value,Index }))
+            foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new { Value, Index }))
             {
                 detectionNumbers.Add(new List<int>());
                 int detectionCount = detectionRuleGroup.Value.ruleDatas.Max(x => x.detectionInterval);
-                if(detectionCount > mostDitectionCount)
+                if (detectionCount > mostDitectionCount)
                 {
                     mostDitectionCount = detectionCount;
                 }
@@ -311,7 +311,7 @@ namespace BrownieHound
             clockTimer.Interval = new TimeSpan(0, 0, 1);
             clockTimer.Tick += new EventHandler(recordTime);
             clockTimer.Start();
-            for(int i = 0;i<detectTimerList.Count;i++)
+            for (int i = 0; i < detectTimerList.Count; i++)
             {
                 detectTimerList[i].Start();
             }
@@ -353,55 +353,6 @@ namespace BrownieHound
                         origindata = sr.ReadToEnd().Split('\n');
                     }
 
-                if (mailFileNo == 0)
-                {
-                    using (File.Create("temps\\maildata0.tmp")) { }
-                    dWindow.maildataCount = 0;
-                    dWindow.mailFileCount = 0;
-                    sendTime = DateTime.Now;
-                }
-                else
-                {
-                    File.Delete($"temps\\maildata{mailFileNo}.tmp");
-                }
-                body.HtmlBody += $"<p><b>時間：{sendTime}</b></p>";
-                body.HtmlBody += $"<p><b>総キャプチャ数：{captureCount}</b></p>";
-                for (int i = 0; i < origindata.Count() - 1; i++)
-                {
-                    int number = Int32.Parse(origindata[i].Split("\\")[0]);
-                    sendList[number].Add(origindata[i].Split("\\")[1]);
-                }
-                origindata = null;
-                for (int i = 0; i < detectionRuleGroups.Count; i++)
-                {
-                    addCount = 0;
-                    if (detectionRuleGroups[i].extendflg)
-                    {
-                        body.HtmlBody += $"<h3 style='color:rgb(255, 179, 0)'>Link Rule</h3>";
-                    }
-                    body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
-                    body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
-                    for (int j = 0; j < detectionRuleGroups[i].ruleDatas.Count; j++)
-                    {
-                        string category;
-                        if (detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
-                        {
-                            category = "black";
-                        }
-                        else
-                        {
-                            category = "white";
-                        }
-                        body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
-                    }
-                    while(0 < sendList[i].Count)
-                    {
-                        addCount++;
-                        body.HtmlBody += sendList[i][0];
-                        sendList[i].RemoveAt(0);
-                    }
-                    body.HtmlBody += "</table><br>";
-                    body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
                     if (mailFileNo == 0)
                     {
                         using (File.Create("temps\\maildata0.tmp")) { }
@@ -426,7 +377,7 @@ namespace BrownieHound
                         addCount = 0;
                         if (detectionRuleGroups[i].extendflg)
                         {
-                            body.HtmlBody += $"<h3>Link Rule</h3>";
+                            body.HtmlBody += $"<h3 style='color:rgb(255, 179, 0)'>Link Rule</h3>";
                         }
                         body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
                         body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
@@ -451,7 +402,7 @@ namespace BrownieHound
                         }
                         body.HtmlBody += "</table><br>";
                         body.HtmlBody += $"<p><b>検知増分：{addCount}</b></p>";
-
+                                       
                     }
                     sendList = null;
                     body.HtmlBody += "</body></html>";
@@ -484,7 +435,7 @@ namespace BrownieHound
             }
         }
 
-        private void recordTime(object sender,EventArgs e)
+        private void recordTime(object sender, EventArgs e)
         {
             recordPacketNo.Add(packetCount);
 
@@ -537,7 +488,7 @@ namespace BrownieHound
                     {
                         int start = recordPacketNo[recordEnd - detectionRule.Value.detectionInterval];
                         int detectIndex = 0;
-                        while(detectIndex < memoryPackets.Count)
+                        while (detectIndex < memoryPackets.Count)
                         {
                             if (memoryPackets[detectIndex].Number == start)
                             {
@@ -572,8 +523,8 @@ namespace BrownieHound
                             if (detectionRule.Value.destinationPort.Equals("all") || detectionRule.Value.destinationPort.Equals(memoryPackets[i].destinationPort))
                             {
                                 flg++;
-                                                            }
-                            if (detectionRule.Value.frameLength.Equals("none")|| Int32.Parse(memoryPackets[i].frameLength) >= Int32.Parse(detectionRule.Value.frameLength))
+                            }
+                            if (detectionRule.Value.frameLength.Equals("none") || Int32.Parse(memoryPackets[i].frameLength) >= Int32.Parse(detectionRule.Value.frameLength))
                             {
                                 flg++;
                             }
@@ -657,7 +608,7 @@ namespace BrownieHound
                         }
                         detectIndex++;
                     }
-                    for(int i = detectIndex; memoryPackets[i].Number <= end; i++)
+                    for (int i = detectIndex; memoryPackets[i].Number <= end; i++)
                     {
                         if (memoryPackets[i].Number == 0)
                         {
@@ -707,10 +658,10 @@ namespace BrownieHound
                     }
                 }
             }
-            packetList.Sort((a,b)=>a.Number - b.Number);
-            foreach(var packet in packetList)
+            packetList.Sort((a, b) => a.Number - b.Number);
+            foreach (var packet in packetList)
             {
-                if (detectflg &&  !detectionNumbers[detectionNumber].Contains(packet.Number))
+                if (detectflg && !detectionNumbers[detectionNumber].Contains(packet.Number))
                 {
                     dWindow.show_detection(packet, detectionNumber);
                     detectionNumbers[detectionNumber].Add(packet.Number);
@@ -720,7 +671,7 @@ namespace BrownieHound
             }
             while (recordPacketNo.Count > mostDitectionCount + 10 && memoryPackets.Count > 100)
             {
-                while(memoryPackets[0].Number < recordPacketNo[1])
+                while (memoryPackets[0].Number < recordPacketNo[1])
                 {
                     memoryPackets.RemoveAt(0);
                 }
@@ -728,7 +679,7 @@ namespace BrownieHound
 
             }
         }
-        private void ruleGroupDataSplit(ruleGroupData ruleGroup,int detectionNumber)
+        private void ruleGroupDataSplit(ruleGroupData ruleGroup, int detectionNumber)
         {
             detectionSet(detectionNumber);
         }
@@ -741,7 +692,7 @@ namespace BrownieHound
             detectTimerList.Add(detectTimer);
             void detection(object sender, EventArgs e)
             {
-                    detectLogic(detectionNumber);
+                detectLogic(detectionNumber);
             }
         }
 
@@ -815,42 +766,42 @@ namespace BrownieHound
         }
         private void chaptureDataGrid_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            
+
             ScrollViewer scrollViewer = GetScrollViewer(CaptureData);
-            
+
             if (!viewUpdateflg)
             {
-                if (!processflg &&  scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.85 && CaptureData.Items.Count % 500 == 0)
+                if (!processflg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.85 && CaptureData.Items.Count % 500 == 0)
                 {
                     processflg = true;
-                    
-                    if(beforeflg)
+
+                    if (beforeflg)
                     {
                         viewPlace++;
                         beforeflg = false;
                     }
-                    
-                    if(viewPlace < writePlace * 10 - 1)
+
+                    if (viewPlace < writePlace * 10 - 1)
                     {
-                        
+
                         readToNext(scrollViewer);
                         nextflg = true;
                     }
 
                     processflg = false;
                 }
-                if(!processflg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight <= scrollViewer.ExtentHeight * 0.15)
+                if (!processflg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight <= scrollViewer.ExtentHeight * 0.15)
                 {
                     processflg = true;
-                    
+
                     if (nextflg)
                     {
                         viewPlace--;
                         nextflg = false;
                     }
-                    if(viewPlace > 0)
+                    if (viewPlace > 0)
                     {
-                        
+
                         readTobefore(scrollViewer);
                         beforeflg = true;
                     }
@@ -859,7 +810,7 @@ namespace BrownieHound
             }
             else
             {
-                if(scrollViewer.VerticalOffset + scrollViewer.ViewportHeight > scrollViewer.ExtentHeight * 0.95 || CaptureData.Items.Count <= 100)
+                if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight > scrollViewer.ExtentHeight * 0.95 || CaptureData.Items.Count <= 100)
                 {
                     scrollflg = true;
                 }
@@ -879,7 +830,7 @@ namespace BrownieHound
                 }
                 for (int i = 0; i < 500; i++)
                 {
-                    viewPacketStrings[i] =  sr.ReadLine();
+                    viewPacketStrings[i] = sr.ReadLine();
 
                 }
             }
@@ -890,7 +841,7 @@ namespace BrownieHound
             if (CaptureData.Items.Count > 1000)
             {
                 int end = CaptureData.Items.Count - 1000;
-                for (int i = 0;i < end; i++)
+                for (int i = 0; i < end; i++)
                 {
                     CaptureData.Items.RemoveAt(1000);
                 }
@@ -902,7 +853,7 @@ namespace BrownieHound
         }
         private void readToNext(ScrollViewer scrollViewer)
         {
-            
+
             double scrollPlace = scrollViewer.VerticalOffset;
             scrollViewer.ScrollToVerticalOffset(scrollPlace % 500);
             scrollViewer.IsEnabled = false;
@@ -988,13 +939,13 @@ namespace BrownieHound
             }
             if (Directory.Exists("temps"))
             {
-                Directory.Delete("temps",true);
+                Directory.Delete("temps", true);
             }
             if (Directory.Exists("tempdetectionData"))
             {
-                Directory.Delete("tempdetectionData",true);
+                Directory.Delete("tempdetectionData", true);
             }
-            
+
 
         }
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
@@ -1012,7 +963,7 @@ namespace BrownieHound
 
             string[] viewPacketStrings = new string[501];
 
-            using(StreamReader sr = new StreamReader("temps\\temp1.tmp"))
+            using (StreamReader sr = new StreamReader("temps\\temp1.tmp"))
             {
                 for (int i = 0; i < 500; i++)
                 {
@@ -1026,11 +977,11 @@ namespace BrownieHound
                         viewPacketStrings[i] = line;
                         break;
                     }
-                    
+
                 }
             }
 
-            for (int i = 0;viewPacketStrings[i] != null;i++)
+            for (int i = 0; viewPacketStrings[i] != null; i++)
             {
                 CaptureData.Items.Add(transfer(viewPacketStrings[i]));
             }
@@ -1046,7 +997,7 @@ namespace BrownieHound
             viewPlace = dataCount / 500;
             if (stopflag)
             {
-                
+
                 CaptureData.ItemsSource = null;
                 CaptureData.Items.Clear();
                 string[] viewPacketStrings = new string[501];
@@ -1054,7 +1005,7 @@ namespace BrownieHound
                 {
                     viewPlace--;
                 }
-                else if(dataCount % 500 < 30 && viewPlace > 0)
+                else if (dataCount % 500 < 30 && viewPlace > 0)
                 {
                     using (StreamReader sr = new StreamReader($"temps\\temp{(viewPlace - 1) / 10 + 1}.tmp"))
                     {
@@ -1138,7 +1089,7 @@ namespace BrownieHound
 
                 double capchaLeft = App.Current.MainWindow.Left;
                 double capchaTop = App.Current.MainWindow.Top;
-                
+
                 //新しいウィンドウを配置
                 packet_detail.Left = capchaLeft + 50;
                 packet_detail.Top = capchaTop + 50;
@@ -1148,12 +1099,10 @@ namespace BrownieHound
 
         private void CaptureData_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if(e.Delta > 0)
+            if (e.Delta > 0)
             {
                 scrollflg = false;
             }
         }
-
-
-    }
+    } 
 }
