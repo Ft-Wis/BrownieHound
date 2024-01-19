@@ -56,6 +56,8 @@ namespace BrownieHound
 
             this.Owner = App.Current.MainWindow;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            blackListRadioButton.Checked += blackListRadioButton_Checked;
+            whiteListRadioButton.Checked += whiteListRadioButton_Checked;
 
             setItem();
         }
