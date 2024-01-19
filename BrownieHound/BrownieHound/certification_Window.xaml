@@ -1,0 +1,22 @@
+﻿<Window x:Class="BrownieHound.certification_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+        xmlns:local="clr-namespace:BrownieHound"
+        mc:Ignorable="d"
+        Title="rule_add_Window" Height="257" Width="414">
+
+    <Grid>
+        <Button x:Name="authorizeButton" Content="認証" Height="43" Margin="216,0,0,10" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White"  IsDefault="True" Click="authorizeButton_Click" HorizontalAlignment="Left" Width="168"/>
+        <Button x:Name="cancelButton" Content="キャンセル" Height="42" Margin="0,0,218,10" VerticalAlignment="Bottom"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black"  IsCancel="True" Click="cancelButton_Click" HorizontalAlignment="Right" Width="168"/>
+
+        <TextBlock x:Name="mailblock" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Margin="33,17,50,0"><Run Language="ja-jp"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Margin="33,52,50,0"><Run Text="宛てに送信された認証番号を入力してください。"/><LineBreak/><Run Text="パスワード有効期限は15分です。"/></TextBlock>
+        <TextBox x:Name="certitext" TextWrapping="Wrap" Text="" FontSize="36" Margin="33,96,225,0" Height="52" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
+        <Button Content="再送" x:Name="mailResendButton"  Foreground="White" BorderBrush="LightSkyBlue" Background="LightSkyBlue" HorizontalAlignment="Left"  Margin="247,121,0,0" VerticalAlignment="Top" Width="117" Click="mailResendButton_Click"/>
+    </Grid>
+
+</Window> 

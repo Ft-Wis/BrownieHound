@@ -29,20 +29,25 @@ namespace BrownieHound
     public partial class mail_settings : Page
     {
         Mail_Validation mailValidation;
+        HashFunction hashFunction = new HashFunction();
         string path = @"conf\mail.conf";
+        string authorizedPath = @"conf\authorize.conf"; 
         string authorize;
         public mail_settings()
         {
             InitializeComponent();
             mailValidation = new Mail_Validation();
             DataContext = mailValidation;
-            
+            App.Current.MainWindow.Width = 650;
+            App.Current.MainWindow.Height = 700;
         }
 
         private void s_rTotop_redo_Click(object sender, RoutedEventArgs e)
         {
             var nextPage = new top();
             NavigationService.Navigate(nextPage);
+            Application.Current.MainWindow.Width = 800;
+            Application.Current.MainWindow.Height = 450;
         }
 
         private void s_rTotop_submit_Click(object sender, RoutedEventArgs e)
@@ -56,18 +61,57 @@ namespace BrownieHound
             {
                 if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
                 {
+                    //メール認証処理
+                    if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
+                    {
+                        //File.Create(authorizedPath);
+                        //メール認証処理
+                        if (!File.Exists(authorizedPath))
+                        {
+                            certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
+                            if (certificationWindow.ShowDialog() == true)
+                            {
+
+                            }
+                        }
+                        else
+                        {
+                            //メール検証
+                            if (hashFunction.verifyMail(mailValidation.mailAddress.Value, authorizedPath))
+                            {
+                                MessageBox.Show("内容を保存しました。");
+                                var nextPage = new top();
+                                NavigationService.Navigate(nextPage);
+                            }
+                            else
+                            {
+                                MessageBox.Show("ご入力いただいたメールアドレスは認証されておりませんので、認証手続きに進みます。\n画面が切り替わるまで少々お待ちください。");
+                                certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
+                                if (certificationWindow.ShowDialog() == true)
+                                {
+
+                                }
+                            }
+                        }
+
+                        using (StreamWriter sw = new StreamWriter(path, false, Encoding.GetEncoding("UTF-8")))
+                        {
+                            sw.WriteLine($"userName:{mailValidation.userName.Value}");
+                            sw.WriteLine($"sendEnabled:{mailValidation.isEnabled.Value}");
+                            sw.WriteLine($"sendSpan:{mailValidation.span.Value}");
+                            sw.WriteLine($"mailLimit:{mailValidation.mailLimit.Value}");
+                            sw.WriteLine($"sendMailAddress:{mailValidation.mailAddress.Value}");
+                        }
+                    }
 
                     using (StreamWriter sw = new StreamWriter(path, false, Encoding.GetEncoding("UTF-8")))
                     {
+                        sw.WriteLine($"userName:{mailValidation.userName.Value}");
                         sw.WriteLine($"sendEnabled:{mailValidation.isEnabled.Value}");
                         sw.WriteLine($"sendSpan:{mailValidation.span.Value}");
+                        sw.WriteLine($"mailLimit:{mailValidation.mailLimit.Value}");
                         sw.WriteLine($"sendMailAddress:{mailValidation.mailAddress.Value}");
-                        sw.WriteLine($"Authorized:Unauthorized");
-
                     }
-                    MessageBox.Show("メール設定を保存しました。", "メール設定成功", MessageBoxButton.OK, MessageBoxImage.Information);
-                    var nextPage = new top();
-                    NavigationService.Navigate(nextPage);
 
                 }
                 else
@@ -79,17 +123,14 @@ namespace BrownieHound
             {
                 using (StreamWriter sw = new StreamWriter(path, false, Encoding.GetEncoding("UTF-8")))
                 {
+                    sw.WriteLine($"userName:{mailValidation.userName.Value}");
                     sw.WriteLine($"sendEnabled:{mailValidation.isEnabled.Value}");
                     sw.WriteLine($"sendSpan:{mailValidation.span.Value}");
+                    sw.WriteLine($"mailLimit:{mailValidation.mailLimit.Value}");
                     sw.WriteLine($"sendMailAddress:{mailValidation.mailAddress.Value}");
-                    sw.WriteLine($"Authorized:Unauthorized");
                 }
-                MessageBox.Show("メール設定を保存しました。", "メール設定成功", MessageBoxButton.OK, MessageBoxImage.Information);
-                var nextPage = new top();
-                NavigationService.Navigate(nextPage);
+
             }
-
-
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -102,15 +143,16 @@ namespace BrownieHound
             {
                 using (StreamWriter sw = new StreamWriter(path, false, Encoding.GetEncoding("UTF-8")))
                 {
-                    sw.WriteLine($"sendEnabled:False");
+                    sw.WriteLine($"userName:");
+                    sw.WriteLine($"sendEnabled:");
                     sw.WriteLine($"sendSpan:");
+                    sw.WriteLine($"mailLimit:");
                     sw.WriteLine($"sendMailAddress:");
-                    sw.WriteLine($"Authorized:Unauthorized");
                 }
             }
             using (StreamReader sr = new StreamReader(path, Encoding.GetEncoding("UTF-8")))
             {
-
+                mailValidation.userName.Value = sr.ReadLine().Split(":")[1];
                 if (bool.TryParse(sr.ReadLine().Split(":")[1], out var isEnabled))
                 {
                     mailValidation.isEnabled.Value = isEnabled;
@@ -119,33 +161,47 @@ namespace BrownieHound
                 {
                     mailValidation.span.Value = span.ToString();
                 }
+                if (int.TryParse(sr.ReadLine().Split(":")[1], out var mailLimit))
+                {
+                    mailValidation.mailLimit.Value = mailLimit.ToString();
+                }
                 mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
-                authorize = sr.ReadLine().Split(":")[1];
-
             }
             //Debug.WriteLine(authorize);
         }
+
+        private class InputDialog
+        {
+        }
     }
-    public class Mail_Validation:INotifyPropertyChanged
+    public class Mail_Validation : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        [RegularExpression("[1-9][0-9]{0,4}",ErrorMessage ="送信スパンは1～99999の間で設定してください。")]
+        [RegularExpression("[1-9][0-9]{0,4}", ErrorMessage = "送信スパンは1～99999の間で設定してください。")]
         public ReactiveProperty<string> span { get; }
 
-        [RegularExpression(@"[\w\-\._]+@[\w\-\._]+\.[A-Za-z]+",ErrorMessage ="メールアドレスを正しく入力してください。")]
+        [RegularExpression("[1-9][0-9]{0,4}", ErrorMessage = "しきい値は1～99999の間で設定してください。")]
+        public ReactiveProperty<string> mailLimit { get; }
+
+        [RegularExpression(@"[\w-.]+@[\w-._]+.[A-Za-z]+", ErrorMessage = "メールアドレスを正しく入力してください。")]
         public ReactiveProperty<string> mailAddress { get; }
-        
+
+        [RegularExpression("[!-~]{4,20}", ErrorMessage = "ユーザー名は4～20文字の半角英数字で入力してください。")]
+        public ReactiveProperty<string> userName { get; }
+
         public ReactiveProperty<bool> isEnabled { get; }
 
         public Mail_Validation()
         {
             this.span = new ReactiveProperty<string>("")
                 .SetValidateAttribute(() => this.span);
+            this.mailLimit = new ReactiveProperty<string>("")
+                .SetValidateAttribute(() => this.mailLimit);
             this.mailAddress = new ReactiveProperty<string>("")
                 .SetValidateAttribute(() => this.mailAddress);
             this.isEnabled = new ReactiveProperty<bool>(false);
+            this.userName = new ReactiveProperty<string>("")
+                .SetValidateAttribute(() => this.userName);
         }
-        
-
     }
 }
