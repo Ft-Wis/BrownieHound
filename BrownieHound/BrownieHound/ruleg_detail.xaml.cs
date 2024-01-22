@@ -429,5 +429,10 @@ namespace BrownieHound
             string filePath = "./ruleGroup/" + fileName + ".txt";
             replaceLine(filePath, 0, "StandardRule");
         }
+
+        private void rule_DataGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            e.Cancel = true;
+        }
     }
 }
