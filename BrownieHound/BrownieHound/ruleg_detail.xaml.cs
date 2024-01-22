@@ -420,12 +420,14 @@ namespace BrownieHound
 
         private void linkCheck_Checked(object sender, RoutedEventArgs e)
         {
+            linkCheck.Content = "ルールのグループ化解除";
             string filePath = "./ruleGroup/" + fileName + ".txt";
             replaceLine(filePath, 0, "ExtendRule");
         }
 
         private void linkCheck_Unchecked(object sender, RoutedEventArgs e)
         {
+            linkCheck.Content = "ルールのグループ化";
             string filePath = "./ruleGroup/" + fileName + ".txt";
             replaceLine(filePath, 0, "StandardRule");
         }
