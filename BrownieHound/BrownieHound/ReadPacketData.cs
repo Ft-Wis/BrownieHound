@@ -17,13 +17,13 @@ namespace BrownieHound
             public string TimeString { get; set; } = "empty";
             public string Source { get; set; }
             public string Destination { get; set; }
-            public string sourcePort { get; set; }
-            public string destinationPort { get; set; }
+            public string SourcePort { get; set; }
+            public string DestinationPort { get; set; }
             public string Protocol { get; set; }
-            public string frameLength { get; set; }
+            public string FrameLength { get; set; }
             public string Info { get; set; }
             public string Data { get; set; }
-            List<string> protocols = new List<string>();
+            List<string> Protocols = new List<string>();
 
             public packetData(String err)
             {
@@ -35,13 +35,13 @@ namespace BrownieHound
                 Data = JsonConvert.SerializeObject(layersObject, Newtonsoft.Json.Formatting.None);
                 foreach (var layer in layersObject)
                 {
-                    protocols.Add(layer.Key.ToString());
+                    Protocols.Add(layer.Key.ToString());
                     //Debug.WriteLine(layer.Key);
                 }
-                Number = Int32.Parse((string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_number"]);
+                Number = Int32.Parse((string)layersObject[Protocols[0]][$"{Protocols[0]}_{Protocols[0]}_number"]);
                 //frame_frame_number
 
-                string caputureTime = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_time"];
+                string caputureTime = (string)layersObject[Protocols[0]][$"{Protocols[0]}_{Protocols[0]}_time"];
                 caputureTime = caputureTime.Substring(0, 27);
                 //精度が高すぎるので落とす
 
@@ -50,37 +50,37 @@ namespace BrownieHound
                 TimeString = Time.ToString("yyyy-MM-dd HH:mm:ss.FFFFFF");
 
 
-                string eSource = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_src"];
-                string eDestination = (string)layersObject[protocols[1]][$"{protocols[1]}_{protocols[1]}_dst"];
+                string eSource = (string)layersObject[Protocols[1]][$"{Protocols[1]}_{Protocols[1]}_src"];
+                string eDestination = (string)layersObject[Protocols[1]][$"{Protocols[1]}_{Protocols[1]}_dst"];
                 //ethレベルのアドレス（MACアドレス）
 
-                Source = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_src"];
-                Destination = (string)layersObject[protocols[2]][$"{protocols[2]}_{protocols[2]}_dst"];
+                Source = (string)layersObject[Protocols[2]][$"{Protocols[2]}_{Protocols[2]}_src"];
+                Destination = (string)layersObject[Protocols[2]][$"{Protocols[2]}_{Protocols[2]}_dst"];
 
                 if (Source == null)
                 {
                     Source = eSource;
                     Destination = eDestination;
                 }
-                if (protocols.Contains("tcp") || protocols.Contains("udp"))
+                if (Protocols.Contains("tcp") || Protocols.Contains("udp"))
                 {
-                    sourcePort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_srcport"];
-                    destinationPort = (string)layersObject[protocols[3]][$"{protocols[3]}_{protocols[3]}_dstport"];
-                    Info += $"{sourcePort} → {destinationPort}";
+                    SourcePort = (string)layersObject[Protocols[3]][$"{Protocols[3]}_{Protocols[3]}_srcport"];
+                    DestinationPort = (string)layersObject[Protocols[3]][$"{Protocols[3]}_{Protocols[3]}_dstport"];
+                    Info += $"{SourcePort} → {DestinationPort}";
                 }
 
-                if (protocols.Last().Equals("data"))
+                if (Protocols.Last().Equals("data"))
                 {
-                    Protocol = protocols[protocols.Count - 2];
+                    Protocol = Protocols[Protocols.Count - 2];
                 }
                 else
                 {
-                    Protocol = protocols.Last();
+                    Protocol = Protocols.Last();
                 }
                 Protocol = Protocol.ToUpper();
 
-                frameLength = (string)layersObject[protocols[0]][$"{protocols[0]}_{protocols[0]}_len"];
-                Info += $" {protocols.Last()}";
+                FrameLength = (string)layersObject[Protocols[0]][$"{Protocols[0]}_{Protocols[0]}_len"];
+                Info += $" {Protocols.Last()}";
                 //Debug.WriteLine($"{Number} : {time.TimeOfDay} : {Source} : {Destination} : {Protocol} : {Length} :: {Info}");
             }
         }
