@@ -71,7 +71,7 @@ namespace BrownieHound
             List<ruleGroupData> detectionRuleGroups = new List<ruleGroupData>();
             foreach (ruleGroupData item in ruleGroupList.Items)
             {
-                if (item.isCheck && item.ruleItems > 0)
+                if (item.IsCheck && item.RuleItems > 0)
                 {
                     message += $"{item.No}:{item.Name}\n";
                     detectionRuleGroups.Add(item);
@@ -93,36 +93,36 @@ namespace BrownieHound
                 {
                     for(int i = 0;i < detectionRuleGroups.Count; i++)
                     {
-                        for(int j = 0;j < detectionRuleGroups[i].ruleDatas.Count;j++)
+                        for(int j = 0;j < detectionRuleGroups[i].RuleDatas.Count;j++)
                         {
-                            if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
+                            if(detectionRuleGroups[i].RuleDatas[j].RuleCategory == 0)
                             {
-                                if (detectionRuleGroups[i].ruleDatas[j].Destination.Equals("broadcast"))
+                                if (detectionRuleGroups[i].RuleDatas[j].Destination.Equals("broadcast"))
                                 {
-                                    RuleData.ruleData broadcast = detectionRuleGroups[i].ruleDatas[j];
-                                    detectionRuleGroups[i].blackListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "255.255.255.255", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
-                                    detectionRuleGroups[i].blackListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
+                                    RuleData.ruleData broadcast = detectionRuleGroups[i].RuleDatas[j];
+                                    detectionRuleGroups[i].BlackListRules.Add(new RuleData.ruleData { RuleGroupNo = broadcast.RuleGroupNo, RuleNo = broadcast.RuleNo, DetectionInterval = broadcast.DetectionInterval, DetectionCount = broadcast.DetectionCount, Source = broadcast.Source, Destination = "255.255.255.255", Protocol = broadcast.Protocol, SourcePort = broadcast.SourcePort, DestinationPort = broadcast.DestinationPort, FrameLength = broadcast.FrameLength, RuleCategory = broadcast.RuleCategory });
+                                    detectionRuleGroups[i].BlackListRules.Add(new RuleData.ruleData { RuleGroupNo = broadcast.RuleGroupNo, RuleNo = broadcast.RuleNo, DetectionInterval = broadcast.DetectionInterval, DetectionCount = broadcast.DetectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, SourcePort = broadcast.SourcePort, DestinationPort = broadcast.DestinationPort, FrameLength = broadcast.FrameLength, RuleCategory = broadcast.RuleCategory });
                                 }
                                 else
                                 {
-                                    detectionRuleGroups[i].blackListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                    detectionRuleGroups[i].BlackListRules.Add(detectionRuleGroups[i].RuleDatas[j]);
                                 }
                             }
-                            else if(detectionRuleGroups[i].ruleDatas[j].ruleCategory == 1)
+                            else if(detectionRuleGroups[i].RuleDatas[j].RuleCategory == 1)
                             {
-                                if (detectionRuleGroups[i].ruleDatas[j].Destination.Equals("broadcast"))
+                                if (detectionRuleGroups[i].RuleDatas[j].Destination.Equals("broadcast"))
                                 {
-                                    RuleData.ruleData broadcast = detectionRuleGroups[i].ruleDatas[j];
-                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData{ruleGroupNo = broadcast.ruleGroupNo,ruleNo = broadcast.ruleNo,detectionInterval = broadcast.detectionInterval,detectionCount = broadcast.detectionCount,Source = broadcast.Source,Destination = "255.255.255.255",Protocol = broadcast.Protocol,sourcePort=broadcast.sourcePort,destinationPort = broadcast.destinationPort,frameLength = broadcast.frameLength,ruleCategory = broadcast.ruleCategory});
-                                    detectionRuleGroups[i].whiteListRules.Add(new RuleData.ruleData { ruleGroupNo = broadcast.ruleGroupNo, ruleNo = broadcast.ruleNo, detectionInterval = broadcast.detectionInterval, detectionCount = broadcast.detectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, sourcePort = broadcast.sourcePort, destinationPort = broadcast.destinationPort, frameLength = broadcast.frameLength, ruleCategory = broadcast.ruleCategory });
+                                    RuleData.ruleData broadcast = detectionRuleGroups[i].RuleDatas[j];
+                                    detectionRuleGroups[i].WhiteListRules.Add(new RuleData.ruleData{RuleGroupNo = broadcast.RuleGroupNo,RuleNo = broadcast.RuleNo,DetectionInterval = broadcast.DetectionInterval,DetectionCount = broadcast.DetectionCount,Source = broadcast.Source,Destination = "255.255.255.255",Protocol = broadcast.Protocol,SourcePort=broadcast.SourcePort,DestinationPort = broadcast.DestinationPort,FrameLength = broadcast.FrameLength,RuleCategory = broadcast.RuleCategory});
+                                    detectionRuleGroups[i].WhiteListRules.Add(new RuleData.ruleData { RuleGroupNo = broadcast.RuleGroupNo, RuleNo = broadcast.RuleNo, DetectionInterval = broadcast.DetectionInterval, DetectionCount = broadcast.DetectionCount, Source = broadcast.Source, Destination = "ff:ff:ff:ff:ff:ff", Protocol = broadcast.Protocol, SourcePort = broadcast.SourcePort, DestinationPort = broadcast.DestinationPort, FrameLength = broadcast.FrameLength, RuleCategory = broadcast.RuleCategory });
                                 }
                                 else
                                 {
-                                    detectionRuleGroups[i].whiteListRules.Add(detectionRuleGroups[i].ruleDatas[j]);
+                                    detectionRuleGroups[i].WhiteListRules.Add(detectionRuleGroups[i].RuleDatas[j]);
                                 }
                             }
-                            detectionRuleGroups[i].ruleDatas[j].Source = detectionRuleGroups[i].ruleDatas[j].Source.Replace("myAddress",myAddress.ToString());
-                            detectionRuleGroups[i].ruleDatas[j].Destination = detectionRuleGroups[i].ruleDatas[j].Destination.Replace("myAddress", myAddress.ToString());
+                            detectionRuleGroups[i].RuleDatas[j].Source = detectionRuleGroups[i].RuleDatas[j].Source.Replace("myAddress",myAddress.ToString());
+                            detectionRuleGroups[i].RuleDatas[j].Destination = detectionRuleGroups[i].RuleDatas[j].Destination.Replace("myAddress", myAddress.ToString());
                         }
                     }
                     var nextPage = new capture(interfaceNumber,detectionRuleGroups);
@@ -160,7 +160,7 @@ namespace BrownieHound
             {
                 ruleGroupData lvi = (ruleGroupData)ruleGroupList.SelectedItem;
                 Debug.WriteLine(lvi.Name);
-                var nextPage = new ruleg_detail(lvi.No, lvi.Name, lvi.ruleDatas);
+                var nextPage = new ruleg_detail(lvi.No, lvi.Name, lvi.RuleDatas);
                 NavigationService.Navigate(nextPage);
             }
         }
@@ -169,7 +169,7 @@ namespace BrownieHound
         {
             var lvi = sender as ListViewItem;
             ruleGroupData rgData = lvi.DataContext as ruleGroupData;
-            var nextPage = new ruleg_detail(rgData.No, rgData.Name, rgData.ruleDatas);
+            var nextPage = new ruleg_detail(rgData.No, rgData.Name, rgData.RuleDatas);
             NavigationService.Navigate(nextPage);
         }
 
@@ -179,7 +179,7 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             foreach (ruleGroupData item in Data)
             {
-                item.isCheck = allSelect;
+                item.IsCheck = allSelect;
                 checkAll.Content = "すべて選択";
 
             }
@@ -193,7 +193,7 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             foreach (ruleGroupData item in Data)
             {
-                item.isCheck = allSelect;
+                item.IsCheck = allSelect;
                 checkAll.Content = "すべて選択解除";
 
             }

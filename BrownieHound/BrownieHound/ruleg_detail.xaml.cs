@@ -193,15 +193,15 @@ namespace BrownieHound
                         //isCheck = false,
                         isCheck = checkStatus,
                         ruleNo = ruleNum,
-                        detectionInterval = rd.detectionInterval,
-                        detectionCount = rd.detectionCount,
+                        detectionInterval = rd.DetectionInterval,
+                        detectionCount = rd.DetectionCount,
                         source = rd.Source,
                         protocol = rd.Protocol,
-                        sourcePort = rd.sourcePort,
-                        destinationPort = rd.destinationPort,
+                        sourcePort = rd.SourcePort,
+                        destinationPort = rd.DestinationPort,
                         destination = rd.Destination,
-                        frameLength = rd.frameLength,
-                        ruleCategory = rd.ruleCategory.ToString()
+                        frameLength = rd.FrameLength,
+                        ruleCategory = rd.RuleCategory.ToString()
                     };
                     if (gridData.ruleCategory == "0")
                     {

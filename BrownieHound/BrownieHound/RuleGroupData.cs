@@ -5,15 +5,15 @@ namespace BrownieHound
 {
     public class ruleGroupData
     {
-        public bool isCheck { get; set; } = false;
+        public bool IsCheck { get; set; } = false;
         public int No { get; set; }
         public String Name { get; set; }
-        public int ruleItems { get; set; } = 0;
-        public bool extendflg { get; set; } = false;
-        public string linked { get; set; }
-        public List<RuleData.ruleData> ruleDatas { get; set; } = new List<RuleData.ruleData>();
-        public List<RuleData.ruleData> blackListRules { get; set; } = new List<RuleData.ruleData>();
-        public List<RuleData.ruleData> whiteListRules { get; set; } = new List<RuleData.ruleData>();
+        public int RuleItems { get; set; } = 0;
+        public bool ExtendFlg { get; set; } = false;
+        public string Linked { get; set; }
+        public List<RuleData.ruleData> RuleDatas { get; set; } = new List<RuleData.ruleData>();
+        public List<RuleData.ruleData> BlackListRules { get; set; } = new List<RuleData.ruleData>();
+        public List<RuleData.ruleData> WhiteListRules { get; set; } = new List<RuleData.ruleData>();
 
         public ruleGroupData(int no, String name)
         {
@@ -25,17 +25,17 @@ namespace BrownieHound
         {
             if (ruleLine.Equals("ExtendRule"))
             {
-                extendflg = true;
-                linked = "linked";
+                ExtendFlg = true;
+                Linked = "linked";
             }
             else if (ruleLine.Equals("StandardRule"))
             {
-                extendflg = false;
-                linked = "--";
+                ExtendFlg = false;
+                Linked = "--";
             }
             else
             {
-                ruleDatas.Add(new RuleData.ruleData(ruleLine, this.No, this.ruleItems++));
+                RuleDatas.Add(new RuleData.ruleData(ruleLine, this.No, this.RuleItems++));
             }
         }
     }
