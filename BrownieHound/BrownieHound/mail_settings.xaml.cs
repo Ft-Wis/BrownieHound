@@ -59,48 +59,34 @@ namespace BrownieHound
             }
             if (mailValidation.isEnabled.Value)
             {
-                if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
+                //メール認証処理
+                if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors) && (mailValidation.userName.Value != "" && !mailValidation.userName.HasErrors))
                 {
-                    //メール認証処理
-                    if ((mailValidation.span.Value != "" && !mailValidation.span.HasErrors) && (mailValidation.mailAddress.Value != "" && !mailValidation.mailAddress.HasErrors))
+                    if (!File.Exists(authorizedPath))
                     {
-                        //File.Create(authorizedPath);
-                        //メール認証処理
-                        if (!File.Exists(authorizedPath))
+                        certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
+                        if (certificationWindow.ShowDialog() == true)
                         {
+
+                        }
+                    }
+                    else
+                    {
+                        //メール検証
+                        if (hashFunction.verifyMail(mailValidation.mailAddress.Value, authorizedPath))
+                        {
+                            MessageBox.Show("内容を保存しました。");
+                            var nextPage = new top();
+                            NavigationService.Navigate(nextPage);
+                        }
+                        else
+                        {
+                            MessageBox.Show("ご入力いただいたメールアドレスは認証されておりませんので、認証手続きに進みます。\n画面が切り替わるまで少々お待ちください。");
                             certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
                             if (certificationWindow.ShowDialog() == true)
                             {
 
                             }
-                        }
-                        else
-                        {
-                            //メール検証
-                            if (hashFunction.verifyMail(mailValidation.mailAddress.Value, authorizedPath))
-                            {
-                                MessageBox.Show("内容を保存しました。");
-                                var nextPage = new top();
-                                NavigationService.Navigate(nextPage);
-                            }
-                            else
-                            {
-                                MessageBox.Show("ご入力いただいたメールアドレスは認証されておりませんので、認証手続きに進みます。\n画面が切り替わるまで少々お待ちください。");
-                                certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
-                                if (certificationWindow.ShowDialog() == true)
-                                {
-
-                                }
-                            }
-                        }
-
-                        using (StreamWriter sw = new StreamWriter(path, false, Encoding.GetEncoding("UTF-8")))
-                        {
-                            sw.WriteLine($"userName:{mailValidation.userName.Value}");
-                            sw.WriteLine($"sendEnabled:{mailValidation.isEnabled.Value}");
-                            sw.WriteLine($"sendSpan:{mailValidation.span.Value}");
-                            sw.WriteLine($"mailLimit:{mailValidation.mailLimit.Value}");
-                            sw.WriteLine($"sendMailAddress:{mailValidation.mailAddress.Value}");
                         }
                     }
 
