@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:BrownieHound"
         mc:Ignorable="d"
-        Title="メール認証" Height="257" Width="414">
+        Title="BrownieHound" Height="257" Width="414">
 
     <Grid>
         <Button x:Name="authorizeButton" Content="認証" Height="43" Margin="216,0,0,10" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White"  IsDefault="True" Click="authorizeButton_Click" HorizontalAlignment="Left" Width="168"/>
