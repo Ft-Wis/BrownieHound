@@ -23,7 +23,7 @@
                 <DataGridTextColumn Header="Source" Binding="{Binding Source}" IsReadOnly="True" MinWidth="100" CanUserSort="False"/>
                 <DataGridTextColumn Header="Destination" Binding="{Binding Destination}" IsReadOnly="True" MinWidth="100" CanUserSort="False"/>
                 <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" IsReadOnly="True" MinWidth="50" CanUserSort="False"/>
-                <DataGridTextColumn Header="Length" Binding="{Binding frameLength}" IsReadOnly="True" MinWidth="60" CanUserSort="False"/>
+                <DataGridTextColumn Header="Length" Binding="{Binding FrameLength}" IsReadOnly="True" MinWidth="60" CanUserSort="False"/>
                 <DataGridTextColumn Header="Infomation" Binding="{Binding Info}" IsReadOnly="True" MinWidth="100" CanUserSort="False"/>
             </DataGrid.Columns>
         </DataGrid>
