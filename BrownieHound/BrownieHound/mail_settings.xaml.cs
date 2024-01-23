@@ -38,15 +38,19 @@ namespace BrownieHound
             InitializeComponent();
             mailValidation = new Mail_Validation();
             DataContext = mailValidation;
-            App.Current.MainWindow.Width = 650;
-            App.Current.MainWindow.Height = 700;
+            App.Current.MainWindow.MinHeight = 680;
         }
 
         private void s_rTotop_redo_Click(object sender, RoutedEventArgs e)
         {
-            var nextPage = new top();
-            NavigationService.Navigate(nextPage);
-            Application.Current.MainWindow.Width = 800;
+            Window_Resize();
+            NavigationService.GoBack();
+            
+        }
+
+        private void Window_Resize()
+        {
+            Application.Current.MainWindow.MinHeight = 450;
             Application.Current.MainWindow.Height = 450;
         }
 
@@ -67,7 +71,10 @@ namespace BrownieHound
                         certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
                         if (certificationWindow.ShowDialog() == true)
                         {
-
+                            var nextPage = new top();
+                            Window_Resize();
+                            NavigationService.Navigate(nextPage);
+                            
                         }
                     }
                     else
@@ -77,7 +84,9 @@ namespace BrownieHound
                         {
                             MessageBox.Show("内容を保存しました。");
                             var nextPage = new top();
+                            Window_Resize();
                             NavigationService.Navigate(nextPage);
+                            
                         }
                         else
                         {
@@ -85,7 +94,10 @@ namespace BrownieHound
                             certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
                             if (certificationWindow.ShowDialog() == true)
                             {
-
+                                var nextPage = new top();
+                                Window_Resize();
+                                NavigationService.Navigate(nextPage);
+                                
                             }
                         }
                     }
