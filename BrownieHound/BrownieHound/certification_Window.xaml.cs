@@ -36,7 +36,7 @@ namespace BrownieHound
             //MessageBox.Show(this, mailAddress);
             sendableTimer.Tick += sendableTimer_Tick;
             sendableTimer.Interval = TimeSpan.FromSeconds(1);
-
+            this.Owner = App.Current.MainWindow;
             this.senderMailAddress = mailAddress;
             mailblock.Text = mailAddress;
             certiCode = Randomcerti();
@@ -141,7 +141,8 @@ namespace BrownieHound
                     //検証に成功したとき
                     MessageBox.Show("認証完了");
                     writeToAuthConf();
-                    Close();
+                    DialogResult = true;
+                    //Close();
                 }
                 else
                 {
