@@ -62,7 +62,7 @@ namespace BrownieHound
             }
             for(int i = 0; i < ruleGroupDatas.Count; i++)
             {
-                if (ruleGroupDatas[i].extendflg)
+                if (ruleGroupDatas[i].ExtendFlg)
                 {
                     detectionDatas.Add(new detectionData() { data = $"LinkRuleGroup:{ruleGroupDatas[i].Name}", color = "#b8860b" });
                 }
@@ -87,10 +87,10 @@ namespace BrownieHound
                 string message = "";
                 using (File.Create($"tempdetectionData\\{ruleGroupDatas[i].Name}.tmp")) { }
                 detectionRuleNames.Add(ruleGroupDatas[i].Name);
-                foreach (RuleData.ruleData detectionRuleData in ruleGroupDatas[i].ruleDatas)
+                foreach (RuleData.ruleData detectionRuleData in ruleGroupDatas[i].RuleDatas)
                 {
                     string category;
-                    if(detectionRuleData.ruleCategory == 0)
+                    if(detectionRuleData.RuleCategory == 0)
                     {
                         category = "black";
                     }
@@ -98,11 +98,11 @@ namespace BrownieHound
                     {
                         category = "white";
                     }
-                    if (detectionRuleData.ruleNo != 0)
+                    if (detectionRuleData.RuleNo != 0)
                     {
                         message += "\n";
                     }
-                    message += $"{detectionRuleData.ruleNo}::[category:{category}][interval:{detectionRuleData.detectionInterval}][count:{detectionRuleData.detectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.sourcePort}][destport:{detectionRuleData.destinationPort}][length:{detectionRuleData.frameLength}]";
+                    message += $"{detectionRuleData.RuleNo}::[category:{category}][interval:{detectionRuleData.DetectionInterval}][count:{detectionRuleData.DetectionCount}][source:{detectionRuleData.Source}][destination:{detectionRuleData.Destination}][protocol:{detectionRuleData.Protocol}][sourceport:{detectionRuleData.SourcePort}][destport:{detectionRuleData.DestinationPort}][length:{detectionRuleData.FrameLength}]";
 
                 }
                 detectionDatas[i].children.Add(new detectionData() { data = message, color = "IndianRed" });
@@ -135,7 +135,7 @@ namespace BrownieHound
         {
             try
             {
-                string message = $"[No:{pd.Number}] :: [src:{pd.Source}] [dest:{pd.Destination}] [proto:{pd.Protocol}] [sPort:{pd.sourcePort}] [dPort:{pd.destinationPort}] [length:{pd.frameLength}]";
+                string message = $"[No:{pd.Number}] :: [src:{pd.Source}] [dest:{pd.Destination}] [proto:{pd.Protocol}] [sPort:{pd.SourcePort}] [dPort:{pd.DestinationPort}] [length:{pd.FrameLength}]";
                 detectionDatas[detectionNumber].children[0].children.Add(new detectionData() { data = message, color = "#000000", jpacketData = pd.Data });
                 DetectionTreeView tree = DetectionPanel.Children[detectionNumber * 2 + 1] as DetectionTreeView;
                 if (tree != null)
@@ -154,7 +154,7 @@ namespace BrownieHound
                     }
                     using (StreamWriter sw = new StreamWriter($"temps\\maildata{mailFileCount}.tmp", true))
                     {
-                        sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.TimeString}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.sourcePort}</td><td>{pd.destinationPort}</td><td>{pd.frameLength}</td></tr></tbody>");
+                        sw.WriteLine($"{detectionNumber}\\<tbody style='background-color: blanchedalmond;'><tr><td>{pd.Number}</td><td></td><td>{pd.TimeString}</td><td></td><td></td><td>{pd.Source}</td><td>{pd.Destination}</td><td>{pd.Protocol}</td><td>{pd.SourcePort}</td><td>{pd.DestinationPort}</td><td>{pd.FrameLength}</td></tr></tbody>");
                     }
                     maildataCount++;
                 }

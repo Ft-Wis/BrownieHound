@@ -51,7 +51,7 @@ namespace BrownieHound
             {
                 ruleGroupData listViewItems = (ruleGroupData)ruleGroupList.SelectedItem;
                 Debug.WriteLine(listViewItems.Name);
-                var nextPage = new ruleg_detail(listViewItems.No, listViewItems.Name, listViewItems.ruleDatas);
+                var nextPage = new ruleg_detail(listViewItems.No, listViewItems.Name, listViewItems.RuleDatas);
                 NavigationService.Navigate(nextPage);
             }
 
@@ -84,7 +84,7 @@ namespace BrownieHound
         {
             var listViewItems = sender as ListViewItem;
             ruleGroupData rgData = listViewItems.DataContext as ruleGroupData;
-            var nextPage = new ruleg_detail(rgData.No, rgData.Name,rgData.ruleDatas);
+            var nextPage = new ruleg_detail(rgData.No, rgData.Name,rgData.RuleDatas);
             NavigationService.Navigate(nextPage);
         }
 
@@ -95,7 +95,7 @@ namespace BrownieHound
             List<string> ruleGroupNames = new List<string>();
             foreach (ruleGroupData item in ruleGroupList.Items)
             {
-                if (item.isCheck)
+                if (item.IsCheck)
                 {
                     message += $"{item.No}:{item.Name}\n";
                     ruleGroupNames.Add(item.Name);
@@ -129,7 +129,7 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             foreach (ruleGroupData item in Data)
             {
-                item.isCheck = allSelect;
+                item.IsCheck = allSelect;
                 checkAll.Content = "すべて選択";
                 
             }
@@ -147,7 +147,7 @@ namespace BrownieHound
             allSelect = (bool)checkAll.IsChecked;
             foreach (ruleGroupData item in Data)
             {
-                item.isCheck = allSelect;
+                item.IsCheck = allSelect;
                 checkAll.Content = "すべて選択解除";
 
             }

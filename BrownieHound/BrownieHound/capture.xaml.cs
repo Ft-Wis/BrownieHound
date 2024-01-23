@@ -75,11 +75,11 @@ namespace BrownieHound
         int writePlace = 1;
         int viewPlace = 0;
         int mailDetectionCount = 0;
-        bool viewUpdateflg = true;
-        bool processflg = false;
-        bool beforeflg = false;
-        bool nextflg = false;
-        bool scrollflg = true;
+        bool viewUpdateFlg = true;
+        bool processFlg = false;
+        bool beforeFlg = false;
+        bool nextFlg = false;
+        bool scrollFlg = true;
 
         public capture(string tsINumber)
         {
@@ -143,15 +143,15 @@ namespace BrownieHound
                 stop.IsEnabled = false;
                 viewable.IsEnabled = false;
                 stopflag = true;
-                if (viewUpdateflg)
+                if (viewUpdateFlg)
                 {
 
                     down_Scroll();
                     if (CaptureData.Items.Count > 500)
                     {
-                        nextflg = true;
+                        nextFlg = true;
                     }
-                    viewUpdateflg = false;
+                    viewUpdateFlg = false;
                 }
 
                 processTscap.Kill();
@@ -175,24 +175,24 @@ namespace BrownieHound
             if (!stopflag)
             {
                 stopflag = true;
-                if (viewUpdateflg)
+                if (viewUpdateFlg)
                 {
 
                     down_Scroll();
                     if (CaptureData.Items.Count > 500)
                     {
-                        nextflg = true;
+                        nextFlg = true;
                     }
-                    viewUpdateflg = false;
+                    viewUpdateFlg = false;
                 }
                 stopstatus.Content = "閲覧中";
             }
             else
             {
                 stopflag = false;
-                nextflg = false;
-                beforeflg = false;
-                viewUpdateflg = true;
+                nextFlg = false;
+                beforeFlg = false;
+                viewUpdateFlg = true;
                 stopstatus.Content = "更新中";
             }
         }
@@ -270,6 +270,7 @@ namespace BrownieHound
                         {
                             using (File.Create(@"temps\maildata0.tmp")) { };
                             mailAddress = mailValidation.mailAddress.Value;
+                            userName = mailValidation.userName.Value;
                             safeLine = int.Parse(mailValidation.mailLimit.Value);
                             mailTimer = new DispatcherTimer();
                             mailTimer.Interval = new TimeSpan(0, int.Parse(mailValidation.span.Value), 0);
@@ -289,7 +290,7 @@ namespace BrownieHound
             foreach (var detectionRuleGroup in detectionRuleGroups.Select((Value, Index) => new { Value, Index }))
             {
                 detectionNumbers.Add(new List<int>());
-                int detectionCount = detectionRuleGroup.Value.ruleDatas.Max(x => x.detectionInterval);
+                int detectionCount = detectionRuleGroup.Value.RuleDatas.Max(x => x.DetectionInterval);
                 if (detectionCount > mostDitectionCount)
                 {
                     mostDitectionCount = detectionCount;
@@ -369,16 +370,16 @@ namespace BrownieHound
                     for (int i = 0; i < detectionRuleGroups.Count; i++)
                     {
                         addCount = 0;
-                        if (detectionRuleGroups[i].extendflg)
+                        if (detectionRuleGroups[i].ExtendFlg)
                         {
                             body.HtmlBody += $"<h3 style='color:rgb(255, 179, 0)'>Link Rule</h3>";
                         }
                         body.HtmlBody += $"<h2>{detectionRuleGroups[i].Name}</h2>";
                         body.HtmlBody += $"<table border='1' style='margin-left:1%;border-collapse: collapse;border-color: thistle;width:98%;'><thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th style='min-width:3em;'>No</th><th style='min-width:3em'>Category</th><th style='min-width:8em;'>Time</th><th style='min-width:4em;'>間隔(s)</th><th style='min-width:2em;'>頻度</th><th style='min-width:18em;'>Source</th><th style='min-width:18em;'>Destination</th><th style='min-width:5em;'>Protocol</th><th style='min-width:6em;'>sourcePort</th><th style='min-width:5em;'>destPort</th><th style='min-width:4em;'>Length</th></tr></thead>";
-                        for (int j = 0; j < detectionRuleGroups[i].ruleDatas.Count; j++)
+                        for (int j = 0; j < detectionRuleGroups[i].RuleDatas.Count; j++)
                         {
                             string category;
-                            if (detectionRuleGroups[i].ruleDatas[j].ruleCategory == 0)
+                            if (detectionRuleGroups[i].RuleDatas[j].RuleCategory == 0)
                             {
                                 category = "black";
                             }
@@ -386,7 +387,7 @@ namespace BrownieHound
                             {
                                 category = "white";
                             }
-                            body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].ruleDatas[j].ruleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionInterval}</th><th>{detectionRuleGroups[i].ruleDatas[j].detectionCount}</th><th>{detectionRuleGroups[i].ruleDatas[j].Source}</th><th>{detectionRuleGroups[i].ruleDatas[j].Destination}</th><th>{detectionRuleGroups[i].ruleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].ruleDatas[j].sourcePort}</th><th>{detectionRuleGroups[i].ruleDatas[j].destinationPort}</th><th>{detectionRuleGroups[i].ruleDatas[j].frameLength}</th></tr></thead>";
+                            body.HtmlBody += $"<thead style='background-color:rgb(255, 179, 0);color:rgb(226, 247, 250);'><tr><th>{detectionRuleGroups[i].RuleDatas[j].RuleNo}</th><th>{category}</th><th>0</th><th>{detectionRuleGroups[i].RuleDatas[j].DetectionInterval}</th><th>{detectionRuleGroups[i].RuleDatas[j].DetectionCount}</th><th>{detectionRuleGroups[i].RuleDatas[j].Source}</th><th>{detectionRuleGroups[i].RuleDatas[j].Destination}</th><th>{detectionRuleGroups[i].RuleDatas[j].Protocol}</th><th>{detectionRuleGroups[i].RuleDatas[j].SourcePort}</th><th>{detectionRuleGroups[i].RuleDatas[j].DestinationPort}</th><th>{detectionRuleGroups[i].RuleDatas[j].FrameLength}</th></tr></thead>";
                         }
                         while (0 < sendList[i].Count)
                         {
@@ -445,14 +446,14 @@ namespace BrownieHound
 
                 }
             }
-            if (viewUpdateflg)
+            if (viewUpdateFlg)
             {
                 CaptureData.ItemsSource = null;
                 CaptureData.Items.Clear();
                 CaptureData.ItemsSource = memoryPackets;
                 bool isRowSelected = CaptureData.SelectedItems.Count > 0;
 
-                if (scrollflg && CaptureData.Items.Count > 0)
+                if (scrollFlg && CaptureData.Items.Count > 0)
                 {
                     CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
                 }
@@ -465,22 +466,22 @@ namespace BrownieHound
 
         private void detectLogic(int detectionNumber)
         {
-            bool detectflg = true;
+            bool detectFlg = true;
             int recordEnd = recordPacketNo.Count - 1;
             int end = recordPacketNo[recordEnd] - 1;
             capturePacketsValue = end;
             List<packetData> packetList = new List<packetData>();
-            if (detectionRuleGroups[detectionNumber].blackListRules.Count > 0)
+            if (detectionRuleGroups[detectionNumber].BlackListRules.Count > 0)
             {
                 List<int> detectionCount = new List<int>();
                 List<int> temp = new List<int>();
-                foreach (var detectionRule in detectionRuleGroups[detectionNumber].blackListRules.Select((Value, Index) => new { Value, Index }))
+                foreach (var detectionRule in detectionRuleGroups[detectionNumber].BlackListRules.Select((Value, Index) => new { Value, Index }))
                 {
                     temp.Add(0);
                     detectionCount.Add(0);
-                    if (detectionRule.Value.detectionInterval <= recordEnd)
+                    if (detectionRule.Value.DetectionInterval <= recordEnd)
                     {
-                        int start = recordPacketNo[recordEnd - detectionRule.Value.detectionInterval];
+                        int start = recordPacketNo[recordEnd - detectionRule.Value.DetectionInterval];
                         int detectIndex = 0;
                         while (detectIndex < memoryPackets.Count)
                         {
@@ -510,48 +511,48 @@ namespace BrownieHound
                             {
                                 flg++;
                             }
-                            if (detectionRule.Value.sourcePort.Equals("all") || detectionRule.Value.sourcePort.Equals(memoryPackets[i].sourcePort))
+                            if (detectionRule.Value.SourcePort.Equals("all") || detectionRule.Value.SourcePort.Equals(memoryPackets[i].SourcePort))
                             {
                                 flg++;
                             }
-                            if (detectionRule.Value.destinationPort.Equals("all") || detectionRule.Value.destinationPort.Equals(memoryPackets[i].destinationPort))
+                            if (detectionRule.Value.DestinationPort.Equals("all") || detectionRule.Value.DestinationPort.Equals(memoryPackets[i].DestinationPort))
                             {
                                 flg++;
                             }
-                            if (detectionRule.Value.frameLength.Equals("none") || Int32.Parse(memoryPackets[i].frameLength) >= Int32.Parse(detectionRule.Value.frameLength))
+                            if (detectionRule.Value.FrameLength.Equals("none") || Int32.Parse(memoryPackets[i].FrameLength) >= Int32.Parse(detectionRule.Value.FrameLength))
                             {
                                 flg++;
                             }
                             if (flg == 6)
                             {
-                                foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                                foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].WhiteListRules)
                                 {
-                                    int wflg = 0;
+                                    int wFlg = 0;
                                     if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(memoryPackets[i].Source))
                                     {
-                                        wflg++;
+                                        wFlg++;
                                     }
                                     if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(memoryPackets[i].Destination))
                                     {
-                                        wflg++;
+                                        wFlg++;
                                     }
                                     if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(memoryPackets[i].Protocol))
                                     {
-                                        wflg++;
+                                        wFlg++;
                                     }
-                                    if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(memoryPackets[i].sourcePort))
+                                    if (whiteListRule.SourcePort.Equals("all") || whiteListRule.SourcePort.Equals(memoryPackets[i].SourcePort))
                                     {
-                                        wflg++;
+                                        wFlg++;
                                     }
-                                    if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(memoryPackets[i].destinationPort))
+                                    if (whiteListRule.DestinationPort.Equals("all") || whiteListRule.DestinationPort.Equals(memoryPackets[i].DestinationPort))
                                     {
-                                        wflg++;
+                                        wFlg++;
                                     }
-                                    if (whiteListRule.frameLength.Equals("none") || Int32.Parse(memoryPackets[i].frameLength) <= Int32.Parse(whiteListRule.frameLength))
+                                    if (whiteListRule.FrameLength.Equals("none") || Int32.Parse(memoryPackets[i].FrameLength) <= Int32.Parse(whiteListRule.FrameLength))
                                     {
-                                        wflg++;
+                                        wFlg++;
                                     }
-                                    if (wflg == 6)
+                                    if (wFlg == 6)
                                     {
                                         flg--;
                                     }
@@ -569,11 +570,11 @@ namespace BrownieHound
                             }
                         }
 
-                        if (detectionCount[detectionRule.Index] < detectionRule.Value.detectionCount)
+                        if (detectionCount[detectionRule.Index] < detectionRule.Value.DetectionCount)
                         {
-                            if (detectionRuleGroups[detectionNumber].extendflg)
+                            if (detectionRuleGroups[detectionNumber].ExtendFlg)
                             {
-                                detectflg = false;
+                                detectFlg = false;
                                 break;
                             }
                             int startIndex = 0;
@@ -610,37 +611,37 @@ namespace BrownieHound
                         }
                         packetList.Add(memoryPackets[i]);
                     }
-                    foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].whiteListRules)
+                    foreach (RuleData.ruleData whiteListRule in detectionRuleGroups[detectionNumber].WhiteListRules)
                     {
 
                         for (int i = 0; i < packetList.Count; i++)
                         {
-                            int wflg = 0;
+                            int wFlg = 0;
                             if (whiteListRule.Source.Equals("all") || whiteListRule.Source.Equals(packetList[i].Source))
                             {
-                                wflg++;
+                                wFlg++;
                             }
                             if (whiteListRule.Destination.Equals("all") || whiteListRule.Destination.Equals(packetList[i].Destination))
                             {
-                                wflg++;
+                                wFlg++;
                             }
                             if (whiteListRule.Protocol.Equals("all") || whiteListRule.Protocol.Equals(packetList[i].Protocol))
                             {
-                                wflg++;
+                                wFlg++;
                             }
-                            if (whiteListRule.sourcePort.Equals("all") || whiteListRule.sourcePort.Equals(packetList[i].sourcePort))
+                            if (whiteListRule.SourcePort.Equals("all") || whiteListRule.SourcePort.Equals(packetList[i].SourcePort))
                             {
-                                wflg++;
+                                wFlg++;
                             }
-                            if (whiteListRule.destinationPort.Equals("all") || whiteListRule.destinationPort.Equals(packetList[i].destinationPort))
+                            if (whiteListRule.DestinationPort.Equals("all") || whiteListRule.DestinationPort.Equals(packetList[i].DestinationPort))
                             {
-                                wflg++;
+                                wFlg++;
                             }
-                            if (whiteListRule.frameLength.Equals("none") || Int32.Parse(packetList[i].frameLength) <= Int32.Parse(whiteListRule.frameLength))
+                            if (whiteListRule.FrameLength.Equals("none") || Int32.Parse(packetList[i].FrameLength) <= Int32.Parse(whiteListRule.FrameLength))
                             {
-                                wflg++;
+                                wFlg++;
                             }
-                            if (wflg == 6)
+                            if (wFlg == 6)
                             {
                                 packetList.RemoveAt(i--);
 
@@ -655,7 +656,7 @@ namespace BrownieHound
             packetList.Sort((a, b) => a.Number - b.Number);
             foreach (var packet in packetList)
             {
-                if (detectflg && !detectionNumbers[detectionNumber].Contains(packet.Number))
+                if (detectFlg && !detectionNumbers[detectionNumber].Contains(packet.Number))
                 {
                     dWindow.show_detection(packet, detectionNumber);
                     detectionNumbers[detectionNumber].Add(packet.Number);
@@ -724,7 +725,7 @@ namespace BrownieHound
                         {
                             sw.WriteLine(msg);
                         }
-                        if (viewUpdateflg)
+                        if (viewUpdateFlg)
                         {
                             viewPlace = dataCount / 500;
                         }
@@ -745,7 +746,7 @@ namespace BrownieHound
                     {
                         sw.WriteLine(msg);
                     }
-                    if (viewUpdateflg)
+                    if (viewUpdateFlg)
                     {
                         viewPlace = dataCount / 500;
                     }
@@ -763,50 +764,50 @@ namespace BrownieHound
 
             ScrollViewer scrollViewer = GetScrollViewer(CaptureData);
 
-            if (!viewUpdateflg)
+            if (!viewUpdateFlg)
             {
-                if (!processflg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.85 && CaptureData.Items.Count % 500 == 0)
+                if (!processFlg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight >= scrollViewer.ExtentHeight * 0.85 && CaptureData.Items.Count % 500 == 0)
                 {
-                    processflg = true;
+                    processFlg = true;
 
-                    if (beforeflg)
+                    if (beforeFlg)
                     {
                         viewPlace++;
-                        beforeflg = false;
+                        beforeFlg = false;
                     }
 
                     if (viewPlace < writePlace * 10 - 1)
                     {
 
                         readToNext(scrollViewer);
-                        nextflg = true;
+                        nextFlg = true;
                     }
 
-                    processflg = false;
+                    processFlg = false;
                 }
-                if (!processflg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight <= scrollViewer.ExtentHeight * 0.15)
+                if (!processFlg && scrollViewer.VerticalOffset + scrollViewer.ViewportHeight <= scrollViewer.ExtentHeight * 0.15)
                 {
-                    processflg = true;
+                    processFlg = true;
 
-                    if (nextflg)
+                    if (nextFlg)
                     {
                         viewPlace--;
-                        nextflg = false;
+                        nextFlg = false;
                     }
                     if (viewPlace > 0)
                     {
 
                         readTobefore(scrollViewer);
-                        beforeflg = true;
+                        beforeFlg = true;
                     }
-                    processflg = false;
+                    processFlg = false;
                 }
             }
             else
             {
                 if (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight > scrollViewer.ExtentHeight * 0.95 || CaptureData.Items.Count <= 100)
                 {
-                    scrollflg = true;
+                    scrollFlg = true;
                 }
             }
         }
@@ -982,9 +983,9 @@ namespace BrownieHound
             viewPacketStrings = null;
             GC.Collect();
             viewPlace = 0;
-            beforeflg = false;
-            nextflg = false;
-            viewUpdateflg = false;
+            beforeFlg = false;
+            nextFlg = false;
+            viewUpdateFlg = false;
         }
         private void down_Scroll()
         {
@@ -1059,7 +1060,7 @@ namespace BrownieHound
             }
             else
             {
-                viewUpdateflg = true;
+                viewUpdateFlg = true;
                 CaptureData.ScrollIntoView(CaptureData.Items.GetItemAt(CaptureData.Items.Count - 1));
 
                 GC.Collect();
@@ -1069,8 +1070,8 @@ namespace BrownieHound
 
         private void down_Click(object sender, RoutedEventArgs e)
         {
-            nextflg = false;
-            beforeflg = false;
+            nextFlg = false;
+            beforeFlg = false;
             down_Scroll();
         }
 
@@ -1095,7 +1096,7 @@ namespace BrownieHound
         {
             if (e.Delta > 0)
             {
-                scrollflg = false;
+                scrollFlg = false;
             }
         }
     } 
