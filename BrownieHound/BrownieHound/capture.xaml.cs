@@ -270,6 +270,7 @@ namespace BrownieHound
                         {
                             using (File.Create(@"temps\maildata0.tmp")) { };
                             mailAddress = mailValidation.mailAddress.Value;
+                            userName = mailValidation.userName.Value;
                             safeLine = int.Parse(mailValidation.mailLimit.Value);
                             mailTimer = new DispatcherTimer();
                             mailTimer.Interval = new TimeSpan(0, int.Parse(mailValidation.span.Value), 0);
