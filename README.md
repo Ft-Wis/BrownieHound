@@ -8,3 +8,7 @@ BrownieHoundは[WireShark](https://www.wireshark.org/download.html)に付随し�
 ## ファイル構造について
 Brownie_Hound_Manual 本アプリケーションのマニュアルです。  
 BrownieHound フォルダ　ソースコードが格納されています。  
+
+## 動作環境について
+このコードは.NET Core3.1でコーディングし、環境を問いませんが現在Windows下での動作を確認しています。  
+メールの送信処理や検知処理で膨大な数を処理するとメモリ使用量が増えるため、メモリの推奨は16GB以上です。（※通常の使用程度であれば200~300MBとなります。）  
