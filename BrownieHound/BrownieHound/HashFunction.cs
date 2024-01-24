@@ -45,12 +45,15 @@ namespace BrownieHound
 
             firstHash = ComputeSHA256(mailAddress);
             verifiedHash = ComputeSHA256(firstHash + mailAddress);
-            using (StreamReader sr = new StreamReader(pathToConf, Encoding.GetEncoding("UTF-8")))
+            if(File.Exists(pathToConf))
             {
-                string savedHash = sr.ReadLine();
-                if (savedHash == verifiedHash)
+                using (StreamReader sr = new StreamReader(pathToConf, Encoding.GetEncoding("UTF-8")))
                 {
-                    verifiableFlg = true;
+                    string savedHash = sr.ReadLine();
+                    if (savedHash == verifiedHash)
+                    {
+                        verifiableFlg = true;
+                    }
                 }
             }
             return verifiableFlg;
