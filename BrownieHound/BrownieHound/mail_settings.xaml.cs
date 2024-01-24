@@ -68,7 +68,7 @@ namespace BrownieHound
                 {
                     if (!File.Exists(authorizedPath))
                     {
-                        certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
+                        certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value,mailValidation.userName.Value);
                         if (certificationWindow.ShowDialog() == true)
                         {
                             var nextPage = new top();
@@ -91,7 +91,7 @@ namespace BrownieHound
                         else
                         {
                             MessageBox.Show("ご入力いただいたメールアドレスは認証されておりませんので、認証手続きに進みます。\n画面が切り替わるまで少々お待ちください。");
-                            certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value);
+                            certification_Window certificationWindow = new certification_Window(mailValidation.mailAddress.Value, mailValidation.userName.Value);
                             if (certificationWindow.ShowDialog() == true)
                             {
                                 var nextPage = new top();
