@@ -1,0 +1,48 @@
+﻿<Page x:Class="BrownieHound.ruleg_detail"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BrownieHound"
+      mc:Ignorable="d" 
+      d:DesignHeight="450"
+      
+      Title="ruleg_detail" Cursor="" Width="1112" HorizontalAlignment="Center">
+
+    <Grid Background="White" HorizontalAlignment="Center" Width="1120">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="263*"/>
+            <ColumnDefinition Width="297*"/>
+        </Grid.ColumnDefinitions>
+        <Image Source="logoimage/rule_detail.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="-2,-99,0,0"/>
+        <Button x:Name="add" Content="追加"  HorizontalAlignment="Left" Height="43" Margin="311,0,0,22" VerticalAlignment="Bottom" Width="153" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" Grid.Column="1"/>
+        <Button x:Name="edit" Content="編集"  HorizontalAlignment="Left" Height="43" Margin="86,0,0,22" VerticalAlignment="Bottom" Width="156" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="editButton_Click" IsEnabled="False" Grid.Column="1"/>
+        <Button x:Name="redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="58,0,0,22" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click"/>
+        <Button x:Name="inactivate" Content="削除" HorizontalAlignment="Left" Height="43" Margin="331,0,0,22" VerticalAlignment="Bottom" Width="124" Click="inactivate_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" IsEnabled="False" />
+        <Button x:Name="correct" Content="名前の修正" Margin="0,25,58,0" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" HorizontalAlignment="Right" Width="157" Height="44" VerticalAlignment="Top" Grid.Column="1" Click="correct_Click"/>
+        <TextBox x:Name="ruleGroupName" HorizontalAlignment="Left" Margin="299,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Cascadia Code" FontWeight="Bold" FontSize="23" Foreground="#FF0C9CB6" Height="43" Width="568" IsEnabled="False" Grid.ColumnSpan="2" Cursor="" Background="{x:Null}" Text="{Binding ruleGroupName.Value, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <DataGrid x:Name="rule_DataGrid" ItemsSource="{Binding}"  AutoGenerateColumns="False" Margin="25,98,25,98" SelectionChanged="DataGrid_Selected" Grid.ColumnSpan="2" BeginningEdit="rule_DataGrid_BeginningEdit" SelectionUnit="FullRow">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding isCheck, UpdateSourceTrigger=PropertyChanged}" Checked="IsChecked_Checked" Unchecked="IsChecked_Unchecked" Margin="0,0,55,0"  />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="番号" Binding="{Binding ruleNo}" IsReadOnly="True" MinWidth="30"/>
+                <DataGridTextColumn Header="検出可否" Binding="{Binding ruleCategory}" IsReadOnly="True" MinWidth="30"/>
+                <DataGridTextColumn Header="送信元IP" Binding="{Binding source}" IsReadOnly="True" MinWidth="50"/>
+                <DataGridTextColumn Header="送信先IP" Binding="{Binding destination}" IsReadOnly="True" MinWidth="50"/>
+                <DataGridTextColumn Header="プロトコル" Binding="{Binding protocol}" IsReadOnly="True" MinWidth="20"/>
+                <DataGridTextColumn Header="送信元ポート番号" Binding="{Binding sourcePort}" IsReadOnly="True" MinWidth="20"/>
+                <DataGridTextColumn Header="送信先ポート番号" Binding="{Binding destinationPort}" IsReadOnly="True" MinWidth="20"/>
+                <DataGridTextColumn Header="検知時間(s)" Binding="{Binding detectionInterval}" IsReadOnly="True" MinWidth="25"/>
+                <DataGridTextColumn Header="検知回数" Binding="{Binding detectionCount}" IsReadOnly="True" MinWidth="20"/>
+                <DataGridTextColumn Header="サイズ" Binding="{Binding frameLength}" IsReadOnly="True" MinWidth="60"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="25,80,0,0" VerticalAlignment="Top" Checked="checkAll_Checked" Unchecked="checkAll_Unchecked" Width="{Binding ElementName=title, Mode=OneWay}"/>
+        <CheckBox x:Name="linkCheck" Content="ルールのグループ化" HorizontalAlignment="Left" Margin="125,80,0,0" VerticalAlignment="Top" Checked="linkCheck_Checked" Unchecked="linkCheck_Unchecked" Width="{Binding ElementName=title, Mode=OneWay}"/>
+    </Grid>
+</Page>

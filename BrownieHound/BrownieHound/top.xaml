@@ -1,0 +1,27 @@
+﻿<Page x:Class="BrownieHound.top"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BrownieHound"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="top">
+    <Grid  Unloaded="Grid_Unloaded" Loaded="Page_loaded" Background="White" MinWidth="800" MinHeight="40"  >
+        <Image Source="logoimage/top.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="25,-73,0,0"/>
+        <Button x:Name="topTos_r" Content="解析実行" Height="43" Margin="0,0,37,22" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="topTos_r_Click" HorizontalAlignment="Right" Width="146" IsEnabled="False" />
+        <Button x:Name="topTom_s" Content="メール設定" Height="43" Margin="0,0,260,22" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic"  FontSize="25" Foreground="White" Click="topTom_s_Click"  HorizontalAlignment="Right" Width="157"/>
+        <Button x:Name="topTorg_s" Content="ルールグループ設定"  Height="43" Margin="0,0,496,22" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Foreground="White" Click="topTorg_s_Click" HorizontalAlignment="Right" Width="260"/>
+        <Button x:Name="topTodp_v" Content="検知パケット閲覧" Height="43" Margin="0,44,56,0" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Yu Gothic"  FontSize="25" Foreground="White"   HorizontalAlignment="Right" Width="262" Click="topTodp_v_Click"/>
+
+
+        <ListBox x:Name="interfaceList" Margin="63,120,37,120" ScrollViewer.CanContentScroll="True">
+            <ListBox.ItemContainerStyle>
+                <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="{x:Type ListBoxItem}">
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="listBoxItem_MouseDoubleClick"/>
+                    <EventSetter Event="ListBoxItem.Selected" Handler="ListBoxItem_Selected"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </Grid>
+</Page>

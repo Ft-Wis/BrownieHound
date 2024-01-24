@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>C:\Users\nkc20\source\repos\Ft-Wis\sotsuken\BrownieHound\BrownieHound\Properties\PublishProfiles\ClickOnceProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="detectionPacketsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DetectionTreeLabel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DetectionTreeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="detectWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="packet_detail_Window.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ruleg_add_Window.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="rule_add_Window.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="rule_edit_Window.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Tsharkpath.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="detectionPacketsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DetectionTreeLabel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DetectionTreeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="packet_detail_Window.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ruleg_add_Window.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="rule_add_Window.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="rule_edit_Window.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="detectWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Tsharkpath.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

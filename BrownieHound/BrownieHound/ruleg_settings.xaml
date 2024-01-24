@@ -1,0 +1,87 @@
+﻿<Page x:Class="BrownieHound.ruleg_settings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BrownieHound"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="827.621"
+      Title="ruleg_settings">
+
+    <Grid Background="White" Loaded="Page_Loaded" Cursor="">
+        <Image Source="logoimage/rule_ssetting.png" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top"  Margin="25,-83,0,0"/>
+        <Button x:Name="add" Content="追加" Height="43" Margin="0,0,55,20" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="addButton_Click" HorizontalAlignment="Right" Width="121"/>
+        <Button x:Name="detail" Content="詳細" Height="43" Margin="0,0,200,20" VerticalAlignment="Bottom" FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25"  Foreground="White" Click="detailButton_Click" HorizontalAlignment="Right" Width="121" IsEnabled="False" Cursor="Hand"/>
+        <Button x:Name="delete" Content="削除" HorizontalAlignment="Left" Height="43" Margin="276,0,0,20" VerticalAlignment="Bottom" Width="116" Click="delete_Click" FontFamily="Yu Gothic"   Background="Red" FontSize="25" Foreground="White" FontWeight="Medium" IsEnabled="False" />
+        <ListView x:Name="ruleGroupList" ItemsSource="{Binding}" Margin="40,110,40,110" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="ListViewItem_DoubleClikck"/>
+                    <EventSetter Event="ListBoxItem.Selected" Handler="ListViewItem_Selected"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridView.ColumnHeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" MinWidth="80" TextAlignment="Left"  HorizontalAlignment="Left"/>
+                        </DataTemplate>
+                    </GridView.ColumnHeaderTemplate>
+                    <GridViewColumn Width="85">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader IsEnabled="False"/>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding isCheck}" Checked="IsChecked_Checked" Unchecked="IsChecked_Unchecked"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="No" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding No}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="295">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Name" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="120">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="ruleItems" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RuleItems}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="110">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Linked" IsEnabled="False"></GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Linked}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="redo" Content="戻る" HorizontalAlignment="Left" Height="43" Margin="28,0,0,22" VerticalAlignment="Bottom" Width="146"  FontWeight="Bold" FontFamily="Yu Gothic" FontSize="25" Background="White" Foreground="Orange" BorderBrush="Black" Click="redoButton_Click"/>
+        <CheckBox x:Name="checkAll" Content="すべて選択" HorizontalAlignment="Left" Margin="54,129,0,0" VerticalAlignment="Top" IsChecked="False" Unchecked="checkAll_Unchecked" Checked="checkAll_Checked"/>
+
+    </Grid>
+</Page>

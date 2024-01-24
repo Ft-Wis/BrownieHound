@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="logoimage\capture.png" />
+    <None Remove="logoimage\detect.png" />
+    <None Remove="logoimage\mail_setting.png" />
+    <None Remove="logoimage\packet_detail.png" />
+    <None Remove="logoimage\rule_detail.png" />
+    <None Remove="logoimage\rule_ssetting.png" />
+    <None Remove="logoimage\square1.png" />
+    <None Remove="logoimage\standby_rule.png" />
+    <None Remove="logoimage\top.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logoimage\capture.png" />
+    <Resource Include="logoimage\detect.png" />
+    <Resource Include="logoimage\mail_setting.png" />
+    <Resource Include="logoimage\packet_detail.png" />
+    <Resource Include="logoimage\rule_detail.png" />
+    <Resource Include="logoimage\rule_ssetting.png" />
+    <Resource Include="logoimage\square1.png" />
+    <Resource Include="logoimage\standby_rule.png" />
+    <Resource Include="logoimage\top.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.1.0" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.2" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ReactiveProperty.WPF" Version="8.1.2" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+  </ItemGroup>
+
+</Project>
