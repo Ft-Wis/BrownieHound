@@ -30,14 +30,15 @@ namespace BrownieHound
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer sendableTimer = new DispatcherTimer();
         private int sendableSeconds = 15;
-        public certification_Window(string mailAddress)
+        private string userName = "";
+        public certification_Window(string mailAddress, string userName)
         {
             InitializeComponent();
-            //MessageBox.Show(this, mailAddress);
             sendableTimer.Tick += sendableTimer_Tick;
             sendableTimer.Interval = TimeSpan.FromSeconds(1);
             this.Owner = App.Current.MainWindow;
             this.senderMailAddress = mailAddress;
+            this.userName = userName;
             mailblock.Text = mailAddress;
             certiCode = Randomcerti();
             _ = sendEmail(mailAddress, certiCode);
@@ -69,7 +70,7 @@ namespace BrownieHound
             var builder = new MimeKit.BodyBuilder();
             email.From.Add(new MailboxAddress("browniehound", "browniehound2024@gmail.com"));
             email.To.Add(new MailboxAddress("", mailAddress));
-            email.Subject = "メール認証";
+            email.Subject = $"{userName}からのメール認証要求";
             MimeKit.TextPart textPart = new MimeKit.TextPart("Plain");
             var body = new BodyBuilder();
             body.HtmlBody = $"<html><body>下記の数字を画面に入力してください<h2>{authCode}</h2><br>" +
