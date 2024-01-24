@@ -51,20 +51,30 @@ namespace BrownieHound
             //メール検証処理
             HashFunction hashFunction = new HashFunction();
             Mail_Validation mailValidation = new Mail_Validation();
-            using (StreamReader sr = new StreamReader(@$"conf\mail.conf", Encoding.GetEncoding("UTF-8")))
-            {
-                for(int i = 0; i < 4; i++)
+            if (File.Exists(@$"conf\mail.conf")){
+                using (StreamReader sr = new StreamReader(@$"conf\mail.conf", Encoding.GetEncoding("UTF-8")))
                 {
                     sr.ReadLine();
-                }
-                mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
+                    if (bool.TryParse(sr.ReadLine().Split(":")[1], out var isEnabled))
+                    {
+                        mailValidation.isEnabled.Value = isEnabled;
+                    }
+                    if (mailValidation.isEnabled.Value)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            sr.ReadLine();
+                        }
+                        mailValidation.mailAddress.Value = sr.ReadLine().Split(":")[1];
 
-                if (!hashFunction.verifyMail(mailValidation.mailAddress.Value, @$"conf\authorize.conf"))
-                {
-                    MessageBox.Show("メールアドレスが認証されておりません。\nメール設定にてメールアドレスの認証を行ってください。");
-                    NavigationService.GoBack();
-                    return;
-                    
+                        if (!hashFunction.verifyMail(mailValidation.mailAddress.Value, @$"conf\authorize.conf"))
+                        {
+                            MessageBox.Show("メールアドレスが認証されておりません。\nメール設定にてメールアドレスの認証を行ってください。");
+                            NavigationService.GoBack();
+                            return;
+
+                        }
+                    }
                 }
             }
 
