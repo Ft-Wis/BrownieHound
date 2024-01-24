@@ -415,7 +415,6 @@ namespace BrownieHound
             else
             {
                 //閾値を超えてないとき。
-                MessageBox.Show("閾値を超えていません");
                 //ファイルを削除する処理
                 string pathToTemps = @"temps\";
                 string[] files = Directory.GetFiles(pathToTemps);
